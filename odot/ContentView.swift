@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @ObservedObject var todos = Todos()
     
     var body: some View {
@@ -16,9 +17,9 @@ struct ContentView: View {
             ForEach(todos.listOfItems){ todo in
                 HStack {
                     Text("\(todo.title)")
-                        .padding()
-                    Text("\(todo.note)")
-                        .padding()
+                    Spacer()
+                    Text("\(todo.getFormattedDate())")
+                        .italic()
                 }
             }
             

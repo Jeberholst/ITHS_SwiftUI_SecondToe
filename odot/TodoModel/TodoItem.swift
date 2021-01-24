@@ -13,11 +13,19 @@ struct TodoItem : Identifiable {
     
     var title: String = "Title"
     var note: String = "Note"
+    var date: Date = Date()
     
     
     //HyperLinks?
     //Images?
     
+    func getFormattedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let date = dateFormatter.string(from: self.date)
+        return date
+        
+    }
     
     
 }

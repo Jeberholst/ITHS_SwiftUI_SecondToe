@@ -16,7 +16,7 @@ struct TodoSelectedItemView: View {
             VStack {
                 
             
-                HStack(alignment: .top) {
+                HStack {
                 
                     ForEach(1 ..< 6) { item in
                         ImageRowButton(text: "\(item)")
@@ -24,16 +24,20 @@ struct TodoSelectedItemView: View {
                     
                 }
                 
-                HStack(alignment: .top) {
-                
+                HStack {
+                 
                     ForEach(1 ..< 6) { item in
-                        Text("Link \(item)")
+                        Text("L\(item)")
+                            .padding()
                     }
+                    
                     
                 }
                 
+                Spacer()
+                
                 ScrollView(.vertical, showsIndicators: true, content: {
-                    TodoBlockView(blockContent: "Block 1")
+                    TodoBlockView(blockContent: "Block 1 asd adasdasda asdasdasdasdsadsadasdasdasdasdasdasdasdasdasdasdadasdasdsadasdasdasdasdasdasdasdsadsadasdassadasdasdasdasdasdsadasdasd")
                     TodoBlockView(blockContent: "Block 2")
                     TodoBlockView(blockContent: "Block 3")
                     TodoBlockView(blockContent: "Block 4")
@@ -66,7 +70,7 @@ struct ImageRowButton: View {
             Text("+")
                 .padding()
                 .border(Color.gray, width: 1)
-                .cornerRadius(/*@START_MENU_TOKEN@*/3.0/*@END_MENU_TOKEN@*/)
+                .cornerRadius(3.0)
         })
     }
 }
@@ -76,8 +80,41 @@ struct TodoBlockView: View {
     var blockContent: String
     
     var body: some View {
-        Text("\(blockContent)")
-            .padding()
-            .frame(width: UIScreen.main.bounds.width - 20, height: 125, alignment: .leading)
+        
+        ZStack {
+            
+            VStack {
+                
+                
+                HStack {
+                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Text("Copy")
+                    })
+                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Text("Edit")
+                    })
+                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Text("Paste")
+                    })
+                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Text("xShare")
+                    })
+                    
+                }
+                
+                Text("\(blockContent)")
+                    .padding()
+                    .font(.system(size: 12))
+                    .frame(width: UIScreen.main.bounds.width - 20, height: 125, alignment: .leading)
+                    .lineSpacing(5.0)
+                    //.border(Color.gray, width: 0.5)
+                    //.shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 2.0, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+            }
+            
+         
+        }
+       //
+        
+      
     }
 }
