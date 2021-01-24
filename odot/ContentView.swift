@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var todos = Todos()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        
+        List(){
+            ForEach(todos.listOfItems){ todo in
+                HStack {
+                    Text("\(todo.title)")
+                        .padding()
+                    Text("\(todo.note)")
+                        .padding()
+                }
+            }
+            
+        }
+        
+        
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
