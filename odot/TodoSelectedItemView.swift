@@ -20,19 +20,19 @@ struct TodoSelectedItemView: View {
                 HStack(content: {
                     Text("Selected item")
                         .padding()
+
                 })
           
-            
-                HStack {
-                
-                    ForEach(1 ..< 6) { item in
-                        ImageRowButton(text: "\(item)")
+                GroupBox{
+                    HStack {
+                        ForEach(1 ..< 6) { item in
+                            ImageRowButton(text: "\(item)")
+                        }
+                        
                     }
-                    
                 }
                 
-                
-                
+                            
                 HStack {
                     
                     ForEach(1 ..< 6) { item in
@@ -89,20 +89,23 @@ struct TodoBlockView: View {
     
     var body: some View {
         
-        ZStack {
+        GroupBox {
             
-            VStack {
-                Color.init(UIColor.black)
+            HStack {
+                
+                //Text latest change Date
+                //Comment? Below?
+                //Delete button?
+                //Create new button?
                 
                 Text("\(blockContent)")
                     .padding()
                     .font(.system(size: 12))
-                    .frame(width: UIScreen.main.bounds.width - 20, height: 125, alignment: .leading)
                     .lineSpacing(5.0)
                     //.border(Color.gray, width: 0.5)
                     //.shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 2.0, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
                 
-                HStack(spacing: 10) {
+                GroupBox {
             
                     Spacer()
                     ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
@@ -110,7 +113,7 @@ struct TodoBlockView: View {
                     ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
                     ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
 
-                }.padding()
+                }
             }
             
          
@@ -127,7 +130,6 @@ struct ClipBoardActionView: View {
     var body: some View {
         
         VStack {
-            
             Image(systemName: iconSystemName)
                 .resizable()
                 .foregroundColor(.black)

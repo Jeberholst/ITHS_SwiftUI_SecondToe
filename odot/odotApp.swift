@@ -11,7 +11,7 @@ import SwiftUI
 struct odotApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TodoSelectedItemView()
         }
     }
 }
