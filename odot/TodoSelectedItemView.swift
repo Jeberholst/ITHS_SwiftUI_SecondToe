@@ -13,8 +13,15 @@ struct TodoSelectedItemView: View {
     var body: some View {
         
         ZStack {
+            
+            
             VStack {
                 
+                HStack(content: {
+                    Text("Selected item")
+                        .padding()
+                })
+          
             
                 HStack {
                 
@@ -24,8 +31,10 @@ struct TodoSelectedItemView: View {
                     
                 }
                 
+                
+                
                 HStack {
-                 
+                    
                     ForEach(1 ..< 6) { item in
                         Text("L\(item)")
                             .padding()
@@ -66,8 +75,7 @@ struct ImageRowButton: View {
         Button(action: {
             
         }, label: {
-            
-            Text("+")
+            Image(systemName: "photo")
                 .padding()
                 .border(Color.gray, width: 1)
                 .cornerRadius(3.0)
@@ -84,23 +92,7 @@ struct TodoBlockView: View {
         ZStack {
             
             VStack {
-                
-                
-                HStack {
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Text("Copy")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Text("Edit")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Text("Paste")
-                    })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                        Text("xShare")
-                    })
-                    
-                }
+                Color.init(UIColor.black)
                 
                 Text("\(blockContent)")
                     .padding()
@@ -109,12 +101,42 @@ struct TodoBlockView: View {
                     .lineSpacing(5.0)
                     //.border(Color.gray, width: 0.5)
                     //.shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 2.0, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                
+                HStack(spacing: 10) {
+            
+                    Spacer()
+                    ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
+                    ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
+                    ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
+                    ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
+
+                }.padding()
             }
             
          
         }
-       //
-        
       
+    }
+}
+
+struct ClipBoardActionView: View {
+    
+    var iconSystemName: String
+    var label: String
+    
+    var body: some View {
+        
+        VStack {
+            
+            Image(systemName: iconSystemName)
+                .resizable()
+                .foregroundColor(.black)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 16, height: 16)
+            Text(label)
+                .font(.system(size: 12))
+        }
+        .cornerRadius(3.0)
+        
     }
 }
