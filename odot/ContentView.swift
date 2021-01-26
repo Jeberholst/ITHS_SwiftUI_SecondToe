@@ -13,35 +13,25 @@ struct ContentView: View {
     
     var body: some View {
         
-//        VStack {
-            
-//            Text("Odot")
-//                .bold()
-//                .italic()
-//                .font(.system(size: CGFloat(55), weight: Font.Weight.bold, design: Font.Design.rounded))
-            
-//            Section {
-                NavigationView {
-                    List(){
-                        ForEach(todos.listOfItems){ todoItem in
-                            NavigationLink(
-                                destination: TodoSelectedItemView(todos: todos, todoItem: todoItem)){
-                                
-                                TodoItemView(todo: todoItem)
-                                
-                                }
-                            }
-                    }
+        NavigationView {
+            List(){
+                ForEach(todos.listOfItems){ todoItem in
+                    
+                    NavigationLink(
+                        destination:
+                        TodoSelectedItemView(todos: todos, todoItem: todoItem)){
                         
-                }.padding()
+                            TodoItemView(todo: todoItem)
+                        
+                    }
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("Todo")
+            
+            
                 
-                
-//            }.padding()
-            
-            
-            
-//        }
-        
+        }
         
     }
 }

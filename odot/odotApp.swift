@@ -15,4 +15,3 @@ struct odotApp: App {
         }
     }
 }
-

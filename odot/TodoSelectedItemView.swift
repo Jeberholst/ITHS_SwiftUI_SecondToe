@@ -15,18 +15,15 @@ struct TodoSelectedItemView: View {
     
     var body: some View {
         
+        
+        
         ZStack {
-    
             
-                VStack {
-                  
-                    HStack(content: {
-                        Text("\(todoItem!.title)")
-                            .padding()
-                            .font(.title)
-                    })
+                VStack(alignment: .leading) {
                     
-                    
+                    Text("\(todoItem!.title) - \(todoItem!.getFormattedDate())")
+                        .font(.system(size: 10))
+                        .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
                     
                     Group {
                         GroupTitleImageView(systemName: "photo.on.rectangle.angled")
@@ -37,7 +34,7 @@ struct TodoSelectedItemView: View {
                                 }
                             }
                         }
-                    }.padding()
+                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
                     
                     Group {
@@ -46,11 +43,12 @@ struct TodoSelectedItemView: View {
                             HStack {
                                 ForEach(0 ..< todoItem!.hyperLinks.capacity, id: \.self){item in
                                     HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item])
+                                
                                     
-                                }
+                                }.background(GrayBackGroundView())
                             }
                         }
-                    }.padding()
+                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
                     
                     Group {
@@ -62,14 +60,14 @@ struct TodoSelectedItemView: View {
                             
                             ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
                                 CodeBlockView(blockContent: todoItem!.codeBlocks[item])
-                                    
+                                
                             }
                             
                         }
                         
                         
                         
-                    }.padding()
+                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
                     
                     
@@ -91,7 +89,7 @@ struct TodoSelectedItemView_Previews: PreviewProvider {
 struct GrayBackGroundView: View {
     
     var body: some View {
-        Color.init(UIColor.systemGray2.withAlphaComponent(0.2))
+        Color.init(UIColor.systemGray4.withAlphaComponent(0.1))
     }
     
 }
@@ -108,9 +106,9 @@ struct ImageRowButton: View {
             Image(systemName: "photo")
                 .padding()
                 .foregroundColor(Color.black)
-                .border(Color.gray, width: 1)
-                .cornerRadius(3.0)
-        })
+//                .border(Color.gray, width: 1)
+//                .cornerRadius(3.0)
+        }).background(GrayBackGroundView())
     }
 }
 
@@ -120,14 +118,20 @@ struct CodeBlockView: View {
     @State private var comment: String = "Comment"
     
     var body: some View {
+        
+        VStack{
+            
+             Text("\(blockContent)")
+                 .padding()
+                 .font(.system(size: 12))
+                 //.background(Color.blue)
+                 //.lineSpacing(5.0)
+                 .frame(width: UIScreen.main.bounds.width - 20, height: 100, alignment: .center)
+                 //UIScreen.main.bounds.width
+            
+        }
+        .background(GrayBackGroundView())
        
-        Text("\(blockContent)")
-            .padding()
-            .font(.system(size: 12))
-            //.background(Color.blue)
-            //.lineSpacing(5.0)
-            .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
-            //UIScreen.main.bounds.width
         
     }
     
@@ -161,6 +165,7 @@ struct HyperLinkView: View {
     var body: some View {
        
         VStack(alignment: .center) {
+            
             Text("\(hyperLinkItem.title)")
                 .bold()
             Text("\(hyperLinkItem.description)")
@@ -169,6 +174,7 @@ struct HyperLinkView: View {
                 .font(.system(size: 14))
                 .foregroundColor(.blue)
         }
+        .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
             
     }
 }
@@ -191,8 +197,6 @@ struct GroupTitleImageView: View {
             
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
                 Image(systemName: "plus")
-                    .padding()
-                    
             })
         }
         
@@ -215,14 +219,8 @@ struct GroupTitleTextCodeBlockView: View {
        
             Spacer()
             
-            ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
-            ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
-            ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
-            ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
-            
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
                 Image(systemName: "plus")
-                    .padding()
                     
             })
         }
@@ -230,3 +228,8 @@ struct GroupTitleTextCodeBlockView: View {
         
     }
 }
+
+//ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
+//ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
+//ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
+//ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
