@@ -9,6 +9,9 @@ import SwiftUI
 
 struct TodoSelectedItemView: View {
     
+    @State var todos: Todos
+    @State var todoItem: TodoItem? = nil
+    //@State var currentSelection: Int = 0
     
     var body: some View {
         
@@ -18,38 +21,49 @@ struct TodoSelectedItemView: View {
             VStack {
                 
                 HStack(content: {
-                    Text("Selected item")
+                    Text("\(todoItem!.title)")
                         .padding()
 
                 })
-          
+                
                 GroupBox{
                     HStack {
-                        ForEach(1 ..< 6) { item in
-                            ImageRowButton(text: "\(item)")
+                        ForEach(0 ..< 5) { item in
+                            ImageRowButton(text: "1")
                         }
-                        
                     }
                 }
-                
-                            
-                HStack {
-                    
-                    ForEach(1 ..< 6) { item in
-                        Text("L\(item)")
-                            .padding()
+                GroupBox(label: GroupTitleTextView(text: "Hyperlinks"), content: {
+                    HStack {
+                       List(){
+                            ForEach(todoItem!.hyperLinks){ item in
+                                HyperLinkView(hyperLinkItem: item)
+                            }.onDelete(perform: { indexSet in
+                                
+                              //  let todoItemIndex = todos.listOfItems.firstIndex { self.$todos.$listOfItems -> todoItem?.id}
+                                
+                                todoItem?.hyperLinks.remove(atOffsets: indexSet)
+                               // todos.listOfItems[]
+                            })
+
+                       }
                     }
-                    
-                    
-                }
+                })
+              
                 
                 Spacer()
                 
-                ScrollView(.vertical, showsIndicators: true, content: {
-                    TodoBlockView(blockContent: "Block 1 asd adasdasda asdasdasdasdsadsadasdasdasdasdasdasdasdasdasdasdadasdasdsadasdasdasdasdasdasdasdsadsadasdassadasdasdasdasdasdsadasdasd")
-                    TodoBlockView(blockContent: "Block 2")
-                    TodoBlockView(blockContent: "Block 3")
-                    TodoBlockView(blockContent: "Block 4")
+                
+                let mockTodoBlock = ["Block 1 asdasdasdasdsdasdasdasdasdasdasdasdasda", "Block 2 asdasdasdasdasdasdsdasdas", "Block 3", "Block 4"]
+                
+                GroupBox(label: GroupTitleTextView(text: "Code-Blocks"), content: {
+                    HStack {
+                       List(){
+                            ForEach(0 ..< mockTodoBlock.capacity) { i in
+                                TodoBlockView(blockContent: mockTodoBlock[i])
+                            }
+                       }
+                    }
                 })
               
                 
@@ -61,8 +75,10 @@ struct TodoSelectedItemView: View {
 }
 
 struct TodoSelectedItemView_Previews: PreviewProvider {
+    static var todo = Todos()
+    
     static var previews: some View {
-        TodoSelectedItemView()
+        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[0])
     }
 }
 
@@ -86,10 +102,12 @@ struct ImageRowButton: View {
 struct TodoBlockView: View {
     
     var blockContent: String
+    @State private var comment: String = "Comment"
     
     var body: some View {
         
-        GroupBox {
+        VStack {
+            
             
             HStack {
                 
@@ -102,9 +120,7 @@ struct TodoBlockView: View {
                     .padding()
                     .font(.system(size: 12))
                     .lineSpacing(5.0)
-                    //.border(Color.gray, width: 0.5)
-                    //.shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 2.0, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
-                
+            
                 GroupBox {
             
                     Spacer()
@@ -114,11 +130,15 @@ struct TodoBlockView: View {
                     ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
 
                 }
+                
+                
             }
             
+            TextField("Placeholder", text: $comment)
+                .padding()
          
         }
-      
+        
     }
 }
 
@@ -139,6 +159,48 @@ struct ClipBoardActionView: View {
                 .font(.system(size: 12))
         }
         .cornerRadius(3.0)
+        
+    }
+}
+
+struct HyperLinkView: View {
+    
+    var hyperLinkItem: HyperLinkItem
+    
+    var body: some View {
+       
+        VStack(alignment: .leading) {
+            Text("\(hyperLinkItem.title)")
+                .bold()
+            Text("\(hyperLinkItem.description)")
+                .font(.system(size: 14))
+            Text("\(hyperLinkItem.hyperlink)")
+                .font(.system(size: 14))
+                .foregroundColor(.blue)
+        }
+            
+    }
+}
+
+struct GroupTitleTextView: View {
+    
+    var text: String
+    
+    var body: some View {
+        
+        HStack {
+            Text("\(text)")
+                .foregroundColor(.black)
+                .font(.custom("Brush Script MT", size: 16))
+            Spacer()
+            
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Image(systemName: "plus")
+                    .padding()
+                    
+            })
+        }
+        
         
     }
 }

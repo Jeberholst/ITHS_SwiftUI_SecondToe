@@ -13,17 +13,19 @@ struct ContentView: View {
     
     var body: some View {
         
-        List(){
-            ForEach(todos.listOfItems){ todo in
-                HStack {
-                    Text("\(todo.title)")
-                    Spacer()
-                    Text("\(todo.getFormattedDate())")
-                        .italic()
+        NavigationView {
+            List(){
+                ForEach(todos.listOfItems){ todoItem in
+                    NavigationLink(
+                        destination: TodoSelectedItemView(todos: todos, todoItem: todoItem)){
+                        
+                        TodoItemView(todo: todoItem)
+                        
+                        }
+                    }
                 }
+                
             }
-            
-        }
         
         
     }
@@ -33,5 +35,19 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct TodoItemView: View {
+    
+    var todo: TodoItem
+    
+    var body: some View {
+        HStack {
+            Text("\(todo.title)")
+            Spacer()
+            Text("\(todo.getFormattedDate())")
+                .italic()
+        }
     }
 }

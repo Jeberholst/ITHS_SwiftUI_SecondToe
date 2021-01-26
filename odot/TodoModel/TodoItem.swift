@@ -8,15 +8,13 @@
 import Foundation
 
 struct TodoItem : Identifiable {
-    
     var id = UUID()
     
     var title: String = "Title"
     var note: String = "Note"
     var date: Date = Date()
+    var hyperLinks: [HyperLinkItem] = [HyperLinkItem]()
     
-    
-    //HyperLinks?
     //Images?
     
     func getFormattedDate() -> String {

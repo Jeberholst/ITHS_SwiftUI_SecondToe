@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375066525C09E66006158E4 /* HyperLinkItem.swift */; };
 		43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBD25BDC84900C59D08 /* odotApp.swift */; };
 		43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBF25BDC84900C59D08 /* ContentView.swift */; };
 		43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B4CDC125BDC84A00C59D08 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4375066525C09E66006158E4 /* HyperLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkItem.swift; sourceTree = "<group>"; };
 		43B4CDBA25BDC84900C59D08 /* odot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = odot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B4CDBD25BDC84900C59D08 /* odotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotApp.swift; sourceTree = "<group>"; };
 		43B4CDBF25BDC84900C59D08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				43B4CDEE25BDC8E000C59D08 /* TodoItem.swift */,
 				43B4CDF425BDCA5C00C59D08 /* Todos.swift */,
+				4375066525C09E66006158E4 /* HyperLinkItem.swift */,
 			);
 			path = TodoModel;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */,
 				43B4CDEF25BDC8E000C59D08 /* TodoItem.swift in Sources */,
 				43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */,
+				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

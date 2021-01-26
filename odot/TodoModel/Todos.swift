@@ -16,10 +16,13 @@ class Todos: ObservableObject {
     }
     
     func createMockData(){
-        addItem(todoItem: TodoItem(title: "En titel 1", note: "En note 1"))
-        addItem(todoItem: TodoItem(title: "En titel 2", note: "En note 2"))
-        addItem(todoItem: TodoItem(title: "En titel 3", note: "En note 3"))
-        addItem(todoItem: TodoItem(title: "En titel 4", note: "En note 4"))
+        
+        let hyperLink = [HyperLinkItem(), HyperLinkItem(),HyperLinkItem()]
+        
+        addItem(todoItem: TodoItem(title: "En titel 1", note: "En note 1", hyperLinks: hyperLink))
+        addItem(todoItem: TodoItem(title: "En titel 2", note: "En note 2", hyperLinks: hyperLink))
+        addItem(todoItem: TodoItem(title: "En titel 3", note: "En note 3", hyperLinks: hyperLink))
+        addItem(todoItem: TodoItem(title: "En titel 4", note: "En note 4", hyperLinks: hyperLink))
     }
     
     func addItem(todoItem: TodoItem){
