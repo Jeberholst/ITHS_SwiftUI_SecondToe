@@ -16,70 +16,84 @@ struct TodoSelectedItemView: View {
     var body: some View {
         
         ZStack {
+    
             
-            
-            VStack {
-                
-                HStack(content: {
-                    Text("\(todoItem!.title)")
-                        .padding()
-
-                })
-                
-                GroupBox{
-                    HStack {
-                        ForEach(0 ..< 5) { item in
-                            ImageRowButton(text: "1")
-                        }
-                    }
-                }
-                GroupBox(label: GroupTitleTextView(text: "Hyperlinks"), content: {
-                    HStack {
-                       List(){
-                            ForEach(todoItem!.hyperLinks){ item in
-                                HyperLinkView(hyperLinkItem: item)
-                            }.onDelete(perform: { indexSet in
-                                
-                              //  let todoItemIndex = todos.listOfItems.firstIndex { self.$todos.$listOfItems -> todoItem?.id}
-                                
-                                todoItem?.hyperLinks.remove(atOffsets: indexSet)
-                               // todos.listOfItems[]
-                            })
-
-                       }
-                    }
-                })
-              
-                
-                Spacer()
-                
-                
-                let mockTodoBlock = ["Block 1 asdasdasdasdsdasdasdasdasdasdasdasdasda", "Block 2 asdasdasdasdasdasdsdasdas", "Block 3", "Block 4"]
-                
-                GroupBox(label: GroupTitleTextView(text: "Code-Blocks"), content: {
-                    HStack {
-                       List(){
-                            ForEach(0 ..< mockTodoBlock.capacity) { i in
-                                TodoBlockView(blockContent: mockTodoBlock[i])
+                VStack {
+                  
+                    HStack(content: {
+                        Text("\(todoItem!.title)")
+                            .padding()
+                            .font(.title)
+                    })
+                    
+                    
+                    
+                    Group {
+                        GroupTitleImageView(systemName: "photo.on.rectangle.angled")
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< 7) { item in
+                                    ImageRowButton(text: "1")
+                                }
                             }
-                       }
-                    }
-                })
-              
-                
+                        }
+                    }.padding()
+                    Divider()
+                    
+                    Group {
+                        GroupTitleImageView(systemName: "link.circle")
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< todoItem!.hyperLinks.capacity, id: \.self){item in
+                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item])
+                                    
+                                }
+                            }
+                        }
+                    }.padding()
+                    Divider()
+                    
+                    Group {
+                        GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right")
+                        
+                        
+                        
+                        ScrollView{
+                            
+                            ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
+                                CodeBlockView(blockContent: todoItem!.codeBlocks[item])
+                                    
+                            }
+                            
+                        }
+                        
+                        
+                        
+                    }.padding()
+                    Divider()
+                    
+                    
+                }
             }
-        
-        }
-            
+
     }
 }
+
 
 struct TodoSelectedItemView_Previews: PreviewProvider {
     static var todo = Todos()
     
     static var previews: some View {
-        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[0])
+        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[3])
     }
+}
+
+struct GrayBackGroundView: View {
+    
+    var body: some View {
+        Color.init(UIColor.systemGray2.withAlphaComponent(0.2))
+    }
+    
 }
 
 struct ImageRowButton: View {
@@ -93,53 +107,30 @@ struct ImageRowButton: View {
         }, label: {
             Image(systemName: "photo")
                 .padding()
+                .foregroundColor(Color.black)
                 .border(Color.gray, width: 1)
                 .cornerRadius(3.0)
         })
     }
 }
 
-struct TodoBlockView: View {
+struct CodeBlockView: View {
     
     var blockContent: String
     @State private var comment: String = "Comment"
     
     var body: some View {
-        
-        VStack {
-            
-            
-            HStack {
-                
-                //Text latest change Date
-                //Comment? Below?
-                //Delete button?
-                //Create new button?
-                
-                Text("\(blockContent)")
-                    .padding()
-                    .font(.system(size: 12))
-                    .lineSpacing(5.0)
-            
-                GroupBox {
-            
-                    Spacer()
-                    ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
-                    ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
-                    ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
-                    ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
-
-                }
-                
-                
-            }
-            
-            TextField("Placeholder", text: $comment)
-                .padding()
-         
-        }
+       
+        Text("\(blockContent)")
+            .padding()
+            .font(.system(size: 12))
+            //.background(Color.blue)
+            //.lineSpacing(5.0)
+            .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
+            //UIScreen.main.bounds.width
         
     }
+    
 }
 
 struct ClipBoardActionView: View {
@@ -169,7 +160,7 @@ struct HyperLinkView: View {
     
     var body: some View {
        
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             Text("\(hyperLinkItem.title)")
                 .bold()
             Text("\(hyperLinkItem.description)")
@@ -182,17 +173,52 @@ struct HyperLinkView: View {
     }
 }
 
-struct GroupTitleTextView: View {
+struct GroupTitleImageView: View {
     
-    var text: String
+    var systemName: String
     
     var body: some View {
         
         HStack {
-            Text("\(text)")
+            
+            Image(systemName: "\(systemName)")
+                .resizable()
                 .foregroundColor(.black)
-                .font(.custom("Brush Script MT", size: 16))
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
+            
             Spacer()
+            
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Image(systemName: "plus")
+                    .padding()
+                    
+            })
+        }
+        
+        
+    }
+}
+
+struct GroupTitleTextCodeBlockView: View {
+    
+    var systemName: String
+    
+    var body: some View {
+        
+        HStack {
+            Image(systemName: "\(systemName)")
+                .resizable()
+                .foregroundColor(.black)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
+       
+            Spacer()
+            
+            ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
+            ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
+            ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
+            ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
             
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
                 Image(systemName: "plus")

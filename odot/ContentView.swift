@@ -13,19 +13,34 @@ struct ContentView: View {
     
     var body: some View {
         
-        NavigationView {
-            List(){
-                ForEach(todos.listOfItems){ todoItem in
-                    NavigationLink(
-                        destination: TodoSelectedItemView(todos: todos, todoItem: todoItem)){
-                        
-                        TodoItemView(todo: todoItem)
-                        
-                        }
+//        VStack {
+            
+//            Text("Odot")
+//                .bold()
+//                .italic()
+//                .font(.system(size: CGFloat(55), weight: Font.Weight.bold, design: Font.Design.rounded))
+            
+//            Section {
+                NavigationView {
+                    List(){
+                        ForEach(todos.listOfItems){ todoItem in
+                            NavigationLink(
+                                destination: TodoSelectedItemView(todos: todos, todoItem: todoItem)){
+                                
+                                TodoItemView(todo: todoItem)
+                                
+                                }
+                            }
                     }
-                }
+                        
+                }.padding()
                 
-            }
+                
+//            }.padding()
+            
+            
+            
+//        }
         
         
     }
