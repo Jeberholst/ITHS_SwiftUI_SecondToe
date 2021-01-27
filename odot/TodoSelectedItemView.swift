@@ -30,7 +30,7 @@ struct TodoSelectedItemView: View {
                     TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImageView(systemName: "photo.on.rectangle.angled")
+                        GroupTitleImageView(systemName: "camera", itemCount: 7)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< 7) { i in
@@ -38,11 +38,13 @@ struct TodoSelectedItemView: View {
                                 }
                             }
                         }
-                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    }
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    
                     Divider()
                     
                     Group {
-                        GroupTitleImageView(systemName: "link.circle")
+                        GroupTitleImageView(systemName: "link", itemCount: 3)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< todoItem!.hyperLinks.capacity, id: \.self){item in
@@ -52,25 +54,25 @@ struct TodoSelectedItemView: View {
                                 }.background(GrayBackGroundView())
                             }
                         }
-                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    }
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    
                     Divider()
                     
                     Group {
                         GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right")
                         
-                        //ScrollView{
                             List(){
                                 ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
                                     CodeBlockView(blockContent: todoItem!.codeBlocks[item])
-                                    
-                                }.onDelete(perform: { indexSet in
+                                }
+                                .onDelete(perform: { indexSet in
                                     //add delete
                                 })
                             }
-                            
-                        //}
-                        
-                    }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+        
+                    }
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
                     
                     
@@ -120,41 +122,27 @@ struct ImageRowButton: View {
 struct CodeBlockView: View {
     
     var blockContent: String
-    @State private var comment: String = "Comment"
     
     var body: some View {
         
+    
         VStack{
             
-             Text("\(blockContent)")
-                 .padding()
-                 .font(.system(size: 12))
-        
-        }.frame(width: UIScreen.main.bounds.width, height: 100, alignment: .leading)
-        
-    }
-    
-}
-
-struct ClipBoardActionView: View {
-    
-    var iconSystemName: String
-    var label: String
-    
-    var body: some View {
-        
-        VStack {
-            Image(systemName: iconSystemName)
-                .resizable()
-                .foregroundColor(.black)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 16, height: 16)
-            Text(label)
-                .font(.system(size: 12))
+            NavigationLink(
+                destination: CodeBlockEditView(codeBlock: blockContent),
+                label: {
+                    Text("\(blockContent)")
+                        //.padding()
+                       .font(.system(size: 12))
+                })
+               
         }
-        .cornerRadius(3.0)
+        .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .leading)
+        
+        
         
     }
+    
 }
 
 struct HyperLinkView: View {
@@ -171,11 +159,14 @@ struct HyperLinkView: View {
                     
                     Text("\(hyperLinkItem.title)")
                         .bold()
+                        .foregroundColor(.black)
                     Text("\(hyperLinkItem.description)")
                         .font(.system(size: 14))
-                    Text("\(hyperLinkItem.hyperlink)")
+                        .foregroundColor(.black)
+                    Text("\(hyperLinkItem.hyperlink.prefix(20) + "...")")
                         .font(.system(size: 14))
                         .foregroundColor(.blue)
+                        
                 }
                 .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
             })
@@ -186,7 +177,7 @@ struct HyperLinkView: View {
 struct GroupTitleImageView: View {
     
     var systemName: String
-    //var itemCount
+    var itemCount: Int
     
     var body: some View {
         
@@ -199,8 +190,11 @@ struct GroupTitleImageView: View {
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             
-            Text("3")
             
+            Text("\(itemCount)")
+                .foregroundColor(.black)
+                .underline()
+                
             Spacer()
             
             Button(action: {
@@ -230,23 +224,20 @@ struct GroupTitleTextCodeBlockView: View {
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             
             Text("4")
+                .underline()
             
             Spacer()
             
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                
+            }, label: {
                 Image(systemName: "plus")
-                    
             })
         }
         
         
     }
 }
-
-//ClipBoardActionView(iconSystemName: "doc.on.clipboard", label: "Copy")
-//ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
-//ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
-//ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
 
 struct TitleTextView: View {
     

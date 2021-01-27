@@ -10,7 +10,7 @@ import Foundation
 struct HyperLinkItem: Identifiable {
     var id = UUID()
     
-    var title: String = "Title"
-    var description: String = "Description"
-    var hyperlink: String = "https://"
+    var title: String = "Set title here"
+    var description: String = "Set description here"
+    var hyperlink: String = "https://setlinkhere.com"
 }
