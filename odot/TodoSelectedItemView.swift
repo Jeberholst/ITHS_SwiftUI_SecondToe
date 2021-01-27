@@ -15,12 +15,19 @@ struct TodoSelectedItemView: View {
     
     
     var body: some View {
-        
+    
         ZStack {
             
                 VStack(alignment: .leading) {
                     
-                    TitleTextView(title: todoItem!.title, dateFormatted: todoItem!.getFormattedDate())
+                    NavigationLink(
+                        destination: EmptyView().frame(width: 1, height: 1, alignment: .center),
+                        label: {
+                            
+                        })
+                        .navigationBarTitle("\(todoItem!.title)")
+                    
+                    TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
                         GroupTitleImageView(systemName: "photo.on.rectangle.angled")
@@ -39,7 +46,7 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< todoItem!.hyperLinks.capacity, id: \.self){item in
-                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item])
+                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item], itemIndex: item)
                                 
                                     
                                 }.background(GrayBackGroundView())
@@ -51,14 +58,17 @@ struct TodoSelectedItemView: View {
                     Group {
                         GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right")
                         
-                        ScrollView{
-                            
-                            ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
-                                CodeBlockView(blockContent: todoItem!.codeBlocks[item])
-                                
+                        //ScrollView{
+                            List(){
+                                ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
+                                    CodeBlockView(blockContent: todoItem!.codeBlocks[item])
+                                    
+                                }.onDelete(perform: { indexSet in
+                                    //add delete
+                                })
                             }
                             
-                        }
+                        //}
                         
                     }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
@@ -119,14 +129,8 @@ struct CodeBlockView: View {
              Text("\(blockContent)")
                  .padding()
                  .font(.system(size: 12))
-                 //.background(Color.blue)
-                 //.lineSpacing(5.0)
-                 .frame(width: UIScreen.main.bounds.width - 20, height: 100, alignment: .center)
-                 //UIScreen.main.bounds.width
-            
-        }
-        .background(GrayBackGroundView())
-       
+        
+        }.frame(width: UIScreen.main.bounds.width, height: 100, alignment: .leading)
         
     }
     
@@ -156,27 +160,33 @@ struct ClipBoardActionView: View {
 struct HyperLinkView: View {
     
     var hyperLinkItem: HyperLinkItem
+    var itemIndex: Int
     
     var body: some View {
-       
-        VStack(alignment: .center) {
-            
-            Text("\(hyperLinkItem.title)")
-                .bold()
-            Text("\(hyperLinkItem.description)")
-                .font(.system(size: 14))
-            Text("\(hyperLinkItem.hyperlink)")
-                .font(.system(size: 14))
-                .foregroundColor(.blue)
-        }
-        .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
-            
+        
+        NavigationLink(
+            destination: HyperLinkEditView(hyperLinkItem: hyperLinkItem),
+            label: {
+                VStack(alignment: .center) {
+                    
+                    Text("\(hyperLinkItem.title)")
+                        .bold()
+                    Text("\(hyperLinkItem.description)")
+                        .font(.system(size: 14))
+                    Text("\(hyperLinkItem.hyperlink)")
+                        .font(.system(size: 14))
+                        .foregroundColor(.blue)
+                }
+                .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
+            })
+           
     }
 }
 
 struct GroupTitleImageView: View {
     
     var systemName: String
+    //var itemCount
     
     var body: some View {
         
@@ -188,6 +198,9 @@ struct GroupTitleImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+            
+            Text("3")
+            
             Spacer()
             
             Button(action: {
@@ -204,6 +217,7 @@ struct GroupTitleImageView: View {
 struct GroupTitleTextCodeBlockView: View {
     
     var systemName: String
+    //var itemCount
     
     var body: some View {
         
@@ -214,6 +228,9 @@ struct GroupTitleTextCodeBlockView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+            
+            Text("4")
+            
             Spacer()
             
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
@@ -233,11 +250,10 @@ struct GroupTitleTextCodeBlockView: View {
 
 struct TitleTextView: View {
     
-    var title: String
     var dateFormatted: String
     
     var body: some View {
-        Text("\(title) - \(dateFormatted)")
+        Text("\(dateFormatted)")
             .font(.system(size: 10))
             .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
     }

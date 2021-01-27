@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375066525C09E66006158E4 /* HyperLinkItem.swift */; };
+		43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */; };
 		43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBD25BDC84900C59D08 /* odotApp.swift */; };
 		43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBF25BDC84900C59D08 /* ContentView.swift */; };
 		43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B4CDC125BDC84A00C59D08 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		4375066525C09E66006158E4 /* HyperLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkItem.swift; sourceTree = "<group>"; };
+		43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkEditView.swift; sourceTree = "<group>"; };
 		43B4CDBA25BDC84900C59D08 /* odot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = odot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B4CDBD25BDC84900C59D08 /* odotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotApp.swift; sourceTree = "<group>"; };
 		43B4CDBF25BDC84900C59D08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +82,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43A9245025C1A2CF00FAD285 /* TodoItemEditViews */ = {
+			isa = PBXGroup;
+			children = (
+				43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */,
+			);
+			path = TodoItemEditViews;
+			sourceTree = "<group>";
+		};
 		43B4CDB125BDC84900C59D08 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 			children = (
 				43B4CDF325BDCA0E00C59D08 /* TodoModel */,
 				43B4CDBD25BDC84900C59D08 /* odotApp.swift */,
+				43A9245025C1A2CF00FAD285 /* TodoItemEditViews */,
 				43B4CDBF25BDC84900C59D08 /* ContentView.swift */,
 				43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */,
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
@@ -282,6 +293,7 @@
 				43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */,
 				43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */,
 				43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */,
+				43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */,
 				43B4CDEF25BDC8E000C59D08 /* TodoItem.swift in Sources */,
 				43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */,
 				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,
