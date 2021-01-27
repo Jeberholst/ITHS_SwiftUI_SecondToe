@@ -9,27 +9,30 @@ import SwiftUI
 
 struct ContentView: View {
     
+    //@ObservedObject var todos = Todos()
     @ObservedObject var todos = Todos()
-    
+
     var body: some View {
         
         NavigationView {
+            
             List(){
-                ForEach(todos.listOfItems){ todoItem in
-                    
+                ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
                     NavigationLink(
                         destination:
-                        TodoSelectedItemView(todos: todos, todoItem: todoItem)){
+                            TodoSelectedItemView(todos: todos, todoItem: todos.listOfItems[i], listItemIndex: i)){
                         
-                            TodoItemView(todo: todoItem)
+                            TodoItemView(todo: todos.listOfItems[i])
                         
                     }
-                }
+                    
+                }.onDelete(perform: { indexSet in
+                    todos.removeItem(indexSet: indexSet)
+                })
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarTitle("Todo")
-            
-            
+            .navigationBarItems(trailing: TodoAddNew(todos: todos))
                 
         }
         
@@ -37,9 +40,26 @@ struct ContentView: View {
 }
 
 
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct TodoAddNew: View {
+    
+    var todos: Todos
+    
+    var body: some View {
+        HStack {
+            Button(action: {
+                let newItem = TodoItem(title: "Hej")
+                todos.addItem(todoItem: newItem)
+            }, label: {
+                Image(systemName: "plus")
+            })
+        }
     }
 }
 

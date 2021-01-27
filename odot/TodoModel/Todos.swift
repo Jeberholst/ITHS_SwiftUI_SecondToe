@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Todos: ObservableObject {
+class Todos: ObservableObject, Identifiable {
     
     @Published var listOfItems = [TodoItem]()
     
@@ -30,6 +30,10 @@ class Todos: ObservableObject {
     
     func addItem(todoItem: TodoItem){
         listOfItems.append(todoItem)
+    }
+    
+    func removeItem(indexSet: IndexSet){
+        listOfItems.remove(atOffsets: indexSet)
     }
     
 }

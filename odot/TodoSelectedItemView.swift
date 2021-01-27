@@ -11,26 +11,23 @@ struct TodoSelectedItemView: View {
     
     @State var todos: Todos
     @State var todoItem: TodoItem? = nil
-    //@State var currentSelection: Int = 0
+    @State var listItemIndex: Int
+    
     
     var body: some View {
-        
-        
         
         ZStack {
             
                 VStack(alignment: .leading) {
                     
-                    Text("\(todoItem!.title) - \(todoItem!.getFormattedDate())")
-                        .font(.system(size: 10))
-                        .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
+                    TitleTextView(title: todoItem!.title, dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
                         GroupTitleImageView(systemName: "photo.on.rectangle.angled")
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(0 ..< 7) { item in
-                                    ImageRowButton(text: "1")
+                                ForEach(0 ..< 7) { i in
+                                    ImageRowButton(mainIndex: listItemIndex, imageIndex: i)
                                 }
                             }
                         }
@@ -54,8 +51,6 @@ struct TodoSelectedItemView: View {
                     Group {
                         GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right")
                         
-                        
-                        
                         ScrollView{
                             
                             ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
@@ -64,8 +59,6 @@ struct TodoSelectedItemView: View {
                             }
                             
                         }
-                        
-                        
                         
                     }.padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
@@ -82,33 +75,35 @@ struct TodoSelectedItemView_Previews: PreviewProvider {
     static var todo = Todos()
     
     static var previews: some View {
-        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[3])
+        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[3], listItemIndex: 3)
     }
 }
 
 struct GrayBackGroundView: View {
     
     var body: some View {
-        Color.init(UIColor.systemGray4.withAlphaComponent(0.1))
+        Color.init(UIColor.systemGray4.withAlphaComponent(0.2))
+            .cornerRadius(10)
     }
     
 }
 
 struct ImageRowButton: View {
     
-    var text: String
+    var mainIndex: Int
+    var imageIndex: Int
     
     var body: some View {
         
         Button(action: {
-            
+            print("MainIndex: \(mainIndex) ImageIndex: \(imageIndex)" )
         }, label: {
             Image(systemName: "photo")
                 .padding()
                 .foregroundColor(Color.black)
-//                .border(Color.gray, width: 1)
-//                .cornerRadius(3.0)
-        }).background(GrayBackGroundView())
+        })
+        .background(GrayBackGroundView())
+
     }
 }
 
@@ -192,10 +187,12 @@ struct GroupTitleImageView: View {
                 .foregroundColor(.black)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
-            
+                .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             Spacer()
             
-            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            Button(action: {
+                
+            }, label: {
                 Image(systemName: "plus")
             })
         }
@@ -216,7 +213,7 @@ struct GroupTitleTextCodeBlockView: View {
                 .foregroundColor(.black)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
-       
+                .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             Spacer()
             
             Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
@@ -233,3 +230,15 @@ struct GroupTitleTextCodeBlockView: View {
 //ClipBoardActionView(iconSystemName: "doc.on.clipboard.fill", label: "Paste")
 //ClipBoardActionView(iconSystemName: "pencil", label: "Edit")
 //ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
+
+struct TitleTextView: View {
+    
+    var title: String
+    var dateFormatted: String
+    
+    var body: some View {
+        Text("\(title) - \(dateFormatted)")
+            .font(.system(size: 10))
+            .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
+    }
+}
