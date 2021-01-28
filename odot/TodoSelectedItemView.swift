@@ -10,13 +10,20 @@ import SwiftUI
 struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todos: Todos
+    @Environment(\.presentationMode) var presentationMode
+    
     @State var todoItem: TodoItem? = nil
     @State var listItemIndex: Int
-    @State private var imagesCount: Int = 0
+    @State private var imagesCount: Int = 7
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
     
+    @State private var isPresentingLargeImage = false
+    @State private var isPresentingHyperLinkEdit = false
+    @State private var isPresentingBlockEdit = false
+    
     var body: some View {
+        
         
         ZStack {
             
@@ -25,13 +32,14 @@ struct TodoSelectedItemView: View {
                     TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImageView(systemName: "camera", itemCount: 0){
+                        GroupTitleImageView(systemName: "camera", itemCount: imagesCount){
                             addNewImageItem()
                         }
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(0 ..< 7) { i in
-                                    ImageRowButton(mainIndex: listItemIndex, imageIndex: i)
+                                ForEach(0 ..< imagesCount) { i in
+                                
+                                    ImageRowButton(mainIndex: listItemIndex, imageIndex: i, presented: isPresentingLargeImage)
                                 }
                             }
                         }
@@ -50,10 +58,11 @@ struct TodoSelectedItemView: View {
                             HStack {
                               
                                 ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
-                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item], itemIndex: item)
+                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item], itemIndex: item, presented: isPresentingHyperLinkEdit)
                                 
-                                    
-                                }.background(GrayBackGroundView())
+                                }
+                                .background(GrayBackGroundView())
+                          
                             }
                         }
                     }
@@ -70,8 +79,8 @@ struct TodoSelectedItemView: View {
                             VStack {
                                
                                 ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
-                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item])
-                                        .background(GrayBackGroundView())
+                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item], presented: isPresentingBlockEdit)
+                                        
                                 }
                             }
                         }
@@ -80,16 +89,16 @@ struct TodoSelectedItemView: View {
                     .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     Divider()
                     
-                    
                 }
             }
             .navigationBarTitle("\(todoItem!.title)")
             .onAppear(){
-                //imagesCount = todoItem!.hyperLinks.count
+                imagesCount = 7 //todoItem!.hyperLinks.count
                 hyperLinksCount = todoItem!.getHyperLinksCount()
                 codeBlocksCount = todoItem!.getCodeBlocksCount()
             }
-
+        
+        
     }
     
     private func addNewImageItem(){
@@ -116,7 +125,6 @@ struct TodoSelectedItemView: View {
 
 struct TodoSelectedItemView_Previews: PreviewProvider {
     static var todo = Todos()
-    
     static var previews: some View {
         TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 3)
     }
@@ -127,10 +135,12 @@ struct ImageRowButton: View {
     
     var mainIndex: Int
     var imageIndex: Int
+    @State var presented: Bool
     
     var body: some View {
-        
+ 
         Button(action: {
+            presented.toggle()
             print("MainIndex: \(mainIndex) ImageIndex: \(imageIndex)" )
         }, label: {
             Image(systemName: "photo")
@@ -138,6 +148,10 @@ struct ImageRowButton: View {
                 .foregroundColor(Color.black)
         })
         .background(GrayBackGroundView())
+        .sheet(isPresented: $presented) {
+            ImageLargeDisplayView(
+                image: "link", mainIndex: mainIndex, imageIndex: imageIndex)
+        }
 
     }
 }
@@ -145,30 +159,35 @@ struct ImageRowButton: View {
 struct CodeBlockView: View {
     
     var codeBlockItem: CodeBlockItem
+    @State var presented: Bool
      
     var body: some View {
     
         VStack{
         
-            NavigationLink(
-                destination: CodeBlockEditView(codeBlockItem: codeBlockItem),
-                label: {
-                    VStack(alignment: .trailing) {
-                        Text("\(codeBlockItem.getFormattedDate())")
-                            .font(.system(size: 12))
-                            .foregroundColor(.black)
-                            .padding()
-                        
-                        Text("\(codeBlockItem.code)")
-                            .padding()
-                            .font(.system(size: 12))
-                            .foregroundColor(.black)
-                            .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
-                    }
-    
-                })
+            VStack(alignment: .trailing) {
+                Text("\(codeBlockItem.getFormattedDate())")
+                    .font(.system(size: 12))
+                    .foregroundColor(.black)
+                    .padding()
+                
+                Divider()
+                
+                Text("\(codeBlockItem.code)")
+                    .padding()
+                    .font(.system(size: 12))
+                    .foregroundColor(.black)
+                    .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+            }
             
         }
+        .background(GrayBackGroundView())
+        .onTapGesture(count: 1, perform: {
+            presented.toggle()
+        })
+        .sheet(isPresented: $presented, content: {
+            CodeBlockEditView(codeBlockItem: codeBlockItem)
+        })
         Divider()
         
     }
@@ -179,37 +198,36 @@ struct HyperLinkView: View {
     
     var hyperLinkItem: HyperLinkItem
     var itemIndex: Int
+    @State var presented: Bool
     
     var body: some View {
         
-        NavigationLink(
-            destination: HyperLinkEditView(hyperLinkItem: hyperLinkItem),
-            label: {
-              
-                VStack(alignment: .center) {
-                    
-                    Text("\(hyperLinkItem.title)")
-                        .bold()
-                        .foregroundColor(.black)
-                    Text("\(hyperLinkItem.description)")
-                        .font(.system(size: 14))
-                        .foregroundColor(.black)
-                    Text("2021-02-33") //ADD DATE
-                        .font(.system(size: 10))
-                    Text("\(hyperLinkItem.hyperlink.prefix(20) + "...")")
-                        .font(.system(size: 14))
-                        .foregroundColor(.blue)
-                        
-                }
-                .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
-            })
-        
-           
+        VStack(alignment: .center) {
+            
+            Text("\(hyperLinkItem.getFormattedDate())") //ADD DATE
+                .font(.system(size: 10))
+                .foregroundColor(.black)
+            Text("\(hyperLinkItem.title)")
+                .bold()
+                .foregroundColor(.black)
+            Text("\(hyperLinkItem.description)")
+                .font(.system(size: 14))
+                .foregroundColor(.black)
+            Text("\(hyperLinkItem.hyperlink.prefix(20) + "...")")
+                .font(.system(size: 14))
+                .foregroundColor(.blue)
+        }
+        .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
+        .onTapGesture(count: 1, perform: {
+            presented.toggle()
+        })
+        .sheet(isPresented: $presented, content: {
+            HyperLinkEditView(hyperLinkItem: hyperLinkItem)
+        })
+
     }
 
 }
-
-
 
 struct GroupTitleImageView: View {
     
@@ -227,7 +245,6 @@ struct GroupTitleImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
-            
             
             Text("\(itemCount)")
                 .foregroundColor(.black)

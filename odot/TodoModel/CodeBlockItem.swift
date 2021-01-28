@@ -10,11 +10,12 @@ import Foundation
 struct CodeBlockItem {
     
     var date: Date = Date()
-    var code: String = "Example []"
+    var code: String = "var itemCount: Int = 0"
 
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .medium
         return dateFormatter.string(from: self.date)
     }
 }

@@ -14,23 +14,41 @@ struct CodeBlockEditView: View {
     var body: some View {
         
         ZStack(alignment: .top) {
-            
-            VStack(alignment: .trailing) {
+            VStack {
                 
-                TextEditorCodeCompoundView(iconSystemName: "chevron.left.slash.chevron.right", viewTitle: "Code", text: $codeBlockItem.code)
+                HStack(spacing: 15) {
+                    Text("\(codeBlockItem.getFormattedDate())")
+                        .font(.system(size: 12))
+                    
+                    Spacer()
+                    Button(action: {
+                        //onSaveButtonClick()
+                    }, label: {
+                        Text("Save")
+                    })
+                    Button(action: {
+                        //onDeleteButtonClick()
+                    }, label: {
+                        Text("Delete")
+                            .foregroundColor(.red)
+                    })
+                    
+                        
+                }.padding()
+                
+                Divider()
                 Spacer()
                 
+                VStack(alignment: .trailing) {
+                    
+                    TextEditorCodeCompoundView(iconSystemName: "chevron.left.slash.chevron.right", viewTitle: "Code", text: $codeBlockItem.code)
+                    Spacer()
+                    
+                }
             }
+         
             
         }
-        .navigationBarTitle("\(codeBlockItem.getFormattedDate())")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: Button(action: {
-            onSaveButtonClick()
-            
-        }, label: {
-            Text("Save")
-        }))
         
         
     }
@@ -91,7 +109,8 @@ struct TextEditorCodeCompoundView: View {
                     HStack(spacing: 15) {
                         ClipBoardActionView(iconSystemName: "doc.text", label: "Copy")
                         ClipBoardActionView(iconSystemName: "doc.on.doc", label: "Paste")
-                        ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
+                        ClipBoardActionView(iconSystemName: "arrow.down.doc", label: "Paste")
+                        ClipBoardActionView(iconSystemName: "square.and.arrow.up", label: "xShare")
                     }.padding()
                 }
                 Divider()

@@ -17,6 +17,24 @@ struct HyperLinkEditView: View {
                 
                 VStack {
                     
+                    HStack(spacing: 15) {
+                      
+                        Spacer()
+                        
+                        Button(action: {
+                            onSaveButtonClick()
+                        }, label: {
+                            Text("Save")
+                        })
+                        Button(action: {
+                            //onDeleteButtonClick()
+                        }, label: {
+                            Text("Delete")
+                                .foregroundColor(.red)
+                        })
+                
+                    }.padding()
+                    
                     TextEditorCompoundView(
                         iconSystemName: "rosette", viewTitle: "Title",text: $hyperLinkItem.title)
                     

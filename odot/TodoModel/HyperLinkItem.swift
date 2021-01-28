@@ -10,7 +10,14 @@ import Foundation
 struct HyperLinkItem: Identifiable {
     var id = UUID()
     
+    var date: Date = Date()
     var title: String = "Set title here"
     var description: String = "Set description here"
     var hyperlink: String = "https://setlinkhere.com"
+    
+    func getFormattedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: self.date)
+    }
 }
