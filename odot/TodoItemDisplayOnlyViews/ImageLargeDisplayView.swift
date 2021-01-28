@@ -19,24 +19,11 @@ struct ImageLargeDisplayView: View {
             
             VStack {
                 
-                HStack(spacing: 15) {
-                    Text("ImageName \(imageIndex)")
-                    
-                    Spacer()
-                    Button(action: {
-                        //onSaveButtonClick()
-                    }, label: {
-                        Text("Save")
-                    })
-                    Button(action: {
-                        //onDeleteButtonClick()
-                    }, label: {
-                        Text("Delete")
-                            .foregroundColor(.red)
-                    })
-                    
-                        
-                }.padding()
+                SheetEditBarView(title: "Image \(imageIndex)"){
+                    onActionSave()
+                } actionDelete: {
+                    onActionDelete()
+                }
                
                 Divider()
                 Spacer()
@@ -53,6 +40,15 @@ struct ImageLargeDisplayView: View {
         }
         
     }
+    
+    private func onActionSave(){
+        print("Save")
+    }
+    
+    private func onActionDelete(){
+        print("Delete")
+    }
+    
 }
 
 struct ImageLargeDisplayView_Previews: PreviewProvider {
@@ -60,3 +56,5 @@ struct ImageLargeDisplayView_Previews: PreviewProvider {
         ImageLargeDisplayView(image: "link", mainIndex: 0, imageIndex: 0)
     }
 }
+
+

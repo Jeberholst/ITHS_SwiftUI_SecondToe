@@ -114,7 +114,7 @@ struct TodoSelectedItemView: View {
     }
     
     private func addNewCodeBlockItem(){
-        let newItem = CodeBlockItem()
+        let newItem = CodeBlockItem(code: "//New item...")
         todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
         todoItem?.addCodeBlockItem(item: newItem)
         codeBlocksCount += 1
@@ -245,11 +245,9 @@ struct GroupTitleImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+        
+            ItemCountView(itemCount: itemCount)
             
-            Text("\(itemCount)")
-                .foregroundColor(.black)
-                .underline()
-                
             Spacer()
             
             Button(action: {
@@ -279,8 +277,7 @@ struct GroupTitleTextCodeBlockView: View {
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             
-            Text("\(itemCount)")
-                .underline()
+            ItemCountView(itemCount: itemCount)
             
             Spacer()
             
@@ -303,5 +300,22 @@ struct TitleTextView: View {
         Text("\(dateFormatted)")
             .font(.system(size: 10))
             .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
+    }
+}
+
+struct ItemCountView: View {
+    
+    var itemCount: Int
+    
+    var body: some View {
+        ZStack{
+            Circle()
+                .frame(width: 32, height: 32, alignment: .center)
+            Circle()
+                .frame(width: 30, height: 30, alignment: .center)
+                .foregroundColor(.white)
+            Text("\(itemCount)")
+                .foregroundColor(.black)
+        }
     }
 }

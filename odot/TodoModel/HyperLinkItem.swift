@@ -17,6 +17,7 @@ struct HyperLinkItem: Identifiable {
     
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
         dateFormatter.dateStyle = .short
         return dateFormatter.string(from: self.date)
     }

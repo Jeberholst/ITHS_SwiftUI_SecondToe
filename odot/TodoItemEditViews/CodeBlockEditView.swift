@@ -16,27 +16,14 @@ struct CodeBlockEditView: View {
         ZStack(alignment: .top) {
             VStack {
                 
-                HStack(spacing: 15) {
-                    Text("\(codeBlockItem.getFormattedDate())")
-                        .font(.system(size: 12))
-                    
-                    Spacer()
-                    Button(action: {
-                        //onSaveButtonClick()
-                    }, label: {
-                        Text("Save")
-                    })
-                    Button(action: {
-                        //onDeleteButtonClick()
-                    }, label: {
-                        Text("Delete")
-                            .foregroundColor(.red)
-                    })
-                    
-                        
-                }.padding()
+                SheetEditBarView(title: "\(codeBlockItem.getFormattedDate())"){
+                    onActionSave()
+                } actionDelete: {
+                    onActionDelete()
+                }
                 
                 Divider()
+                
                 Spacer()
                 
                 VStack(alignment: .trailing) {
@@ -53,11 +40,12 @@ struct CodeBlockEditView: View {
         
     }
     
-    func onSaveButtonClick(){
-
-        print($codeBlockItem)
-        //SAVE ITEM HERE
-
+    private func onActionSave(){
+        print("Save")
+    }
+    
+    private func onActionDelete(){
+        print("Delete")
     }
 }
 
@@ -118,7 +106,6 @@ struct TextEditorCodeCompoundView: View {
                 TextEditor(text: text)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
-                    //.border(Color.gray, width: 0.3)
                     
             }
         }

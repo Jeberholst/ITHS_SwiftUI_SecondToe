@@ -17,23 +17,13 @@ struct HyperLinkEditView: View {
                 
                 VStack {
                     
-                    HStack(spacing: 15) {
-                      
-                        Spacer()
-                        
-                        Button(action: {
-                            onSaveButtonClick()
-                        }, label: {
-                            Text("Save")
-                        })
-                        Button(action: {
-                            //onDeleteButtonClick()
-                        }, label: {
-                            Text("Delete")
-                                .foregroundColor(.red)
-                        })
-                
-                    }.padding()
+                    SheetEditBarView(title: "\(hyperLinkItem.getFormattedDate())"){
+                        onActionSave()
+                    } actionDelete: {
+                        onActionDelete()
+                    }
+                    
+                    Divider()
                     
                     TextEditorCompoundView(
                         iconSystemName: "rosette", viewTitle: "Title",text: $hyperLinkItem.title)
@@ -46,23 +36,17 @@ struct HyperLinkEditView: View {
                 }
                 Spacer()
             }
-            .navigationBarTitle("\(hyperLinkItem.title)")
-            .navigationBarItems(trailing: Button(action: {
-                onSaveButtonClick()
-                
-            }, label: {
-                Text("Save")
-            }))
-            .frame(width: UIScreen.main.bounds.width - 15)
         
     }
     
-    func onSaveButtonClick(){
-        
-        print(hyperLinkItem)
-        //SAVE ITEM HERE
-        
+    private func onActionSave(){
+        print("Save")
     }
+    
+    private func onActionDelete(){
+        print("Delete")
+    }
+    
 }
 
 
