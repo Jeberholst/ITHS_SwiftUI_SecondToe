@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    //@ObservedObject var todos = Todos()
-    @ObservedObject var todos = Todos()
+    @EnvironmentObject var todos : Todos
 
     var body: some View {
         
@@ -20,7 +19,7 @@ struct ContentView: View {
                 ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
                     NavigationLink(
                         destination:
-                            TodoSelectedItemView(todos: todos, todoItem: todos.listOfItems[i], listItemIndex: i)){
+                            TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i).environmentObject(todos)){
                         
                             TodoItemView(todo: todos.listOfItems[i])
                         

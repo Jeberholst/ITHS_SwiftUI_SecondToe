@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CodeBlockEditView: View {
     
-    @State var codeBlock: String
+    @State var codeBlockItem: CodeBlockItem
 
     var body: some View {
         
@@ -17,37 +17,30 @@ struct CodeBlockEditView: View {
             
             VStack(alignment: .trailing) {
                 
-                NavigationLink(
-                    destination: EmptyView().frame(width: 0, height: 0, alignment: .center),
-                    label: {
-                        
-                    })
-                    .navigationBarTitle("Block[]")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(trailing: Button(action: {
-                        //onSaveButtonClick()
-                        
-                    }, label: {
-                        Text("Save")
-                    }))
-                
-                
-                TextEditorCodeCompoundView(iconSystemName: "chevron.left.slash.chevron.right", viewTitle: "Code", text: $codeBlock)
+                TextEditorCodeCompoundView(iconSystemName: "chevron.left.slash.chevron.right", viewTitle: "Code", text: $codeBlockItem.code)
                 Spacer()
                 
             }
-           
             
         }
+        .navigationBarTitle("\(codeBlockItem.getFormattedDate())")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: Button(action: {
+            onSaveButtonClick()
+            
+        }, label: {
+            Text("Save")
+        }))
+        
         
     }
     
-//    func onSaveButtonClick(){
-//
-//        print(codeBlock)
-//        //SAVE ITEM HERE
-//
-//    }
+    func onSaveButtonClick(){
+
+        print($codeBlockItem)
+        //SAVE ITEM HERE
+
+    }
 }
 
 
@@ -73,7 +66,7 @@ struct ClipBoardActionView: View {
 
 struct CodeBlockEditView_Previews: PreviewProvider {
     static var previews: some View {
-        CodeBlockEditView(codeBlock: "Example [ ]")
+        CodeBlockEditView(codeBlockItem: CodeBlockItem())
     }
 }
 
@@ -98,7 +91,7 @@ struct TextEditorCodeCompoundView: View {
                     HStack(spacing: 15) {
                         ClipBoardActionView(iconSystemName: "doc.text", label: "Copy")
                         ClipBoardActionView(iconSystemName: "doc.on.doc", label: "Paste")
-                        ClipBoardActionView(iconSystemName: "square.and.arrow.up", label: "xShare")
+                        ClipBoardActionView(iconSystemName: "square.and.arrow.up.fill", label: "xShare")
                     }.padding()
                 }
                 Divider()

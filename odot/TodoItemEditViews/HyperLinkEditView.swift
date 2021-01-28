@@ -12,23 +12,8 @@ struct HyperLinkEditView: View {
     @State var hyperLinkItem: HyperLinkItem
 
     var body: some View {
-        
-        //ZStack {
             
             VStack(alignment: .leading) {
-                
-                NavigationLink(
-                    destination: EmptyView().frame(width: 0, height: 0, alignment: .center),
-                    label: {
-                        
-                    })
-                    .navigationBarTitle("\(hyperLinkItem.title)")
-                    .navigationBarItems(trailing: Button(action: {
-                        onSaveButtonClick()
-                        
-                    }, label: {
-                        Text("Save")
-                    }))
                 
                 VStack {
                     
@@ -42,9 +27,15 @@ struct HyperLinkEditView: View {
                         iconSystemName: "link",  viewTitle: "Hyperlink",text: $hyperLinkItem.hyperlink)
                 }
                 Spacer()
-            }.frame(width: UIScreen.main.bounds.width - 15)
-            
-        //}
+            }
+            .navigationBarTitle("\(hyperLinkItem.title)")
+            .navigationBarItems(trailing: Button(action: {
+                onSaveButtonClick()
+                
+            }, label: {
+                Text("Save")
+            }))
+            .frame(width: UIScreen.main.bounds.width - 15)
         
     }
     

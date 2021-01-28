@@ -14,7 +14,7 @@ struct TodoItem : Identifiable {
     var note: String = "Note"
     var date: Date = Date()
     var hyperLinks: [HyperLinkItem] = [HyperLinkItem]()
-    var codeBlocks: [String] = [String]()
+    var codeBlocks: [CodeBlockItem] = [CodeBlockItem]()
     
     //Images?
     
@@ -25,6 +25,27 @@ struct TodoItem : Identifiable {
         return date
         
     }
+    
+//    mutating func addImageItem(item: String){
+//        codeBlocks.append(item)
+//    }
+    
+    mutating func addHyperLinkItem(item: HyperLinkItem){
+        hyperLinks.append(item)
+    }
+    
+    mutating func addCodeBlockItem(item: CodeBlockItem){
+        codeBlocks.append(item)
+    }
+    
+    func getHyperLinksCount() -> Int {
+        return hyperLinks.count
+    }
+    
+    func getCodeBlocksCount() -> Int {
+        return codeBlocks.count
+    }
+    
     
     
 }

@@ -9,28 +9,25 @@ import SwiftUI
 
 struct TodoSelectedItemView: View {
     
-    @State var todos: Todos
+    @EnvironmentObject var todos: Todos
     @State var todoItem: TodoItem? = nil
     @State var listItemIndex: Int
-    
+    @State private var imagesCount: Int = 0
+    @State private var hyperLinksCount: Int = 0
+    @State private var codeBlocksCount: Int = 0
     
     var body: some View {
-    
+        
         ZStack {
             
                 VStack(alignment: .leading) {
                     
-                    NavigationLink(
-                        destination: EmptyView().frame(width: 1, height: 1, alignment: .center),
-                        label: {
-                            
-                        })
-                        .navigationBarTitle("\(todoItem!.title)")
-                    
                     TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImageView(systemName: "camera", itemCount: 7)
+                        GroupTitleImageView(systemName: "camera", itemCount: 0){
+                            addNewImageItem()
+                        }
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< 7) { i in
@@ -44,10 +41,15 @@ struct TodoSelectedItemView: View {
                     Divider()
                     
                     Group {
-                        GroupTitleImageView(systemName: "link", itemCount: 3)
+                        
+                        GroupTitleImageView(systemName: "link", itemCount: hyperLinksCount) {
+                            addNewHyperLinkItem()
+                        }
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(0 ..< todoItem!.hyperLinks.capacity, id: \.self){item in
+                              
+                                ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
                                     HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item], itemIndex: item)
                                 
                                     
@@ -60,16 +62,19 @@ struct TodoSelectedItemView: View {
                     Divider()
                     
                     Group {
-                        GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right")
+                        GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right", itemCount: codeBlocksCount){
+                            addNewCodeBlockItem()
+                        }
                         
-                            List(){
-                                ForEach(0 ..< todoItem!.codeBlocks.capacity){item in
-                                    CodeBlockView(blockContent: todoItem!.codeBlocks[item])
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack {
+                               
+                                ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
+                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item])
+                                        .background(GrayBackGroundView())
                                 }
-                                .onDelete(perform: { indexSet in
-                                    //add delete
-                                })
                             }
+                        }
         
                     }
                     .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
@@ -78,27 +83,45 @@ struct TodoSelectedItemView: View {
                     
                 }
             }
+            .navigationBarTitle("\(todoItem!.title)")
+            .onAppear(){
+                //imagesCount = todoItem!.hyperLinks.count
+                hyperLinksCount = todoItem!.getHyperLinksCount()
+                codeBlocksCount = todoItem!.getCodeBlocksCount()
+            }
 
     }
-}
+    
+    private func addNewImageItem(){
+        print("Click: Add new image...")
+    }
+    
+    private func addNewHyperLinkItem(){
+        let newItem = HyperLinkItem()
+        todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
+        todoItem?.addHyperLinkItem(item: newItem)
+        hyperLinksCount += 1
+        print("Click: Add hyperlink item...")
+    }
+    
+    private func addNewCodeBlockItem(){
+        let newItem = CodeBlockItem()
+        todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
+        todoItem?.addCodeBlockItem(item: newItem)
+        codeBlocksCount += 1
+        print("Click: Add new code block item...")
+    }
 
+}
 
 struct TodoSelectedItemView_Previews: PreviewProvider {
     static var todo = Todos()
     
     static var previews: some View {
-        TodoSelectedItemView(todos: Todos(), todoItem: todo.listOfItems[3], listItemIndex: 3)
+        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 3)
     }
 }
 
-struct GrayBackGroundView: View {
-    
-    var body: some View {
-        Color.init(UIColor.systemGray4.withAlphaComponent(0.2))
-            .cornerRadius(10)
-    }
-    
-}
 
 struct ImageRowButton: View {
     
@@ -121,25 +144,32 @@ struct ImageRowButton: View {
 
 struct CodeBlockView: View {
     
-    var blockContent: String
-    
+    var codeBlockItem: CodeBlockItem
+     
     var body: some View {
-        
     
         VStack{
-            
+        
             NavigationLink(
-                destination: CodeBlockEditView(codeBlock: blockContent),
+                destination: CodeBlockEditView(codeBlockItem: codeBlockItem),
                 label: {
-                    Text("\(blockContent)")
-                        //.padding()
-                       .font(.system(size: 12))
+                    VStack(alignment: .trailing) {
+                        Text("\(codeBlockItem.getFormattedDate())")
+                            .font(.system(size: 12))
+                            .foregroundColor(.black)
+                            .padding()
+                        
+                        Text("\(codeBlockItem.code)")
+                            .padding()
+                            .font(.system(size: 12))
+                            .foregroundColor(.black)
+                            .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+                    }
+    
                 })
-               
+            
         }
-        .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .leading)
-        
-        
+        Divider()
         
     }
     
@@ -155,6 +185,7 @@ struct HyperLinkView: View {
         NavigationLink(
             destination: HyperLinkEditView(hyperLinkItem: hyperLinkItem),
             label: {
+              
                 VStack(alignment: .center) {
                     
                     Text("\(hyperLinkItem.title)")
@@ -163,6 +194,8 @@ struct HyperLinkView: View {
                     Text("\(hyperLinkItem.description)")
                         .font(.system(size: 14))
                         .foregroundColor(.black)
+                    Text("2021-02-33") //ADD DATE
+                        .font(.system(size: 10))
                     Text("\(hyperLinkItem.hyperlink.prefix(20) + "...")")
                         .font(.system(size: 14))
                         .foregroundColor(.blue)
@@ -170,14 +203,19 @@ struct HyperLinkView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
             })
+        
            
     }
+
 }
+
+
 
 struct GroupTitleImageView: View {
     
     var systemName: String
     var itemCount: Int
+    var onAction: () -> ()
     
     var body: some View {
         
@@ -198,7 +236,7 @@ struct GroupTitleImageView: View {
             Spacer()
             
             Button(action: {
-                
+                onAction()
             }, label: {
                 Image(systemName: "plus")
             })
@@ -211,7 +249,8 @@ struct GroupTitleImageView: View {
 struct GroupTitleTextCodeBlockView: View {
     
     var systemName: String
-    //var itemCount
+    var itemCount: Int
+    var onAction: () -> ()
     
     var body: some View {
         
@@ -223,13 +262,13 @@ struct GroupTitleTextCodeBlockView: View {
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             
-            Text("4")
+            Text("\(itemCount)")
                 .underline()
             
             Spacer()
             
             Button(action: {
-                
+                onAction()
             }, label: {
                 Image(systemName: "plus")
             })
