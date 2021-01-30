@@ -11,6 +11,7 @@
 		4313416A25C2EFA70065B537 /* CodeBlockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416925C2EFA70065B537 /* CodeBlockItem.swift */; };
 		4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416F25C301920065B537 /* ImageLargeDisplayView.swift */; };
 		431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92D725C36C8600F08481 /* SheetEditBarView.swift */; };
+		431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */; };
 		4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375066525C09E66006158E4 /* HyperLinkItem.swift */; };
 		43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */; };
 		43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */; };
@@ -47,6 +48,7 @@
 		4313416925C2EFA70065B537 /* CodeBlockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockItem.swift; sourceTree = "<group>"; };
 		4313416F25C301920065B537 /* ImageLargeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLargeDisplayView.swift; sourceTree = "<group>"; };
 		431A92D725C36C8600F08481 /* SheetEditBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetEditBarView.swift; sourceTree = "<group>"; };
+		431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTodoItemEditView.swift; sourceTree = "<group>"; };
 		4375066525C09E66006158E4 /* HyperLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkItem.swift; sourceTree = "<group>"; };
 		43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkEditView.swift; sourceTree = "<group>"; };
 		43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockEditView.swift; sourceTree = "<group>"; };
@@ -101,19 +103,13 @@
 			path = SharedViews;
 			sourceTree = "<group>";
 		};
-		4313416E25C3014F0065B537 /* TodoItemDisplayOnlyViews */ = {
-			isa = PBXGroup;
-			children = (
-				4313416F25C301920065B537 /* ImageLargeDisplayView.swift */,
-			);
-			path = TodoItemDisplayOnlyViews;
-			sourceTree = "<group>";
-		};
 		43A9245025C1A2CF00FAD285 /* TodoItemEditViews */ = {
 			isa = PBXGroup;
 			children = (
 				43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */,
+				431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */,
 				43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */,
+				4313416F25C301920065B537 /* ImageLargeDisplayView.swift */,
 			);
 			path = TodoItemEditViews;
 			sourceTree = "<group>";
@@ -146,7 +142,6 @@
 				43B4CDBD25BDC84900C59D08 /* odotApp.swift */,
 				43A9245025C1A2CF00FAD285 /* TodoItemEditViews */,
 				43B4CDBF25BDC84900C59D08 /* ContentView.swift */,
-				4313416E25C3014F0065B537 /* TodoItemDisplayOnlyViews */,
 				43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */,
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
 				43B4CDC625BDC84A00C59D08 /* Info.plist */,
@@ -326,6 +321,7 @@
 				43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */,
 				43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */,
 				431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */,
+				431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */,
 				43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */,
 				4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */,
 				43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */,

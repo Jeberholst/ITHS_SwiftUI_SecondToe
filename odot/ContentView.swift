@@ -42,7 +42,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        TodoItemView(todo: TodoItem())
     }
 }
 
@@ -68,10 +68,19 @@ struct TodoItemView: View {
     
     var body: some View {
         HStack {
-            Text("\(todo.title)")
+            VStack(alignment: .leading, spacing: 5){
+                Text("\(todo.title)")
+                    .bold()
+                Text("\(todo.note)")
+                    .italic()
+                    .font(.system(size: 12))
+            }
+            
             Spacer()
+            
             Text("\(todo.getFormattedDate())")
                 .italic()
+                .padding()
         }
     }
 }

@@ -18,18 +18,20 @@ struct TodoSelectedItemView: View {
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
     
+    @State private var isPrestentingTodoItemEdit = false
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
     
     var body: some View {
         
+        if let todoItem = todoItem {
         
-        ZStack {
-            
+            ZStack {
+                
                 VStack(alignment: .leading) {
-                    
-                    TitleTextView(dateFormatted: todoItem!.getFormattedDate())
+                        
+                    TitleTextView(dateFormatted: todoItem.getFormattedDate())
                     
                     Group {
                         GroupTitleImageView(systemName: "camera", itemCount: imagesCount){
@@ -58,7 +60,7 @@ struct TodoSelectedItemView: View {
                             HStack {
                               
                                 ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
-                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item], itemIndex: item, presented: isPresentingHyperLinkEdit)
+                                    HyperLinkView(hyperLinkItem: todoItem.hyperLinks[item], itemIndex: item, presented: isPresentingHyperLinkEdit)
                                 
                                 }
                                 .background(GrayBackGroundView())
@@ -79,7 +81,7 @@ struct TodoSelectedItemView: View {
                             VStack {
                                
                                 ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
-                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item], presented: isPresentingBlockEdit)
+                                    CodeBlockView(codeBlockItem: todoItem.codeBlocks[item], presented: isPresentingBlockEdit)
                                         
                                 }
                             }
@@ -91,13 +93,21 @@ struct TodoSelectedItemView: View {
                     
                 }
             }
-            .navigationBarTitle("\(todoItem!.title)")
+            .navigationBarItems(trailing: Button(action: {
+                isPrestentingTodoItemEdit.toggle()
+            }, label: {
+                Image(systemName: "square.and.pencil")
+            }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
+                SelectedTodoItemEditView(todoItem: todoItem)
+            }))
+            .navigationBarTitle("\(todoItem.title)")
             .onAppear(){
-                imagesCount = 7 //todoItem!.hyperLinks.count
-                hyperLinksCount = todoItem!.getHyperLinksCount()
-                codeBlocksCount = todoItem!.getCodeBlocksCount()
+                imagesCount = 7 //todoItem!.*.count
+                hyperLinksCount = todoItem.getHyperLinksCount()
+                codeBlocksCount = todoItem.getCodeBlocksCount()
             }
-        
+
+        }
         
     }
     
@@ -174,9 +184,9 @@ struct CodeBlockView: View {
                 Divider()
                 
                 Text("\(codeBlockItem.code)")
-                    .padding()
                     .font(.system(size: 12))
                     .foregroundColor(.black)
+                    .padding()
                     .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
             }
             
@@ -202,20 +212,13 @@ struct HyperLinkView: View {
     
     var body: some View {
         
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 5) {
+          
+            CustomTextView(text: "\(hyperLinkItem.title)", fontSize: 12, weight: .bold)
+            CustomTextView(text: "\(hyperLinkItem.getFormattedDate())", fontSize: 10)
+            CustomTextView(text: "\(hyperLinkItem.description)", fontSize: 12, weight: .none)
+            CustomTextView(text: "\(hyperLinkItem.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue)
             
-            Text("\(hyperLinkItem.getFormattedDate())") //ADD DATE
-                .font(.system(size: 10))
-                .foregroundColor(.black)
-            Text("\(hyperLinkItem.title)")
-                .bold()
-                .foregroundColor(.black)
-            Text("\(hyperLinkItem.description)")
-                .font(.system(size: 14))
-                .foregroundColor(.black)
-            Text("\(hyperLinkItem.hyperlink.prefix(20) + "...")")
-                .font(.system(size: 14))
-                .foregroundColor(.blue)
         }
         .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
         .onTapGesture(count: 1, perform: {
@@ -227,6 +230,40 @@ struct HyperLinkView: View {
 
     }
 
+}
+
+struct CustomTextView: View {
+    
+    var text: String
+    var fontSize: CGFloat
+    var fontColor: Color? = nil
+    var weight: Optional<Font.Weight>? = nil
+    
+    var body: some View {
+        
+        Text("\(text)")
+            .font(.system(size: fontSize))
+            .foregroundColor(checkColor())
+            .fontWeight(checkFontWeight())
+    }
+    
+    private func checkColor() -> Color {
+        if let fColor = fontColor {
+            return fColor
+        }else{
+            return Color.black
+        }
+    }
+    
+    private func checkFontWeight() -> Optional<Font.Weight> {
+        if let fWeight = weight {
+            return fWeight
+        }else{
+            return Font.Weight.regular
+        }
+    }
+    
+    
 }
 
 struct GroupTitleImageView: View {
