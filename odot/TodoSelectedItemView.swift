@@ -7,17 +7,24 @@
 
 import SwiftUI
 
+let icLink = "link"
+let icCode = "chevron.left.slash.chevron.right"
+let icEdit = "square.and.pencil"
+let icCamera = "camera"
+let icImage = "photo"
+
 struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todos: Todos
-    @Environment(\.presentationMode) var presentationMode
-    
+   
     @State var todoItem: TodoItem? = nil
     @State var listItemIndex: Int
     @State private var imagesCount: Int = 7
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
     
+    @State private var isEmptyPresenter = false
+    @State private var isPrestentingImagePicker = false
     @State private var isPrestentingTodoItemEdit = false
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
@@ -25,18 +32,16 @@ struct TodoSelectedItemView: View {
     
     var body: some View {
         
-        if let todoItem = todoItem {
+       // if let todoItem = todoItem {
         
             ZStack {
                 
                 VStack(alignment: .leading) {
                         
-                    TitleTextView(dateFormatted: todoItem.getFormattedDate())
+                    TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImageView(systemName: "camera", itemCount: imagesCount){
-                            addNewImageItem()
-                        }
+                        GroupTitleImagesView(systemName: icCamera, itemCount: imagesCount, presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< imagesCount) { i in
@@ -52,7 +57,7 @@ struct TodoSelectedItemView: View {
                     
                     Group {
                         
-                        GroupTitleImageView(systemName: "link", itemCount: hyperLinksCount) {
+                        GroupTitleHyperLinkView(systemName: icLink, itemCount: hyperLinksCount) {
                             addNewHyperLinkItem()
                         }
                         
@@ -60,7 +65,7 @@ struct TodoSelectedItemView: View {
                             HStack {
                               
                                 ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
-                                    HyperLinkView(hyperLinkItem: todoItem.hyperLinks[item], itemIndex: item, presented: isPresentingHyperLinkEdit)
+                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item],itemIndex: item, presented: isPresentingHyperLinkEdit)
                                 
                                 }
                                 .background(GrayBackGroundView())
@@ -73,15 +78,15 @@ struct TodoSelectedItemView: View {
                     Divider()
                     
                     Group {
-                        GroupTitleTextCodeBlockView(systemName: "chevron.left.slash.chevron.right", itemCount: codeBlocksCount){
+                        GroupTitleTextCodeBlockView(systemName: icCode, itemCount: codeBlocksCount){
                             addNewCodeBlockItem()
                         }
                         
-                        ScrollView(.vertical, showsIndicators: false) {
+                        ScrollView(.vertical, showsIndicators: true) {
                             VStack {
                                
                                 ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
-                                    CodeBlockView(codeBlockItem: todoItem.codeBlocks[item], presented: isPresentingBlockEdit)
+                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item], presented: isPresentingBlockEdit)
                                         
                                 }
                             }
@@ -96,39 +101,46 @@ struct TodoSelectedItemView: View {
             .navigationBarItems(trailing: Button(action: {
                 isPrestentingTodoItemEdit.toggle()
             }, label: {
-                Image(systemName: "square.and.pencil")
+                Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: todoItem)
+                SelectedTodoItemEditView(todoItem: todoItem!)
             }))
-            .navigationBarTitle("\(todoItem.title)")
+            .navigationBarTitle("\(todoItem!.title)")
             .onAppear(){
                 imagesCount = 7 //todoItem!.*.count
-                hyperLinksCount = todoItem.getHyperLinksCount()
-                codeBlocksCount = todoItem.getCodeBlocksCount()
+                hyperLinksCount = todoItem!.getHyperLinksCount()
+                codeBlocksCount = todoItem!.getCodeBlocksCount()
             }
+           
 
-        }
+       // }
         
     }
+   
     
     private func addNewImageItem(){
-        print("Click: Add new image...")
+        //isPrestentingImagePicker.toggle()
+        print("Click: Added new image...")
     }
     
     private func addNewHyperLinkItem(){
+       
         let newItem = HyperLinkItem()
         todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
-        todoItem?.addHyperLinkItem(item: newItem)
+        todoItem!.addHyperLinkItem(item: newItem)
         hyperLinksCount += 1
-        print("Click: Add hyperlink item...")
+        print("Click: Added hyperlink item...")
+        
     }
     
     private func addNewCodeBlockItem(){
+        
         let newItem = CodeBlockItem(code: "//New item...")
         todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
-        todoItem?.addCodeBlockItem(item: newItem)
+        todoItem!.addCodeBlockItem(item: newItem)
         codeBlocksCount += 1
-        print("Click: Add new code block item...")
+        print("Click: Added new code block item...")
+    
     }
 
 }
@@ -153,14 +165,14 @@ struct ImageRowButton: View {
             presented.toggle()
             print("MainIndex: \(mainIndex) ImageIndex: \(imageIndex)" )
         }, label: {
-            Image(systemName: "photo")
+            Image(systemName: icImage)
                 .padding()
                 .foregroundColor(Color.black)
         })
         .background(GrayBackGroundView())
         .sheet(isPresented: $presented) {
             ImageLargeDisplayView(
-                image: "link", mainIndex: mainIndex, imageIndex: imageIndex)
+                image: icImage, mainIndex: mainIndex, imageIndex: imageIndex)
         }
 
     }
@@ -176,11 +188,9 @@ struct CodeBlockView: View {
         VStack{
         
             VStack(alignment: .trailing) {
-                Text("\(codeBlockItem.getFormattedDate())")
-                    .font(.system(size: 12))
-                    .foregroundColor(.black)
-                    .padding()
                 
+                CustomTextView(text: "\(codeBlockItem.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+      
                 Divider()
                 
                 Text("\(codeBlockItem.code)")
@@ -198,6 +208,7 @@ struct CodeBlockView: View {
         .sheet(isPresented: $presented, content: {
             CodeBlockEditView(codeBlockItem: codeBlockItem)
         })
+        .animation(.linear)
         Divider()
         
     }
@@ -213,7 +224,7 @@ struct HyperLinkView: View {
     var body: some View {
         
         VStack(alignment: .center, spacing: 5) {
-          
+  
             CustomTextView(text: "\(hyperLinkItem.title)", fontSize: 12, weight: .bold)
             CustomTextView(text: "\(hyperLinkItem.getFormattedDate())", fontSize: 10)
             CustomTextView(text: "\(hyperLinkItem.description)", fontSize: 12, weight: .none)
@@ -227,6 +238,7 @@ struct HyperLinkView: View {
         .sheet(isPresented: $presented, content: {
             HyperLinkEditView(hyperLinkItem: hyperLinkItem)
         })
+        .animation(.linear)
 
     }
 
@@ -238,6 +250,7 @@ struct CustomTextView: View {
     var fontSize: CGFloat
     var fontColor: Color? = nil
     var weight: Optional<Font.Weight>? = nil
+    var padding: CGFloat? = nil
     
     var body: some View {
         
@@ -245,6 +258,7 @@ struct CustomTextView: View {
             .font(.system(size: fontSize))
             .foregroundColor(checkColor())
             .fontWeight(checkFontWeight())
+            .padding(checkPadding())
     }
     
     private func checkColor() -> Color {
@@ -263,10 +277,56 @@ struct CustomTextView: View {
         }
     }
     
+    private func checkPadding() -> CGFloat {
+        if let fPadding = padding {
+            return fPadding
+        }else{
+            return 0
+        }
+    }
+    
     
 }
 
-struct GroupTitleImageView: View {
+struct GroupTitleImagesView: View {
+    
+    var systemName: String
+    var itemCount: Int
+    @State var presented: Bool
+    
+    var body: some View {
+        
+        HStack {
+            
+            Image(systemName: "\(systemName)")
+                .resizable()
+                .foregroundColor(.black)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+        
+            ItemCountView(itemCount: itemCount)
+            
+            Spacer()
+            
+            VStack {
+                Image(systemName: "plus")
+            }
+            .onTapGesture(perform: {
+                presented.toggle()
+            })
+            .sheet(isPresented: $presented, content: {
+                ImagePickerPresenter()
+            })
+
+
+        }
+        
+        
+    }
+}
+
+struct GroupTitleHyperLinkView: View {
     
     var systemName: String
     var itemCount: Int
@@ -292,6 +352,7 @@ struct GroupTitleImageView: View {
             }, label: {
                 Image(systemName: "plus")
             })
+
         }
         
         

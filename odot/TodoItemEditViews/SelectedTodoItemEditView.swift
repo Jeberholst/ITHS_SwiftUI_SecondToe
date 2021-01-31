@@ -10,6 +10,7 @@ import SwiftUI
 struct SelectedTodoItemEditView: View {
     
     @State var todoItem: TodoItem
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
             
@@ -17,10 +18,8 @@ struct SelectedTodoItemEditView: View {
                 
                 VStack {
                     
-                    SheetEditBarView(title: "\(todoItem.getFormattedDate())"){
+                    SheetSaveOnlyBarView(title: "\(todoItem.getFormattedDate())"){
                         onActionSave()
-                    } actionDelete: {
-                        onActionDelete()
                     }
                     
                     Divider()
@@ -39,11 +38,8 @@ struct SelectedTodoItemEditView: View {
     
     private func onActionSave(){
         print("Save")
+        presentationMode.wrappedValue.dismiss()
     }
-    private func onActionDelete(){
-        
-    }
-    
     
 }
 
