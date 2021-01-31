@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+let icCopy = "doc.text"
+let icPaste = "doc.on.doc"
+let icPasteLastLine = "arrow.down.doc"
+let icShare = "square.and.arrow.up"
+
+let icTitle = "chevron.left.slash.chevron.right"
+
 struct CodeBlockEditView: View {
     
     @State var codeBlockItem: CodeBlockItem
@@ -27,16 +34,14 @@ struct CodeBlockEditView: View {
               
                 VStack(alignment: .trailing) {
                     
-                    TextEditorCodeCompoundView(iconSystemName: "chevron.left.slash.chevron.right", viewTitle: "Code", text: codeBlockItem.code)
+                    TextEditorCodeCompoundView(iconSystemName: icTitle, viewTitle: "Code", text: codeBlockItem.code)
                     Spacer()
                     
                 }
                 
             }
-         
             
         }
-        
         
     }
     
@@ -105,35 +110,32 @@ struct TextEditorCodeCompoundView: View {
                     
                     Spacer()
                     HStack(spacing: 15) {
-                        ClipBoardActionView(iconSystemName: "doc.text", label: "Copy", onAction: {
+                        ClipBoardActionView(iconSystemName: icCopy, label: "Copy", onAction: {
                             print("Copying to clipboard")
                             UIPasteboard.general.string = text
                         })
-                        ClipBoardActionView(iconSystemName: "doc.on.doc", label: "Paste", onAction: {
+                        ClipBoardActionView(iconSystemName: icPaste, label: "Paste", onAction: {
                             print("Pasting from clipboard")
                             if let onPasteBoard = UIPasteboard.general.string {
                                 text = onPasteBoard
                             }
                         })
-                        ClipBoardActionView(iconSystemName: "arrow.down.doc", label: "Paste", onAction: {
+                        ClipBoardActionView(iconSystemName: icPasteLastLine, label: "Paste", onAction: {
                             print("Paste from clipboard last line")
                             if let onPasteBoard = UIPasteboard.general.string {
                                 text = "\(text)\r\n\(onPasteBoard)"
                             }
                         })
-                        ClipBoardActionView(iconSystemName: "square.and.arrow.up", label: "xShare", onAction: {
+                        ClipBoardActionView(iconSystemName: icShare, label: "xShare", onAction: {
                             print("Share to...")
                         })
                     }.padding()
                 }
                 Divider()
                 
-                
                 TextEditor(text: $text.animation(.easeIn))
                     .frame(minWidth: UIScreen.main.bounds.width - 30, idealWidth: 100, maxWidth: .infinity, minHeight: UIScreen.main.bounds.height / 2, idealHeight: .infinity, maxHeight: .infinity, alignment: .center)
                 
-       
-                    
             }
         }
         .padding()

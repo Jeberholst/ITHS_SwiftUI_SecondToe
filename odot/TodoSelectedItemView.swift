@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-let icLink = "link"
-let icCode = "chevron.left.slash.chevron.right"
-let icEdit = "square.and.pencil"
-let icCamera = "camera"
-let icImage = "photo"
+//let icLink = "link"
+//let icCode = "chevron.left.slash.chevron.right"
+//let icEdit = "square.and.pencil"
+//let icCamera = "camera"
+//let icImage = "photo"
 
 struct TodoSelectedItemView: View {
     
@@ -311,6 +311,7 @@ struct GroupTitleImagesView: View {
             
             VStack {
                 Image(systemName: "plus")
+                    .foregroundColor(.blue)
             }
             .onTapGesture(perform: {
                 presented.toggle()
