@@ -41,7 +41,7 @@ struct TodoSelectedItemView: View {
                     TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImagesView(systemName: icCamera, itemCount: imagesCount, presented: isPrestentingImagePicker)
+                        GroupTitleImagesView(systemName: icCamera, presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< imagesCount) { i in
@@ -57,7 +57,7 @@ struct TodoSelectedItemView: View {
                     
                     Group {
                         
-                        GroupTitleHyperLinkView(systemName: icLink, itemCount: hyperLinksCount) {
+                        GroupTitleHyperLinkView(systemName: icLink) {
                             addNewHyperLinkItem()
                         }
                         
@@ -78,7 +78,7 @@ struct TodoSelectedItemView: View {
                     Divider()
                     
                     Group {
-                        GroupTitleTextCodeBlockView(systemName: icCode, itemCount: codeBlocksCount){
+                        GroupTitleTextCodeBlockView(systemName: icCode){
                             addNewCodeBlockItem()
                         }
                         
@@ -228,7 +228,7 @@ struct HyperLinkView: View {
             CustomTextView(text: "\(hyperLinkItem.title)", fontSize: 12, weight: .bold)
             CustomTextView(text: "\(hyperLinkItem.getFormattedDate())", fontSize: 10)
             CustomTextView(text: "\(hyperLinkItem.description)", fontSize: 12, weight: .none)
-            CustomTextView(text: "\(hyperLinkItem.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue)
+            CustomTextView(text: "\(hyperLinkItem.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: hyperLinkItem.hyperlink)
             
         }
         .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
@@ -251,14 +251,28 @@ struct CustomTextView: View {
     var fontColor: Color? = nil
     var weight: Optional<Font.Weight>? = nil
     var padding: CGFloat? = nil
+    var link: String? = nil
     
     var body: some View {
         
-        Text("\(text)")
-            .font(.system(size: fontSize))
-            .foregroundColor(checkColor())
-            .fontWeight(checkFontWeight())
-            .padding(checkPadding())
+        if link != nil {
+            if let link = link {
+                Link(destination: URL(string: "\(link)")!, label: {
+                    Text("\(text)")
+                        .font(.system(size: fontSize))
+                        .foregroundColor(checkColor())
+                        .fontWeight(checkFontWeight())
+                        .padding(checkPadding())
+                })
+            }
+        } else {
+            Text("\(text)")
+                .font(.system(size: fontSize))
+                .foregroundColor(checkColor())
+                .fontWeight(checkFontWeight())
+                .padding(checkPadding())
+        }
+        
     }
     
     private func checkColor() -> Color {
@@ -291,7 +305,6 @@ struct CustomTextView: View {
 struct GroupTitleImagesView: View {
     
     var systemName: String
-    var itemCount: Int
     @State var presented: Bool
     
     var body: some View {
@@ -305,8 +318,6 @@ struct GroupTitleImagesView: View {
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
         
-            ItemCountView(itemCount: itemCount)
-            
             Spacer()
             
             VStack {
@@ -330,7 +341,6 @@ struct GroupTitleImagesView: View {
 struct GroupTitleHyperLinkView: View {
     
     var systemName: String
-    var itemCount: Int
     var onAction: () -> ()
     
     var body: some View {
@@ -344,8 +354,6 @@ struct GroupTitleHyperLinkView: View {
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
         
-            ItemCountView(itemCount: itemCount)
-            
             Spacer()
             
             Button(action: {
@@ -363,7 +371,6 @@ struct GroupTitleHyperLinkView: View {
 struct GroupTitleTextCodeBlockView: View {
     
     var systemName: String
-    var itemCount: Int
     var onAction: () -> ()
     
     var body: some View {
@@ -375,8 +382,6 @@ struct GroupTitleTextCodeBlockView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
-            
-            ItemCountView(itemCount: itemCount)
             
             Spacer()
             

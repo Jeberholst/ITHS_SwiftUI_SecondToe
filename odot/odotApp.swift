@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct odotApp: App {
-    @ObservedObject var todos = Todos()
+   // @ObservedObject var todos = Todos()
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(todos)
+            LoginRegisterView()
+           // ContentView().environmentObject(todos)
         }
     }
 }

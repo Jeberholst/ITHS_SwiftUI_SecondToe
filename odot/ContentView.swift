@@ -16,67 +16,40 @@ let icImage = "photo"
 struct ContentView: View {
     
     @EnvironmentObject private var todos : Todos
+   // @ObservedObject private var todos = Todos()
+    
+    init() {
+        UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
+    }
     
     var body: some View {
+        NavigationView {
         
-            NavigationView {
-                
-                List(){
-                    ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
-                        NavigationLink(
-                            destination:
-                                TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)
-                                .environmentObject(todos)){
+            ZStack{
+                VStack {
+                    List(){
+                        ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
+                            NavigationLink(
+                                destination:
+                                    TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)){
+                                
+                                TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
+                                
+                            }
                             
-                            TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
-                            
-                        }
-                        
-                    }.onDelete(perform: { indexSet in
-                        todos.removeItem(indexSet: indexSet)
-                    })
+                        }.onDelete(perform: { indexSet in
+                            todos.removeItem(indexSet: indexSet)
+                        })
+                    }
+                    .navigationBarTitleDisplayMode(.inline)
+                   // .navigationBarHidden(true)
+                    .navigationBarItems(trailing: TodoAddNew(todos: todos))
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarTitle("Todo")
-                .navigationBarItems(trailing: TodoAddNew(todos: todos))
             }
-        
-    }
-}
-
-struct ContentViewP: View {
-    
-    private var todos = Todos()
-    
-    var body: some View {
-    
-            NavigationView {
-            
-                
-                List(){
-                    ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
-                        NavigationLink(
-                            destination:
-                                TodoSelectedItemView(todoItem: todos.listOfItems[i],
-                                                 listItemIndex: i)){
-                            
-                                TodoItemView(todo: todos.listOfItems[i],
-                                             imagesCount: 0, hyperLinksCount: 0, codeBlocksCount: 0)
-                            
-                        }
-                        
-                    }.onDelete(perform: { indexSet in
-                        todos.removeItem(indexSet: indexSet)
-                    })
-                  
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarTitle("Todo")
-                .navigationBarItems(trailing: TodoAddNew(todos: todos))
-                    
-            }
+        }
             
     }
+    
 }
 
 struct TodoAddNew: View {
@@ -106,23 +79,23 @@ struct TodoItemView: View {
     var body: some View {
         
         HStack {
+            
             VStack(alignment: .leading){
                 
                 HStack {
                     
                     VStack(alignment: .leading) {
                         Text("\(todo.title)")
-                            .font(.system(size: 14))
+                            .font(.system(size: 16))
                             .bold()
                         
                         Text("\(todo.getFormattedDate())")
-                            .font(.system(size: 10))
-                            .italic()
+                            .font(.system(size: 14))
                         
                         Spacer()
                    
-                        Text("\(todo.note)")
-                            .font(.system(size: 12))
+                        //Text("\(todo.note)")
+                          //  .font(.system(size: 14))
                     
                     }
                    
@@ -136,29 +109,29 @@ struct TodoItemView: View {
                         Image(systemName: icImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 12, height: 12)
-                        Text("\(imagesCount)").font(.system(size: 8))
+                            .frame(width: 16, height: 16)
+                        Text("\(imagesCount)").font(.system(size: 14))
                     }
                     HStack {
                         Image(systemName: icLink)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 12, height: 12)
-                        Text("\(hyperLinksCount)").font(.system(size: 8))
+                            .frame(width: 16, height: 16)
+                        Text("\(hyperLinksCount)").font(.system(size: 14))
                     }
                     HStack {
                         Image(systemName: icCode)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 12, height: 12)
-                        Text("\(codeBlocksCount)").font(.system(size: 8))
+                            .frame(width: 16, height: 16)
+                        Text("\(codeBlocksCount)").font(.system(size: 14))
                     }
                 }
                 
              
             }
             
-        }
+        }.padding() 
         
     }
 
@@ -166,6 +139,6 @@ struct TodoItemView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentViewP()
+        ContentView()
     }
 }
