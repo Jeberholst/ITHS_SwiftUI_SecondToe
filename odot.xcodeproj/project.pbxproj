@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BC3F6FB9C7CCDCA43E5AD6B /* Pods_odot_odotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3111AE61325EF783E5154BAC /* Pods_odot_odotUITests.framework */; };
+		30C67CA4D154A040F822BA03 /* Pods_odot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 820E00AB1F273BD1B0299FCB /* Pods_odot.framework */; };
 		4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */; };
 		4313416A25C2EFA70065B537 /* CodeBlockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416925C2EFA70065B537 /* CodeBlockItem.swift */; };
 		4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416F25C301920065B537 /* ImageLargeDisplayView.swift */; };
@@ -16,9 +18,12 @@
 		4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375066525C09E66006158E4 /* HyperLinkItem.swift */; };
 		4383055F25C8A93000DFFEF8 /* LoginRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */; };
 		4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383056925C973C200DFFEF8 /* ImagesItem.swift */; };
+		4383056F25CAE4FD00DFFEF8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */; };
 		4393035A25C6276100B6546F /* SheetSaveOnlyBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4393035925C6276100B6546F /* SheetSaveOnlyBarView.swift */; };
 		43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */; };
 		43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */; };
+		43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118A025CB48C900F9A9FB /* AppDelegate.swift */; };
+		43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */; };
 		43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBD25BDC84900C59D08 /* odotApp.swift */; };
 		43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBF25BDC84900C59D08 /* ContentView.swift */; };
 		43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B4CDC125BDC84A00C59D08 /* Assets.xcassets */; };
@@ -28,6 +33,7 @@
 		43B4CDEF25BDC8E000C59D08 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDEE25BDC8E000C59D08 /* TodoItem.swift */; };
 		43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDF425BDCA5C00C59D08 /* Todos.swift */; };
 		43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */; };
+		844A6CEA1AE2ADCE4CB713CE /* Pods_odotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A041C45EF7C71D6629C89B7 /* Pods_odotTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00EF8F2FE09F38DC4353ECE9 /* Pods-odot-odotUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot-odotUITests.release.xcconfig"; path = "Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests.release.xcconfig"; sourceTree = "<group>"; };
+		1A041C45EF7C71D6629C89B7 /* Pods_odotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B5DCC4456FE6BAD04571474 /* Pods-odotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odotTests.release.xcconfig"; path = "Target Support Files/Pods-odotTests/Pods-odotTests.release.xcconfig"; sourceTree = "<group>"; };
+		3111AE61325EF783E5154BAC /* Pods_odot_odotUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odot_odotUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayBackGroundView.swift; sourceTree = "<group>"; };
 		4313416925C2EFA70065B537 /* CodeBlockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockItem.swift; sourceTree = "<group>"; };
 		4313416F25C301920065B537 /* ImageLargeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLargeDisplayView.swift; sourceTree = "<group>"; };
@@ -57,9 +67,12 @@
 		4375066525C09E66006158E4 /* HyperLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkItem.swift; sourceTree = "<group>"; };
 		4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRegisterView.swift; sourceTree = "<group>"; };
 		4383056925C973C200DFFEF8 /* ImagesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesItem.swift; sourceTree = "<group>"; };
+		4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4393035925C6276100B6546F /* SheetSaveOnlyBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSaveOnlyBarView.swift; sourceTree = "<group>"; };
 		43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkEditView.swift; sourceTree = "<group>"; };
 		43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockEditView.swift; sourceTree = "<group>"; };
+		43B118A025CB48C900F9A9FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestUI.swift; sourceTree = "<group>"; };
 		43B4CDBA25BDC84900C59D08 /* odot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = odot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B4CDBD25BDC84900C59D08 /* odotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotApp.swift; sourceTree = "<group>"; };
 		43B4CDBF25BDC84900C59D08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +88,11 @@
 		43B4CDEE25BDC8E000C59D08 /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		43B4CDF425BDCA5C00C59D08 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSelectedItemView.swift; sourceTree = "<group>"; };
+		4D9BE49F1BC9EAECD117A9C9 /* Pods-odot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.debug.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.debug.xcconfig"; sourceTree = "<group>"; };
+		596F7C625C22F6789DBC9258 /* Pods-odotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odotTests.debug.xcconfig"; path = "Target Support Files/Pods-odotTests/Pods-odotTests.debug.xcconfig"; sourceTree = "<group>"; };
+		77473369614D91697F5CF964 /* Pods-odot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.release.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.release.xcconfig"; sourceTree = "<group>"; };
+		820E00AB1F273BD1B0299FCB /* Pods_odot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D62BA05A46BA966F87439DCA /* Pods-odot-odotUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot-odotUITests.debug.xcconfig"; path = "Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30C67CA4D154A040F822BA03 /* Pods_odot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				844A6CEA1AE2ADCE4CB713CE /* Pods_odotTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BC3F6FB9C7CCDCA43E5AD6B /* Pods_odot_odotUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */,
+				43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -146,6 +168,8 @@
 				43B4CDCE25BDC84A00C59D08 /* odotTests */,
 				43B4CDD925BDC84A00C59D08 /* odotUITests */,
 				43B4CDBB25BDC84900C59D08 /* Products */,
+				AECB207146F848FB7DE73D29 /* Pods */,
+				915C5A4B4E55B0C3264EDB29 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +196,8 @@
 				43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */,
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
 				43B4CDC625BDC84A00C59D08 /* Info.plist */,
+				43B118A025CB48C900F9A9FB /* AppDelegate.swift */,
+				4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */,
 				43B4CDC325BDC84A00C59D08 /* Preview Content */,
 			);
 			path = odot;
@@ -215,6 +241,29 @@
 			path = TodoModel;
 			sourceTree = "<group>";
 		};
+		915C5A4B4E55B0C3264EDB29 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				820E00AB1F273BD1B0299FCB /* Pods_odot.framework */,
+				3111AE61325EF783E5154BAC /* Pods_odot_odotUITests.framework */,
+				1A041C45EF7C71D6629C89B7 /* Pods_odotTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AECB207146F848FB7DE73D29 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4D9BE49F1BC9EAECD117A9C9 /* Pods-odot.debug.xcconfig */,
+				77473369614D91697F5CF964 /* Pods-odot.release.xcconfig */,
+				D62BA05A46BA966F87439DCA /* Pods-odot-odotUITests.debug.xcconfig */,
+				00EF8F2FE09F38DC4353ECE9 /* Pods-odot-odotUITests.release.xcconfig */,
+				596F7C625C22F6789DBC9258 /* Pods-odotTests.debug.xcconfig */,
+				2B5DCC4456FE6BAD04571474 /* Pods-odotTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -222,9 +271,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43B4CDDF25BDC84A00C59D08 /* Build configuration list for PBXNativeTarget "odot" */;
 			buildPhases = (
+				DFF61889A66BD89B67B5E4A6 /* [CP] Check Pods Manifest.lock */,
 				43B4CDB625BDC84900C59D08 /* Sources */,
 				43B4CDB725BDC84900C59D08 /* Frameworks */,
 				43B4CDB825BDC84900C59D08 /* Resources */,
+				FA492AAB66E8137DBECD193E /* [CP] Embed Pods Frameworks */,
+				F60FCD300A71A688C6D64F24 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -239,6 +291,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43B4CDE225BDC84A00C59D08 /* Build configuration list for PBXNativeTarget "odotTests" */;
 			buildPhases = (
+				8775419D77748A56415BF806 /* [CP] Check Pods Manifest.lock */,
 				43B4CDC725BDC84A00C59D08 /* Sources */,
 				43B4CDC825BDC84A00C59D08 /* Frameworks */,
 				43B4CDC925BDC84A00C59D08 /* Resources */,
@@ -257,9 +310,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43B4CDE525BDC84A00C59D08 /* Build configuration list for PBXNativeTarget "odotUITests" */;
 			buildPhases = (
+				9B6FD7D24AC14EC5E316F876 /* [CP] Check Pods Manifest.lock */,
 				43B4CDD225BDC84A00C59D08 /* Sources */,
 				43B4CDD325BDC84A00C59D08 /* Frameworks */,
 				43B4CDD425BDC84A00C59D08 /* Resources */,
+				5DFE9F85AA5CBDC74783A557 /* [CP] Embed Pods Frameworks */,
+				1893AA0661BF4F21ACE9776D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -320,6 +376,7 @@
 			files = (
 				43B4CDC525BDC84A00C59D08 /* Preview Assets.xcassets in Resources */,
 				43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */,
+				4383056F25CAE4FD00DFFEF8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,12 +396,150 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1893AA0661BF4F21ACE9776D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5DFE9F85AA5CBDC74783A557 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-odot-odotUITests/Pods-odot-odotUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8775419D77748A56415BF806 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-odotTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B6FD7D24AC14EC5E316F876 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-odot-odotUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFF61889A66BD89B67B5E4A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-odot-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F60FCD300A71A688C6D64F24 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA492AAB66E8137DBECD193E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-odot/Pods-odot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		43B4CDB625BDC84900C59D08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */,
+				43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */,
 				4313416A25C2EFA70065B537 /* CodeBlockItem.swift in Sources */,
 				43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */,
 				4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */,
@@ -356,6 +551,7 @@
 				43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */,
 				4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */,
 				43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */,
+				43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */,
 				431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */,
 				43B4CDEF25BDC8E000C59D08 /* TodoItem.swift in Sources */,
 				43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */,
@@ -514,6 +710,7 @@
 		};
 		43B4CDE025BDC84A00C59D08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D9BE49F1BC9EAECD117A9C9 /* Pods-odot.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -536,6 +733,7 @@
 		};
 		43B4CDE125BDC84A00C59D08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77473369614D91697F5CF964 /* Pods-odot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -558,6 +756,7 @@
 		};
 		43B4CDE325BDC84A00C59D08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 596F7C625C22F6789DBC9258 /* Pods-odotTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -580,6 +779,7 @@
 		};
 		43B4CDE425BDC84A00C59D08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B5DCC4456FE6BAD04571474 /* Pods-odotTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -602,6 +802,7 @@
 		};
 		43B4CDE625BDC84A00C59D08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D62BA05A46BA966F87439DCA /* Pods-odot-odotUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -622,6 +823,7 @@
 		};
 		43B4CDE725BDC84A00C59D08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 00EF8F2FE09F38DC4353ECE9 /* Pods-odot-odotUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
