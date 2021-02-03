@@ -42,7 +42,6 @@ struct ContentView: View {
                         })
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                   // .navigationBarHidden(true)
                     .navigationBarItems(trailing: TodoAddNew(todos: todos))
                 }
             }

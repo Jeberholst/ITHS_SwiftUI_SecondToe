@@ -17,7 +17,6 @@ let icTitle = "chevron.left.slash.chevron.right"
 struct CodeBlockEditView: View {
     
     @State var codeBlockItem: CodeBlockItem
-    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         
@@ -47,12 +46,10 @@ struct CodeBlockEditView: View {
     
     private func onActionSave(){
         print("Save")
-        presentationMode.wrappedValue.dismiss()
     }
     
     private func onActionDelete(){
         print("Delete")
-        presentationMode.wrappedValue.dismiss()
     }
 }
 

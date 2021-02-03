@@ -17,15 +17,24 @@ class Todos: ObservableObject, Identifiable {
     
     func createMockData(){
         
-        let hyperLink0 = [HyperLinkItem(), HyperLinkItem(),HyperLinkItem()]
-        let hyperLink1 = [HyperLinkItem(hyperlink: "https://www.something.com"), HyperLinkItem(),HyperLinkItem()]
-        let codeBlock0 = [CodeBlockItem(), CodeBlockItem()]
-        let codeBlock1 = [CodeBlockItem(code: "var itemCount = 2"), CodeBlockItem(), CodeBlockItem(), CodeBlockItem(), CodeBlockItem(code: "Senaste")]
+        let image0 = ImagesItem(storageReference: "https:SomeRef")
+        let image1 = ImagesItem(storageReference: "https:SomeRef3")
+        let hyperLink0 = HyperLinkItem()
+        let hyperLink1 = HyperLinkItem(hyperlink: "https://www.something.com")
+        let codeBlock0 = CodeBlockItem()
+        let codeBlock1 = CodeBlockItem(code: "var itemCount = 2")
         
-        addItem(todoItem: TodoItem(title: "En titel 1", note: "En note 1", hyperLinks: hyperLink0, codeBlocks: codeBlock0))
-        addItem(todoItem: TodoItem(title: "En titel 2", note: "En note 2", hyperLinks: hyperLink0, codeBlocks: codeBlock0))
-        addItem(todoItem: TodoItem(title: "En titel 3", note: "En note 3", hyperLinks: hyperLink1, codeBlocks: codeBlock1))
-        addItem(todoItem: TodoItem(title: "En titel 4", note: "En note 4", hyperLinks: hyperLink1, codeBlocks: codeBlock1))
+        for i in (0...5){
+            var todoItem = TodoItem(title: "Item \(i)")
+            todoItem.addImagesItem(item: image0)
+            todoItem.addImagesItem(item: image1)
+            todoItem.addHyperLinkItem(item: hyperLink0)
+            todoItem.addHyperLinkItem(item: hyperLink1)
+            todoItem.addCodeBlockItem(item: codeBlock0)
+            todoItem.addCodeBlockItem(item: codeBlock1)
+            addItem(todoItem: todoItem)
+        }
+        
     }
     
     func addItem(todoItem: TodoItem){

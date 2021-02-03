@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ImagePickerPresenter: View {
     
-    //On save put in @EnvironmentObject todo: Todos, last in list
+    @EnvironmentObject var todos: Todos
+    @State var todoItem: TodoItem
+    @State var mainIndex: Int
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
     
@@ -35,6 +37,9 @@ struct ImagePickerPresenter: View {
     
     private func actionSave(){
         print("Saving image...")
+        let newItem = ImagesItem(storageReference: "somestorageref")
+        todos.listOfItems[mainIndex].addImagesItem(item: newItem)
+        todoItem.addImagesItem(item: newItem)
     }
     
     
@@ -88,6 +93,6 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 struct CaptureImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImagePickerPresenter()
+        ImagePickerPresenter(todoItem: TodoItem(),mainIndex: 0)
     }
 }

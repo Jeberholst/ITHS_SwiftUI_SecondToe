@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SheetEditBarView: View {
     
+    @Environment(\.presentationMode) private var presentationMode
     var title: String
     var actionSave: () -> ()
     var actionDelete: () -> ()
@@ -23,6 +24,7 @@ struct SheetEditBarView: View {
             
             Button(action: {
                 actionSave()
+                presentationMode.wrappedValue.dismiss()
             }, label: {
                 Image(systemName: "checkmark.circle")
                     .resizable()
@@ -32,6 +34,7 @@ struct SheetEditBarView: View {
             })
             Button(action: {
                 actionDelete()
+                presentationMode.wrappedValue.dismiss()
             }, label: {
                 Image(systemName: "trash.circle")
                     .resizable()

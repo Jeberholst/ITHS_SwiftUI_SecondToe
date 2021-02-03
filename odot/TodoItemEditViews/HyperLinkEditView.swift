@@ -10,7 +10,6 @@ import SwiftUI
 struct HyperLinkEditView: View {
     
     @State var hyperLinkItem: HyperLinkItem
-    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
             
@@ -42,12 +41,10 @@ struct HyperLinkEditView: View {
     
     private func onActionSave(){
         print("Save")
-        presentationMode.wrappedValue.dismiss()
     }
     
     private func onActionDelete(){
         print("Delete")
-        presentationMode.wrappedValue.dismiss()
     }
     
 }

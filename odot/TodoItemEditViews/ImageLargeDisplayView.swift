@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageLargeDisplayView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var todos : Todos
     var image: String
     @State var mainIndex: Int
     @State var imageIndex: Int
@@ -44,19 +44,17 @@ struct ImageLargeDisplayView: View {
     
     private func onActionSave(){
         print("Save")
-        presentationMode.wrappedValue.dismiss()
     }
     
     private func onActionDelete(){
         print("Delete")
-        presentationMode.wrappedValue.dismiss()
     }
     
 }
 
 struct ImageLargeDisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageLargeDisplayView(image: "link", mainIndex: 0, imageIndex: 0)
+        ImageLargeDisplayView(image: "photo", mainIndex: 0, imageIndex: 0)
     }
 }
 

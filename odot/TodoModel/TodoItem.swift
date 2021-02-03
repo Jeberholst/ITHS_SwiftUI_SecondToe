@@ -15,9 +15,8 @@ struct TodoItem : Identifiable {
     var date: Date = Date()
     var hyperLinks: [HyperLinkItem] = [HyperLinkItem]()
     var codeBlocks: [CodeBlockItem] = [CodeBlockItem]()
-    
-    //Images?
-    
+    var images: [ImagesItem] = [ImagesItem]()
+   
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -26,9 +25,9 @@ struct TodoItem : Identifiable {
         
     }
     
-//    mutating func addImageItem(item: String){
-//        codeBlocks.append(item)
-//    }
+    mutating func addImagesItem(item: ImagesItem){
+        images.append(item)
+    }
     
     mutating func addHyperLinkItem(item: HyperLinkItem){
         hyperLinks.append(item)
@@ -38,6 +37,10 @@ struct TodoItem : Identifiable {
         codeBlocks.append(item)
     }
     
+    func getImagesCount() -> Int {
+        return images.count
+    }
+    
     func getHyperLinksCount() -> Int {
         return hyperLinks.count
     }
@@ -45,7 +48,6 @@ struct TodoItem : Identifiable {
     func getCodeBlocksCount() -> Int {
         return codeBlocks.count
     }
-    
     
     
 }

@@ -19,7 +19,7 @@ struct TodoSelectedItemView: View {
    
     @State var todoItem: TodoItem? = nil
     @State var listItemIndex: Int
-    @State private var imagesCount: Int = 7
+    @State private var imagesCount: Int = 0
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
     
@@ -41,10 +41,10 @@ struct TodoSelectedItemView: View {
                     TitleTextView(dateFormatted: todoItem!.getFormattedDate())
                     
                     Group {
-                        GroupTitleImagesView(systemName: icCamera, presented: isPrestentingImagePicker)
+                        GroupTitleImagesView(systemName: icCamera, mainIndex: listItemIndex, todoItem: todoItem!, presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(0 ..< imagesCount) { i in
+                                ForEach(0 ..< imagesCount, id: \.self) { i in
                                 
                                     ImageRowButton(mainIndex: listItemIndex, imageIndex: i, presented: isPresentingLargeImage)
                                 }
@@ -63,13 +63,11 @@ struct TodoSelectedItemView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                              
                                 ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
                                     HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item],itemIndex: item, presented: isPresentingHyperLinkEdit)
                                 
                                 }
                                 .background(GrayBackGroundView())
-                          
                             }
                         }
                     }
@@ -107,7 +105,7 @@ struct TodoSelectedItemView: View {
             }))
             .navigationBarTitle("\(todoItem!.title)")
             .onAppear(){
-                imagesCount = 7 //todoItem!.*.count
+                imagesCount = todoItem!.getImagesCount()
                 hyperLinksCount = todoItem!.getHyperLinksCount()
                 codeBlocksCount = todoItem!.getCodeBlocksCount()
             }
@@ -124,7 +122,7 @@ struct TodoSelectedItemView: View {
     }
     
     private func addNewHyperLinkItem(){
-       
+        
         let newItem = HyperLinkItem()
         todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
         todoItem!.addHyperLinkItem(item: newItem)
@@ -148,7 +146,7 @@ struct TodoSelectedItemView: View {
 struct TodoSelectedItemView_Previews: PreviewProvider {
     static var todo = Todos()
     static var previews: some View {
-        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 3)
+        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 2)
     }
 }
 
@@ -305,6 +303,8 @@ struct CustomTextView: View {
 struct GroupTitleImagesView: View {
     
     var systemName: String
+    @State var mainIndex: Int
+    @State var todoItem: TodoItem
     @State var presented: Bool
     
     var body: some View {
@@ -328,7 +328,7 @@ struct GroupTitleImagesView: View {
                 presented.toggle()
             })
             .sheet(isPresented: $presented, content: {
-                ImagePickerPresenter()
+                ImagePickerPresenter(todoItem: todoItem, mainIndex: mainIndex)
             })
 
 

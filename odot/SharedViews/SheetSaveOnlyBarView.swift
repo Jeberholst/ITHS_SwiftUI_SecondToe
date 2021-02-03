@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SheetSaveOnlyBarView: View {
     
+    @Environment(\.presentationMode) private var presentationMode
     var title: String
     var actionSave: () -> ()
     
@@ -22,6 +23,7 @@ struct SheetSaveOnlyBarView: View {
             
             Button(action: {
                 actionSave()
+                presentationMode.wrappedValue.dismiss()
             }, label: {
                 Image(systemName: "checkmark.circle")
                     .resizable()
