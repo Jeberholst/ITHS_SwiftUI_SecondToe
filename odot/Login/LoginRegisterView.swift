@@ -16,11 +16,20 @@ struct LoginRegisterView: View {
     @ObservedObject var todos = Todos()
     @State private var isLoggedIn: Bool = false
     @State private var isPresentingLoginUI = false
+    //@State private var listener: AuthStateDidChangeListenerHandle? = nil
+
     
     var body: some View {
         
         VStack {
             
+            VStack{}.sheet(isPresented: $isPresentingLoginUI) {
+                SignInTestUI()
+            }
+            VStack{}.fullScreenCover(isPresented: $isLoggedIn) {
+                ContentView().environmentObject(todos)
+            }
+         
             Spacer()
             
             HStack(alignment: .center, spacing: 0) {
@@ -42,52 +51,34 @@ struct LoginRegisterView: View {
             }
             
             Spacer()
-        
+            
             Button(action: {
-                //startSignIn()
-                isPresentingLoginUI.toggle()
-               
-               // isLoggedIn.toggle()
+                if(Auth.auth().currentUser != nil){
+                    print("IsLoggedIn: \(isLoggedIn)")
+                    isLoggedIn = true
+                    print("IsLoggedIn toggled: \(isLoggedIn)")
+                } else {
+                    isPresentingLoginUI = true
+                }
             }, label: {
                 Text("Login / Register")
             })
-        
-           
-        
+            .padding()
+            
+            Button(action: {
+                self.signOut()
+            }, label: {
+                Text("SignOut (test)")
+            }).padding()
+            
             Spacer()
         }
-       
-        
-        .fullScreenCover(isPresented: $isLoggedIn) {
-            ContentView().environmentObject(todos)
-        }
-        
-        .sheet(isPresented: $isPresentingLoginUI) {
-           // FUIAuthBaseViewController() as! View
-            //print("Displaying")
-            SignInTestUI()
-            
-        }
-       
         .onAppear(){
-            Auth.auth().addStateDidChangeListener { (auth, user) in
-                if let user = user {
-                        self.showUserInfo(user: user)
-                    } else {
-                        print("No user signed in")
-                        self.showLoginVC()
-                    }
-            }
+            print("On appear")
+            addListener()
         }
-    }
-    
-    func showLoginVC() {
-        let authUI = FUIAuth.defaultAuthUI()
-        let providers = [FUIGoogleAuth(authUI: authUI!)]
-        authUI?.providers = providers
-        let authViewController = authUI!.authViewController()
-        isPresentingLoginUI.toggle()
       
+        
     }
     
     func showUserInfo(user: User){
@@ -95,7 +86,34 @@ struct LoginRegisterView: View {
         print(user.displayName)
     }
    
+    func signOut(){
+        let authUI = FUIAuth.defaultAuthUI()
+        print("Trying to sign out user...")
+        try! authUI?.signOut()
+    }
 
+    func addListener(){
+        //listener = 
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+             if let user = user {
+                self.showUserInfo(user: user)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    isPresentingLoginUI = false
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    isLoggedIn = true
+                }
+              
+               
+                print("isLoggedIn: \(isLoggedIn)")
+             } else {
+                 print("No user signed in")
+                 isLoggedIn = false
+             }
+         }
+    }
+    
 }
 
 

@@ -13,6 +13,8 @@ struct SignInTestUI: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> UINavigationController {
         let authUI = FUIAuth.defaultAuthUI()
+        let providers = [FUIGoogleAuth(authUI: authUI!)]
+        authUI?.providers = providers
         let authViewController = authUI!.authViewController()
         return authViewController
     }

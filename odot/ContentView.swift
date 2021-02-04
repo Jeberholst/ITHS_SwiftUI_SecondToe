@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseUI
 
 let icLink = "link"
 let icCode = "chevron.left.slash.chevron.right"
@@ -43,6 +44,7 @@ struct ContentView: View {
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarItems(trailing: TodoAddNew(todos: todos))
+                    
                 }
             }
         }
@@ -57,6 +59,18 @@ struct TodoAddNew: View {
     
     var body: some View {
         HStack {
+            
+            Button(action: {
+
+                let authUI = FUIAuth.defaultAuthUI()
+                print("Trying to sign out user...")
+                try! authUI?.signOut()
+                
+            }, label: {
+                Text("Sign out")
+            })
+            
+            
             Button(action: {
                 let newItem = TodoItem(title: "Hej")
                 todos.addItem(todoItem: newItem)
