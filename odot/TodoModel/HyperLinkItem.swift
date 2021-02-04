@@ -8,7 +8,7 @@
 import Foundation
 
 struct HyperLinkItem: Codable {
-    var date: Date
+    var date: Date = Date()
     var title: String
     var description: String
     var hyperlink: String

@@ -17,11 +17,10 @@ let icImage = "photo"
 
 struct ContentView: View {
     
-    @EnvironmentObject private var todos : Todos
+    //@EnvironmentObject private var todos : Todos
    // @ObservedObject private var todos = Todos()
-    @StateObject var todoData = TodoDataModel()
-    let fbInstance = FirebaseUtil.self
-    
+    @ObservedObject var todoDataModel = TodoDataModel()
+  
     init() {
         UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
     }
@@ -32,36 +31,61 @@ struct ContentView: View {
             ZStack{
                 VStack {
                     List(){
-                        ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
+                        
+                        ForEach(todoDataModel.todoData){ item in
+                            
                             NavigationLink(
                                 destination:
-                                    TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)){
-                                
-                                TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
-                                
+                                    TodoSelectedItemView(todoItem: item)){
+//
+                                    TodoItemView(todo: item, imagesCount: 0, hyperLinksCount: 0, codeBlocksCount: 0)
+//
                             }
                             
                         }.onDelete(perform: { indexSet in
-                            todos.removeItem(indexSet: indexSet)
+                            //todos.removeItem(indexSet: indexSet)
                         })
+//                        ForEach(0 ..< todoDataModel.todoData.capacity, id: \.self){ i in
+//
+//
+//                            NavigationLink(
+//                                destination:
+//                                    TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)){
+//
+//                                TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
+//
+//                            }
+//
+//                        }.onDelete(perform: { indexSet in
+//                            todos.removeItem(indexSet: indexSet)
+//                        })
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(trailing: TodoAddNew(todos: todos))
+                    .navigationBarItems(trailing: TodoAddNew())
                     
                 }
             }
         }
         .onAppear(){
-            todoData.fetchData()
+            todoDataModel.fetchData()
+            printItems()
         }
             
+    }
+    
+    func printItems(){
+        for item in todoDataModel.todoData {
+            print("ITEM: \(item)")
+        }
     }
     
 }
 
 struct TodoAddNew: View {
     
-    var todos: Todos
+//    var todos: Todos
+    
+    let userColRef = FirebaseUtil.firebaseUtil.getUserCollection()
     
     var body: some View {
         HStack {
@@ -74,22 +98,27 @@ struct TodoAddNew: View {
                 
             }, label: {
                 Text("Sign out")
-            })
+            }).padding()
             
             
             Button(action: {
-                let newItem = TodoItemOriginal(title: "Hej")
-                todos.addItem(todoItem: newItem)
+                let newItem = TodoItem(title: "A new title", note: "A new note")
+                do {
+                    try userColRef.document().setData(from: newItem)
+                } catch let error {
+                    print("Error writing city to Firestore: \(error)")
+                }
+                
             }, label: {
                 Image(systemName: "plus")
-            })
+            }).padding()
         }
     }
 }
 
 struct TodoItemView: View {
     
-    var todo: TodoItemOriginal
+    var todo: TodoItem
     
     var imagesCount: Int
     var hyperLinksCount: Int
@@ -104,7 +133,7 @@ struct TodoItemView: View {
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text("\(todo.title)")
+                        Text("\(todo.title ?? "not title")")
                             .font(.system(size: 16))
                             .bold()
                         

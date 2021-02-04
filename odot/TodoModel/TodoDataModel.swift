@@ -18,14 +18,15 @@ class TodoDataModel: ObservableObject {
     
     func fetchData() {
         
-        db.collection("\(Auth.auth().currentUser?.uid ?? "value")").addSnapshotListener { [self] (querySnapshot, error) in
+        db.collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
         guard let documents = querySnapshot?.documents else {
           print("No documents")
           return
         }
         
+            print("Loading docs...")
         todoData = documents.compactMap { queryDocumentSnapshot in
-            return try? queryDocumentSnapshot.data(as: TodoItem.self)
+            return try! queryDocumentSnapshot.data(as: TodoItem.self)
         }
         
 //        todoData = documents.compactMap { querySnapshot -> TodoItem in

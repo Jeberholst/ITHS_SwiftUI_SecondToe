@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectedTodoItemEditView: View {
     
-    @State var todoItem: TodoItemOriginal
+    @State var todoItem: TodoItem
 
     var body: some View {
             
@@ -22,12 +22,12 @@ struct SelectedTodoItemEditView: View {
                     }
                     
                     Divider()
+                
+                    TextEditorCompoundView(
+                        iconSystemName: "rosette", viewTitle: "Title", text: $todoItem.title)
                     
                     TextEditorCompoundView(
-                        iconSystemName: "rosette", viewTitle: "Title",text: $todoItem.title)
-                    
-                    TextEditorCompoundView(
-                        iconSystemName: "doc.text", viewTitle: "Note", text:$todoItem.note)
+                        iconSystemName: "doc.text", viewTitle: "Note", text: $todoItem.note)
                  
                 }
                 Spacer()
@@ -44,7 +44,7 @@ struct SelectedTodoItemEditView: View {
 
 struct SelectedTodoItemEditView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectedTodoItemEditView(todoItem: TodoItemOriginal())
+        SelectedTodoItemEditView(todoItem: TodoItem())
     }
 }
 
@@ -52,7 +52,7 @@ private struct TextEditorCompoundView: View {
     
     var iconSystemName: String
     var viewTitle: String
-    var text: Binding<String>
+    var text: Binding<String?>
     
     var body: some View {
         
@@ -63,10 +63,12 @@ private struct TextEditorCompoundView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
                 
-                TextEditor(text: text)
+                TextEditor(text: Binding(text)!)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
                     //.border(Color.gray, width: 0.3)
+            
+               
                     
             }
         }

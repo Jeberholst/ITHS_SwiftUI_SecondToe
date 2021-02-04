@@ -7,16 +7,17 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
 struct TodoItem: Codable, Identifiable {
-    var id: Int
+    @DocumentID var id: String?
     
-    var title: String
-    var note: String
-    var date: Date
-    var hyperLinks: [HyperLinkItem]?
-    var codeBlocks: [CodeBlockItem]?
-    var images: [ImagesItem]?
+    var title: String?
+    var note: String?
+    var date: Date? = Date()
+    var hyperLinks: [HyperLinkItem]? = []
+    var codeBlocks: [CodeBlockItem]? = []
+    var images: [ImagesItem]? = []
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -26,6 +27,14 @@ struct TodoItem: Codable, Identifiable {
         case hyperLinks
         case codeBlocks
         case images
+    }
+    
+    func getFormattedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let date = dateFormatter.string(from: self.date ?? Date())
+        return date
+        
     }
 }
 

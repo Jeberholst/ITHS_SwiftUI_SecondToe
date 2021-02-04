@@ -15,10 +15,9 @@ import SwiftUI
 
 struct TodoSelectedItemView: View {
     
-    @EnvironmentObject var todos: Todos
+    //@EnvironmentObject var todos: Todos
    
-    @State var todoItem: TodoItemOriginal? = nil
-    @State var listItemIndex: Int
+    @State var todoItem: TodoItem? = nil
     @State private var imagesCount: Int = 0
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
@@ -38,10 +37,10 @@ struct TodoSelectedItemView: View {
                 
                 VStack(alignment: .leading) {
                         
-                    TitleTextView(dateFormatted: todoItem!.getFormattedDate())
+                    TitleTextView(dateFormatted: todoItem?.getFormattedDate() ?? "Date here")
                     
                     Group {
-                        GroupTitleImagesView(systemName: icCamera, mainIndex: listItemIndex, todoItem: todoItem!, presented: isPrestentingImagePicker)
+                        GroupTitleImagesView(systemName: icCamera, todoItem: todoItem!, presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach(0 ..< imagesCount, id: \.self) { i in
@@ -103,11 +102,11 @@ struct TodoSelectedItemView: View {
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
                 SelectedTodoItemEditView(todoItem: todoItem!)
             }))
-            .navigationBarTitle("\(todoItem!.title)")
+            .navigationBarTitle("\(todoItem!.title ?? "no title")")
             .onAppear(){
-                imagesCount = todoItem!.getImagesCount()
-                hyperLinksCount = todoItem!.getHyperLinksCount()
-                codeBlocksCount = todoItem!.getCodeBlocksCount()
+                //imagesCount = todoItem!.getImagesCount()
+                //hyperLinksCount = todoItem!.getHyperLinksCount()
+                //codeBlocksCount = todoItem!.getCodeBlocksCount()
             }
            
 
@@ -123,32 +122,32 @@ struct TodoSelectedItemView: View {
     
     private func addNewHyperLinkItem(){
         
-        let newItem = HyperLinkItemOriginal()
+       // let newItem = HyperLinkItem()
 //        todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
 //        todoItem!.addHyperLinkItem(item: newItem)
-        hyperLinksCount += 1
+       // hyperLinksCount += 1
         print("Click: Added hyperlink item...")
         
     }
     
     private func addNewCodeBlockItem(){
         
-        let newItem = CodeBlockItemOriginal(code: "//New item...")
+       // let newItem = CodeBlockItemOriginal(code: "//New item...")
 //        todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
 //        todoItem!.addCodeBlockItem(item: newItem)
-        codeBlocksCount += 1
+       // codeBlocksCount += 1
         print("Click: Added new code block item...")
     
     }
 
 }
 
-struct TodoSelectedItemView_Previews: PreviewProvider {
-    static var todo = Todos()
-    static var previews: some View {
-        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 2)
-    }
-}
+//struct TodoSelectedItemView_Previews: PreviewProvider {
+//    static var todo = Todos()
+//    static var previews: some View {
+//        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 2)
+//    }
+//}
 
 
 struct ImageRowButton: View {
@@ -303,8 +302,7 @@ struct CustomTextView: View {
 struct GroupTitleImagesView: View {
     
     var systemName: String
-    @State var mainIndex: Int
-    @State var todoItem: TodoItemOriginal
+    @State var todoItem: TodoItem
     @State var presented: Bool
     
     var body: some View {
@@ -328,7 +326,7 @@ struct GroupTitleImagesView: View {
                 presented.toggle()
             })
             .sheet(isPresented: $presented, content: {
-                ImagePickerPresenter(todoItem: todoItem, mainIndex: mainIndex)
+               // ImagePickerPresenter(todoItem: todoItem, mainIndex: mainIndex)
             })
 
 
