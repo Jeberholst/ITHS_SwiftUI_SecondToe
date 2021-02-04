@@ -17,7 +17,7 @@ struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todos: Todos
    
-    @State var todoItem: TodoItem? = nil
+    @State var todoItem: TodoItemOriginal? = nil
     @State var listItemIndex: Int
     @State private var imagesCount: Int = 0
     @State private var hyperLinksCount: Int = 0
@@ -46,7 +46,7 @@ struct TodoSelectedItemView: View {
                             HStack {
                                 ForEach(0 ..< imagesCount, id: \.self) { i in
                                 
-                                    ImageRowButton(mainIndex: listItemIndex, imageIndex: i, presented: isPresentingLargeImage)
+                                    //ImageRowButton(mainIndex: listItemIndex, imageIndex: i, presented: isPresentingLargeImage)
                                 }
                             }
                         }
@@ -64,7 +64,7 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
-                                    HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item],itemIndex: item, presented: isPresentingHyperLinkEdit)
+                                    //HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item],itemIndex: item, presented: isPresentingHyperLinkEdit)
                                 
                                 }
                                 .background(GrayBackGroundView())
@@ -84,7 +84,7 @@ struct TodoSelectedItemView: View {
                             VStack {
                                
                                 ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
-                                    CodeBlockView(codeBlockItem: todoItem!.codeBlocks[item], presented: isPresentingBlockEdit)
+                                    //CodeBlockView(codeBlockItem: todoItemOr!.codeBlocks[item], presented: isPresentingBlockEdit)
                                         
                                 }
                             }
@@ -123,9 +123,9 @@ struct TodoSelectedItemView: View {
     
     private func addNewHyperLinkItem(){
         
-        let newItem = HyperLinkItem()
-        todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
-        todoItem!.addHyperLinkItem(item: newItem)
+        let newItem = HyperLinkItemOriginal()
+//        todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
+//        todoItem!.addHyperLinkItem(item: newItem)
         hyperLinksCount += 1
         print("Click: Added hyperlink item...")
         
@@ -133,9 +133,9 @@ struct TodoSelectedItemView: View {
     
     private func addNewCodeBlockItem(){
         
-        let newItem = CodeBlockItem(code: "//New item...")
-        todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
-        todoItem!.addCodeBlockItem(item: newItem)
+        let newItem = CodeBlockItemOriginal(code: "//New item...")
+//        todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
+//        todoItem!.addCodeBlockItem(item: newItem)
         codeBlocksCount += 1
         print("Click: Added new code block item...")
     
@@ -178,7 +178,7 @@ struct ImageRowButton: View {
 
 struct CodeBlockView: View {
     
-    var codeBlockItem: CodeBlockItem
+    var codeBlockItem: CodeBlockItemOriginal
     @State var presented: Bool
      
     var body: some View {
@@ -304,7 +304,7 @@ struct GroupTitleImagesView: View {
     
     var systemName: String
     @State var mainIndex: Int
-    @State var todoItem: TodoItem
+    @State var todoItem: TodoItemOriginal
     @State var presented: Bool
     
     var body: some View {

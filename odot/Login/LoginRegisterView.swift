@@ -16,9 +16,8 @@ struct LoginRegisterView: View {
     @ObservedObject var todos = Todos()
     @State private var isLoggedIn: Bool = false
     @State private var isPresentingLoginUI = false
-    //@State private var listener: AuthStateDidChangeListenerHandle? = nil
+    @State private var listener: AuthStateDidChangeListenerHandle? = nil
 
-    
     var body: some View {
         
         VStack {
@@ -93,8 +92,7 @@ struct LoginRegisterView: View {
     }
 
     func addListener(){
-        //listener = 
-        Auth.auth().addStateDidChangeListener { (auth, user) in
+        listener = Auth.auth().addStateDidChangeListener { (auth, user) in
              if let user = user {
                 self.showUserInfo(user: user)
                 
@@ -104,8 +102,6 @@ struct LoginRegisterView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     isLoggedIn = true
                 }
-              
-               
                 print("isLoggedIn: \(isLoggedIn)")
              } else {
                  print("No user signed in")

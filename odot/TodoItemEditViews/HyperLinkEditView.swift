@@ -50,11 +50,11 @@ struct HyperLinkEditView: View {
 }
 
 
-struct HyperLinkEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        HyperLinkEditView(hyperLinkItem: HyperLinkItem())
-    }
-}
+//struct HyperLinkEditView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HyperLinkEditView(hyperLinkItem: HyperLinkItemOriginal())
+//    }
+//}
 
 private struct TextEditorCompoundView: View {
     

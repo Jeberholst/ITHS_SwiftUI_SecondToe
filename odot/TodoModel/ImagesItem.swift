@@ -7,7 +7,18 @@
 
 import Foundation
 
-struct ImagesItem: Identifiable {
+struct ImagesItem: Codable {
+
+    var date: Date
+    var storageReference: String
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case storageReference
+    }
+}
+
+struct ImagesItemOriginal: Identifiable {
     
     var id = UUID()
     

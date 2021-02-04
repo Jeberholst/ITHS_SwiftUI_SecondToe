@@ -6,8 +6,30 @@
 //
 
 import Foundation
+import Firebase
 
-struct TodoItem : Identifiable {
+struct TodoItem: Codable, Identifiable {
+    var id: Int
+    
+    var title: String
+    var note: String
+    var date: Date
+    var hyperLinks: [HyperLinkItem]?
+    var codeBlocks: [CodeBlockItem]?
+    var images: [ImagesItem]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case note
+        case date
+        case hyperLinks
+        case codeBlocks
+        case images
+    }
+}
+
+struct TodoItemOriginal : Identifiable {
     var id = UUID()
     
     var title: String = "Title"

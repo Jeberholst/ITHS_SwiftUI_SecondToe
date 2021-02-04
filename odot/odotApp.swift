@@ -18,8 +18,6 @@ struct odotApp: App {
         FirebaseApp.configure()
     }
     
-    
-    
     var body: some Scene {
         WindowGroup {
             LoginRegisterView()

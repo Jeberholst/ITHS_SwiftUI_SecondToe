@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseUI
+import FirebaseFirestoreSwift
 
 let icLink = "link"
 let icCode = "chevron.left.slash.chevron.right"
@@ -18,6 +19,8 @@ struct ContentView: View {
     
     @EnvironmentObject private var todos : Todos
    // @ObservedObject private var todos = Todos()
+    @StateObject var todoData = TodoDataModel()
+    let fbInstance = FirebaseUtil.self
     
     init() {
         UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
@@ -48,6 +51,9 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear(){
+            todoData.fetchData()
+        }
             
     }
     
@@ -72,7 +78,7 @@ struct TodoAddNew: View {
             
             
             Button(action: {
-                let newItem = TodoItem(title: "Hej")
+                let newItem = TodoItemOriginal(title: "Hej")
                 todos.addItem(todoItem: newItem)
             }, label: {
                 Image(systemName: "plus")
@@ -83,7 +89,7 @@ struct TodoAddNew: View {
 
 struct TodoItemView: View {
     
-    var todo: TodoItem
+    var todo: TodoItemOriginal
     
     var imagesCount: Int
     var hyperLinksCount: Int
@@ -106,7 +112,7 @@ struct TodoItemView: View {
                             .font(.system(size: 14))
                         
                         Spacer()
-                   
+   
                         //Text("\(todo.note)")
                           //  .font(.system(size: 14))
                     
@@ -141,7 +147,6 @@ struct TodoItemView: View {
                     }
                 }
                 
-             
             }
             
         }.padding() 

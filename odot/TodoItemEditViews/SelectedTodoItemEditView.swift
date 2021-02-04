@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectedTodoItemEditView: View {
     
-    @State var todoItem: TodoItem
+    @State var todoItem: TodoItemOriginal
 
     var body: some View {
             
@@ -44,7 +44,7 @@ struct SelectedTodoItemEditView: View {
 
 struct SelectedTodoItemEditView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectedTodoItemEditView(todoItem: TodoItem())
+        SelectedTodoItemEditView(todoItem: TodoItemOriginal())
     }
 }
 

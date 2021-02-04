@@ -7,7 +7,21 @@
 
 import Foundation
 
-struct HyperLinkItem: Identifiable {
+struct HyperLinkItem: Codable {
+    var date: Date
+    var title: String
+    var description: String
+    var hyperlink: String
+    
+    func getFormattedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: self.date)
+    }
+}
+
+struct HyperLinkItemOriginal: Identifiable {
     var id = UUID()
     
     var date: Date = Date()
