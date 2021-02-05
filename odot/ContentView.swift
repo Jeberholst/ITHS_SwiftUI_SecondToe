@@ -17,8 +17,6 @@ let icImage = "photo"
 
 struct ContentView: View {
     
-    //@EnvironmentObject private var todos : Todos
-   // @ObservedObject private var todos = Todos()
     @ObservedObject var todoDataModel = TodoDataModel()
   
     init() {
@@ -36,14 +34,14 @@ struct ContentView: View {
                             
                             NavigationLink(
                                 destination:
-                                    TodoSelectedItemView(todoItem: item)){
+                                    TodoSelectedItemView(todoItem: item, documentId: item.id)){
 
-                                    TodoItemView(todo: item, imagesCount: 0, hyperLinksCount: 0, codeBlocksCount: 0)
+                                TodoItemView(todo: item, imagesCount: item.getImagesCount(), hyperLinksCount: item.getHyperLinksCount(), codeBlocksCount: item.getCodeBlocksCount())
 
                             }
                             
                         }.onDelete(perform: { indexSet in
-                            //todos.removeItem(indexSet: indexSet)
+                            todoDataModel.todoData.remove(atOffsets: indexSet)
                         })
                  
                     }
@@ -55,22 +53,19 @@ struct ContentView: View {
         }
         .onAppear(){
             todoDataModel.fetchData()
-            printItems()
+            //printItems()
         }
             
     }
     
-    func printItems(){
-        for item in todoDataModel.todoData {
-            print("ITEM: \(item)")
-        }
+    private func removeDocument(){
+        //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
     }
+    
     
 }
 
 struct TodoAddNew: View {
-    
-//    var todos: Todos
     
     let userColRef = FirebaseUtil.firebaseUtil.getUserCollection()
     
@@ -89,7 +84,7 @@ struct TodoAddNew: View {
             
             
             Button(action: {
-                let newItem = TodoItem(title: "A new title", note: "A new note")
+                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date())
                 do {
                     try userColRef.document().setData(from: newItem)
                 } catch let error {
@@ -120,7 +115,7 @@ struct TodoItemView: View {
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text("\(todo.title ?? "not title")")
+                        Text("\(todo.title)")
                             .font(.system(size: 16))
                             .bold()
                         

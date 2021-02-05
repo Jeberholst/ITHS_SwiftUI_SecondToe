@@ -11,9 +11,11 @@ import FirebaseUI
 
 struct FirebaseUtil {
     static let firebaseUtil = FirebaseUtil()
-    
     var instance = Firestore.firestore()
     
+    private init(){}
+    
+  
     func getUserCollection() -> CollectionReference {
         let currUserUid = Auth.auth().currentUser!.uid
         print(currUserUid)
@@ -21,7 +23,7 @@ struct FirebaseUtil {
     }
     
     
-    private init(){}
+
     
     
 }

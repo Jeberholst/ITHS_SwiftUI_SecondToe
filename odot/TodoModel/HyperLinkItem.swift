@@ -21,21 +21,14 @@ struct HyperLinkItem: Codable, Hashable {
         case hyperlink
     }
     
-    func getFormattedDate() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .short
-        return dateFormatter.string(from: self.date)
+    func getAsDictionary() -> [String : Any] {
+       return [
+                "date": self.date,
+                "title": self.title,
+                "description": self.description,
+                "hyperlink": self.hyperlink
+            ]
     }
-}
-
-struct HyperLinkItemOriginal: Identifiable {
-    var id = UUID()
-    
-    var date: Date = Date()
-    var title: String = "Set title here"
-    var description: String = "Set description here"
-    var hyperlink: String = "https://setlinkhere.com"
     
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()

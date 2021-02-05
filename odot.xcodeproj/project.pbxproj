@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */; };
-		4313416A25C2EFA70065B537 /* CodeBlockItemOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416925C2EFA70065B537 /* CodeBlockItemOriginal.swift */; };
 		4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416F25C301920065B537 /* ImageLargeDisplayView.swift */; };
 		431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92D725C36C8600F08481 /* SheetEditBarView.swift */; };
 		431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */; };
 		431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */; };
 		4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356968D25CC86340072D09E /* FirebaseUtil.swift */; };
 		435696BD25CC96AB0072D09E /* TodoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435696BC25CC96AB0072D09E /* TodoDataModel.swift */; };
+		435696C225CD94550072D09E /* CodeBlockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435696C125CD94550072D09E /* CodeBlockItem.swift */; };
+		435696C725CD94980072D09E /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435696C625CD94980072D09E /* TodoItem.swift */; };
 		4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375066525C09E66006158E4 /* HyperLinkItem.swift */; };
 		4383055F25C8A93000DFFEF8 /* LoginRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */; };
 		4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383056925C973C200DFFEF8 /* ImagesItem.swift */; };
@@ -30,7 +31,6 @@
 		43B4CDC525BDC84A00C59D08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B4CDC425BDC84A00C59D08 /* Preview Assets.xcassets */; };
 		43B4CDD025BDC84A00C59D08 /* odotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDCF25BDC84A00C59D08 /* odotTests.swift */; };
 		43B4CDDB25BDC84A00C59D08 /* odotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDDA25BDC84A00C59D08 /* odotUITests.swift */; };
-		43B4CDEF25BDC8E000C59D08 /* TodoItemOriginal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDEE25BDC8E000C59D08 /* TodoItemOriginal.swift */; };
 		43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDF425BDCA5C00C59D08 /* Todos.swift */; };
 		43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */; };
 		55C9B818E0027A93721FFE5F /* Pods_odot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4248C0EC336CC628A3E096 /* Pods_odot.framework */; };
@@ -59,13 +59,14 @@
 		17034B2F9B7966846C095DBE /* Pods_odot_odotUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odot_odotUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9D61807D46A3FE8BE7D10B /* Pods-odot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.debug.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.debug.xcconfig"; sourceTree = "<group>"; };
 		4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayBackGroundView.swift; sourceTree = "<group>"; };
-		4313416925C2EFA70065B537 /* CodeBlockItemOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockItemOriginal.swift; sourceTree = "<group>"; };
 		4313416F25C301920065B537 /* ImageLargeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLargeDisplayView.swift; sourceTree = "<group>"; };
 		431A92D725C36C8600F08481 /* SheetEditBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetEditBarView.swift; sourceTree = "<group>"; };
 		431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTodoItemEditView.swift; sourceTree = "<group>"; };
 		431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerPresenter.swift; sourceTree = "<group>"; };
 		4356968D25CC86340072D09E /* FirebaseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtil.swift; sourceTree = "<group>"; };
 		435696BC25CC96AB0072D09E /* TodoDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDataModel.swift; sourceTree = "<group>"; };
+		435696C125CD94550072D09E /* CodeBlockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockItem.swift; sourceTree = "<group>"; };
+		435696C625CD94980072D09E /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		4375066525C09E66006158E4 /* HyperLinkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkItem.swift; sourceTree = "<group>"; };
 		4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRegisterView.swift; sourceTree = "<group>"; };
 		4383056925C973C200DFFEF8 /* ImagesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesItem.swift; sourceTree = "<group>"; };
@@ -87,7 +88,6 @@
 		43B4CDD625BDC84A00C59D08 /* odotUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = odotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B4CDDA25BDC84A00C59D08 /* odotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotUITests.swift; sourceTree = "<group>"; };
 		43B4CDDC25BDC84A00C59D08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43B4CDEE25BDC8E000C59D08 /* TodoItemOriginal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemOriginal.swift; sourceTree = "<group>"; };
 		43B4CDF425BDCA5C00C59D08 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSelectedItemView.swift; sourceTree = "<group>"; };
 		53925DE65C6ABAB7AC1A2086 /* Pods-odotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odotTests.release.xcconfig"; path = "Target Support Files/Pods-odotTests/Pods-odotTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -237,12 +237,12 @@
 		43B4CDF325BDCA0E00C59D08 /* TodoModel */ = {
 			isa = PBXGroup;
 			children = (
-				43B4CDEE25BDC8E000C59D08 /* TodoItemOriginal.swift */,
 				43B4CDF425BDCA5C00C59D08 /* Todos.swift */,
+				435696C625CD94980072D09E /* TodoItem.swift */,
 				4375066525C09E66006158E4 /* HyperLinkItem.swift */,
 				435696BC25CC96AB0072D09E /* TodoDataModel.swift */,
 				4383056925C973C200DFFEF8 /* ImagesItem.swift */,
-				4313416925C2EFA70065B537 /* CodeBlockItemOriginal.swift */,
+				435696C125CD94550072D09E /* CodeBlockItem.swift */,
 			);
 			path = TodoModel;
 			sourceTree = "<group>";
@@ -546,11 +546,12 @@
 			files = (
 				43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */,
 				43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */,
-				4313416A25C2EFA70065B537 /* CodeBlockItemOriginal.swift in Sources */,
 				43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */,
 				4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */,
 				43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */,
+				435696C725CD94980072D09E /* TodoItem.swift in Sources */,
 				4393035A25C6276100B6546F /* SheetSaveOnlyBarView.swift in Sources */,
+				435696C225CD94550072D09E /* CodeBlockItem.swift in Sources */,
 				435696BD25CC96AB0072D09E /* TodoDataModel.swift in Sources */,
 				431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */,
 				431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */,
@@ -560,7 +561,6 @@
 				43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */,
 				43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */,
 				431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */,
-				43B4CDEF25BDC8E000C59D08 /* TodoItemOriginal.swift in Sources */,
 				4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */,
 				43B4CDF525BDCA5C00C59D08 /* Todos.swift in Sources */,
 				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,

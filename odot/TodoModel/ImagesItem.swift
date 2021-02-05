@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ImagesItem: Codable {
+struct ImagesItem: Codable, Hashable {
 
     var date: Date
     var storageReference: String

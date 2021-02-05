@@ -9,9 +9,7 @@ import SwiftUI
 
 struct ImagePickerPresenter: View {
     
-    @EnvironmentObject var todos: Todos
-    @State var todoItem: TodoItemOriginal
-    @State var mainIndex: Int
+    @State var todoItem: TodoItem
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
     
@@ -86,13 +84,13 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIImagePickerController,
                                 context: UIViewControllerRepresentableContext<ImagePicker>) {
-        
+            
     }
     
 }
-
-struct CaptureImageView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImagePickerPresenter(todoItem: TodoItemOriginal(),mainIndex: 0)
-    }
-}
+//
+//struct CaptureImageView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ImagePickerPresenter(todoItem: TodoItem(),mainIndex: 0)
+//    }
+//}

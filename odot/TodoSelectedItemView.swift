@@ -19,7 +19,7 @@ struct TodoSelectedItemView: View {
     //@EnvironmentObject var todos: Todos
    
     @State var todoItem: TodoItem? = nil
-    @State private var docID: String? = nil
+    @State var documentId: String? = nil
     
     private let fbUtil = FirebaseUtil.firebaseUtil
     
@@ -46,10 +46,10 @@ struct TodoSelectedItemView: View {
                     Group {
                         GroupTitleImagesView(systemName: icCamera, todoItem: todoItem!, presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(0 ..< imagesCount, id: \.self) { i in
-                                
-                                    //ImageRowButton(mainIndex: listItemIndex, imageIndex: i, presented: isPresentingLargeImage)
+                            
+                            HStack(spacing: 15) {
+                                ForEach((todoItem?.images)!, id: \.self){ item in
+                                    ImageRowButton(presented: isPresentingLargeImage)
                                 }
                             }
                         }
@@ -66,18 +66,10 @@ struct TodoSelectedItemView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
-                                
                                 ForEach((todoItem?.hyperLinks)!, id: \.self){ item in
-                                                          
                                     HyperLinkView(hyperLinkItem: item, presented: isPresentingHyperLinkEdit)
-                                
-
                                 }
-                                                          
-                           }
-                           .background(GrayBackGroundView())
-                            
-
+                            }
                         }
                         
                     }
@@ -91,11 +83,10 @@ struct TodoSelectedItemView: View {
                         }
                         
                         ScrollView(.vertical, showsIndicators: true) {
-                            VStack {
-                               
-                                ForEach((0 ..< codeBlocksCount).reversed(), id: \.self){item in
-                                    //CodeBlockView(codeBlockItem: todoItemOr!.codeBlocks[item], presented: isPresentingBlockEdit)
-                                        
+                            VStack(spacing: 5) {
+                                
+                                ForEach((todoItem?.codeBlocks)!, id: \.self){ item in
+                                    CodeBlockView(codeBlockItem: item, presented: isPresentingBlockEdit)
                                 }
                             }
                         }
@@ -111,97 +102,104 @@ struct TodoSelectedItemView: View {
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: todoItem!)
+              //  if let todoItem = todoItem {
+                    //if let docID = docID {
+                SelectedTodoItemEditView(todoItem: todoItem!, docID: documentId!)
+                    //}
+               // }
             }))
-            .navigationBarTitle("\(todoItem!.title ?? "no title")")
-            .onAppear(){
-                imagesCount = todoItem!.getImagesCount()
-                hyperLinksCount = todoItem!.getHyperLinksCount()
-                codeBlocksCount = todoItem!.getCodeBlocksCount()
-                docID = todoItem?.id
-            }
+            .navigationBarTitle("\(todoItem!.title)")
+//            .onAppear(){
+//                docID = (todoItem?.documentId)!
+//            }
         
     }
    
     
     private func addNewImageItem(){
         //isPrestentingImagePicker.toggle()
-        let userColRef =  fbUtil.getUserCollection()
-        let newItem = TodoItem(title: "A new title", note: "A new note")
-        do {
-            try userColRef.document(docID!).setData(from: newItem)
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
-        }
-        
-    
         print("Click: Added new image...")
     }
     
     private func addNewHyperLinkItem(){
-        
-        if let docId = docID {
-            
-            let docRef = fbUtil.getUserCollection().document(docId)
-            let newItem = HyperLinkItem(title: "New title", description: "New description", hyperlink: "https://linkhere.change")
-            print(docId)
-            print("Doc-path: \(docRef.path)")
-    
-            var docData : [String: Any] {
-                  return [
-                    "date": newItem.date,
-                    "title" : newItem.title,
-                    "description" : newItem.description,
-                    "hyperlink" : newItem.hyperlink,
-                  ]
-            }
-            
-                docRef.updateData([
-                    "hyperLinks": FieldValue.arrayUnion([docData])
-                ]) { err in
-                    if let err = err {
-                        print("Error updating document: \(err)")
-                    } else {
-                        print("Document successfully updated")
-                    }
-                }
-                
-            
-            print("Click: Added hyperlink item...")
-        }
+        addNewItem(type: .HYPERLINK)
+        print("Click: Added hyperlink item...")
     }
     
     private func addNewCodeBlockItem(){
-        
-       // let newItem = CodeBlockItemOriginal(code: "//New item...")
-//        todos.listOfItems[listItemIndex].addCodeBlockItem(item: newItem)
-//        todoItem!.addCodeBlockItem(item: newItem)
-       // codeBlocksCount += 1
+        addNewItem(type: .CODEBLOCK)
         print("Click: Added new code block item...")
+    }
     
+    private func addNewItem(type: DOC_FIELDS_NEW){
+        
+        if let documentId = self.documentId {
+            
+            let docRef = fbUtil.getUserCollection().document(documentId)
+            
+            var deterDocumentField: String
+            var docData : [String: Any] = [:]
+            let FIELD_HYPERLINKS = "hyperLinks"
+            let FIELD_IMAGES = "images"
+            let FIELD_CODEBLOCKS = "codeBlocks"
+
+            switch(type){
+            case .IMAGE:
+                
+                deterDocumentField = FIELD_IMAGES
+                
+                
+            case .HYPERLINK:
+                
+                deterDocumentField = FIELD_HYPERLINKS
+                
+                docData = HyperLinkItem(
+                    title: "New title",
+                    description: "New description",
+                    hyperlink: "https://linkhere.change").getAsDictionary()
+            
+            case .CODEBLOCK:
+                
+                deterDocumentField = FIELD_CODEBLOCKS
+            
+                docData = CodeBlockItem(
+                    code: "New description").getAsDictionary()
+                
+            }
+            
+            print(deterDocumentField)
+            print(docData)
+            
+            docRef.updateData([
+                deterDocumentField: FieldValue.arrayUnion([docData])
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+            
+            
+        }
     }
 
 }
 
-//struct TodoSelectedItemView_Previews: PreviewProvider {
-//    static var todo = Todos()
-//    static var previews: some View {
-//        TodoSelectedItemView(todoItem: todo.listOfItems[3], listItemIndex: 2)
-//    }
-//}
+enum DOC_FIELDS_NEW {
+    case IMAGE, HYPERLINK, CODEBLOCK;
+}
 
 
 struct ImageRowButton: View {
     
-    var mainIndex: Int
-    var imageIndex: Int
     @State var presented: Bool
     
     var body: some View {
  
         Button(action: {
             presented.toggle()
-            print("MainIndex: \(mainIndex) ImageIndex: \(imageIndex)" )
+            
         }, label: {
             Image(systemName: icImage)
                 .padding()
@@ -210,7 +208,7 @@ struct ImageRowButton: View {
         .background(GrayBackGroundView())
         .sheet(isPresented: $presented) {
             ImageLargeDisplayView(
-                image: icImage, mainIndex: mainIndex, imageIndex: imageIndex)
+                image: icImage)
         }
 
     }
@@ -218,7 +216,7 @@ struct ImageRowButton: View {
 
 struct CodeBlockView: View {
     
-    var codeBlockItem: CodeBlockItemOriginal
+    var codeBlockItem: CodeBlockItem
     @State var presented: Bool
      
     var body: some View {
@@ -276,6 +274,7 @@ struct HyperLinkView: View {
         .sheet(isPresented: $presented, content: {
             HyperLinkEditView(hyperLinkItem: hyperLinkItem)
         })
+        .background(GrayBackGroundView())
         .animation(.linear)
 
     }
@@ -462,3 +461,9 @@ struct ItemCountView: View {
         }
     }
 }
+
+//struct TodoSelectedItemView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TodoSelectedItemView(todoItem: TodoItem())
+//    }
+//}

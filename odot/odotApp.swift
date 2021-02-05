@@ -20,11 +20,9 @@ struct odotApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginRegisterView()
-           // ContentView().environmentObject(todos)
+            LoginRegisterView()   // .environmentObject(todos)
         }
     }
-    
  
 }
 

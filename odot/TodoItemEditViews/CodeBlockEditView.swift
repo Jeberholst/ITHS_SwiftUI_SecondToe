@@ -16,7 +16,7 @@ let icTitle = "chevron.left.slash.chevron.right"
 
 struct CodeBlockEditView: View {
     
-    @State var codeBlockItem: CodeBlockItemOriginal
+    @State var codeBlockItem: CodeBlockItem
 
     var body: some View {
         
@@ -79,11 +79,11 @@ struct ClipBoardActionView: View {
 }
 
 
-struct CodeBlockEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        CodeBlockEditView(codeBlockItem: CodeBlockItemOriginal())
-    }
-}
+//struct CodeBlockEditView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CodeBlockEditView(codeBlockItem: CodeBlockItem())
+//    }
+//}
 
 
 struct TextEditorCodeCompoundView: View {

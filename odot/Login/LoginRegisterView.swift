@@ -13,7 +13,7 @@ import FirebaseUI
 
 struct LoginRegisterView: View {
   
-    @ObservedObject var todos = Todos()
+//    @ObservedObject var todos = Todos()
     @State private var isLoggedIn: Bool = false
     @State private var isPresentingLoginUI = false
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
@@ -26,7 +26,7 @@ struct LoginRegisterView: View {
                 SignInTestUI()
             }
             VStack{}.fullScreenCover(isPresented: $isLoggedIn) {
-                ContentView().environmentObject(todos)
+                ContentView()
             }
          
             Spacer()
