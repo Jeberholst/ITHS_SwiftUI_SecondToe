@@ -7,11 +7,19 @@
 
 import Foundation
 
-struct HyperLinkItem: Codable {
+struct HyperLinkItem: Codable, Hashable {
+  
     var date: Date = Date()
     var title: String
     var description: String
     var hyperlink: String
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case title
+        case description
+        case hyperlink
+    }
     
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()

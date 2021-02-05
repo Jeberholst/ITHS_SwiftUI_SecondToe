@@ -81,8 +81,8 @@ struct LoginRegisterView: View {
     }
     
     func showUserInfo(user: User){
-        print(user.email)
-        print(user.displayName)
+        print(user.email!)
+        print(user.displayName!)
     }
    
     func signOut(){

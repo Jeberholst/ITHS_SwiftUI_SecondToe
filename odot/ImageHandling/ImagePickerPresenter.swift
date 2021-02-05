@@ -37,7 +37,7 @@ struct ImagePickerPresenter: View {
     
     private func actionSave(){
         print("Saving image...")
-        let newItem = ImagesItemOriginal(storageReference: "somestorageref")
+       // let newItem = ImagesItemOriginal(storageReference: "somestorageref")
 //        todos.listOfItems[mainIndex].addImagesItem(item: newItem)
 //        todoItem.addImagesItem(item: newItem)
     }

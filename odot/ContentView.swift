@@ -37,28 +37,15 @@ struct ContentView: View {
                             NavigationLink(
                                 destination:
                                     TodoSelectedItemView(todoItem: item)){
-//
+
                                     TodoItemView(todo: item, imagesCount: 0, hyperLinksCount: 0, codeBlocksCount: 0)
-//
+
                             }
                             
                         }.onDelete(perform: { indexSet in
                             //todos.removeItem(indexSet: indexSet)
                         })
-//                        ForEach(0 ..< todoDataModel.todoData.capacity, id: \.self){ i in
-//
-//
-//                            NavigationLink(
-//                                destination:
-//                                    TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)){
-//
-//                                TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
-//
-//                            }
-//
-//                        }.onDelete(perform: { indexSet in
-//                            todos.removeItem(indexSet: indexSet)
-//                        })
+                 
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarItems(trailing: TodoAddNew())

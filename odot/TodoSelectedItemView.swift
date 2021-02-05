@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 //let icLink = "link"
 //let icCode = "chevron.left.slash.chevron.right"
@@ -18,6 +19,10 @@ struct TodoSelectedItemView: View {
     //@EnvironmentObject var todos: Todos
    
     @State var todoItem: TodoItem? = nil
+    @State private var docID: String? = nil
+    
+    private let fbUtil = FirebaseUtil.firebaseUtil
+    
     @State private var imagesCount: Int = 0
     @State private var hyperLinksCount: Int = 0
     @State private var codeBlocksCount: Int = 0
@@ -29,9 +34,8 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
     
+    
     var body: some View {
-        
-       // if let todoItem = todoItem {
         
             ZStack {
                 
@@ -61,14 +65,21 @@ struct TodoSelectedItemView: View {
                         }
                         
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach((0 ..< hyperLinksCount).reversed(), id: \.self){item in
-                                    //HyperLinkView(hyperLinkItem: todoItem!.hyperLinks[item],itemIndex: item, presented: isPresentingHyperLinkEdit)
+                            HStack(spacing: 15) {
                                 
+                                ForEach((todoItem?.hyperLinks)!, id: \.self){ item in
+                                                          
+                                    HyperLinkView(hyperLinkItem: item, presented: isPresentingHyperLinkEdit)
+                                
+
                                 }
-                                .background(GrayBackGroundView())
-                            }
+                                                          
+                           }
+                           .background(GrayBackGroundView())
+                            
+
                         }
+                        
                     }
                     .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
@@ -104,30 +115,60 @@ struct TodoSelectedItemView: View {
             }))
             .navigationBarTitle("\(todoItem!.title ?? "no title")")
             .onAppear(){
-                //imagesCount = todoItem!.getImagesCount()
-                //hyperLinksCount = todoItem!.getHyperLinksCount()
-                //codeBlocksCount = todoItem!.getCodeBlocksCount()
+                imagesCount = todoItem!.getImagesCount()
+                hyperLinksCount = todoItem!.getHyperLinksCount()
+                codeBlocksCount = todoItem!.getCodeBlocksCount()
+                docID = todoItem?.id
             }
-           
-
-       // }
         
     }
    
     
     private func addNewImageItem(){
         //isPrestentingImagePicker.toggle()
+        let userColRef =  fbUtil.getUserCollection()
+        let newItem = TodoItem(title: "A new title", note: "A new note")
+        do {
+            try userColRef.document(docID!).setData(from: newItem)
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+        
+    
         print("Click: Added new image...")
     }
     
     private func addNewHyperLinkItem(){
         
-       // let newItem = HyperLinkItem()
-//        todos.listOfItems[listItemIndex].addHyperLinkItem(item: newItem)
-//        todoItem!.addHyperLinkItem(item: newItem)
-       // hyperLinksCount += 1
-        print("Click: Added hyperlink item...")
-        
+        if let docId = docID {
+            
+            let docRef = fbUtil.getUserCollection().document(docId)
+            let newItem = HyperLinkItem(title: "New title", description: "New description", hyperlink: "https://linkhere.change")
+            print(docId)
+            print("Doc-path: \(docRef.path)")
+    
+            var docData : [String: Any] {
+                  return [
+                    "date": newItem.date,
+                    "title" : newItem.title,
+                    "description" : newItem.description,
+                    "hyperlink" : newItem.hyperlink,
+                  ]
+            }
+            
+                docRef.updateData([
+                    "hyperLinks": FieldValue.arrayUnion([docData])
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
+                
+            
+            print("Click: Added hyperlink item...")
+        }
     }
     
     private func addNewCodeBlockItem(){
@@ -215,7 +256,7 @@ struct CodeBlockView: View {
 struct HyperLinkView: View {
     
     var hyperLinkItem: HyperLinkItem
-    var itemIndex: Int
+   // var itemIndex: Int
     @State var presented: Bool
     
     var body: some View {

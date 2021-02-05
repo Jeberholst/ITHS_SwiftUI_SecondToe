@@ -34,7 +34,18 @@ struct TodoItem: Codable, Identifiable {
         dateFormatter.dateStyle = .medium
         let date = dateFormatter.string(from: self.date ?? Date())
         return date
-        
+    }
+    
+    func getImagesCount() -> Int {
+        return images?.count ?? 0
+    }
+    
+    func getHyperLinksCount() -> Int {
+        return hyperLinks?.count ?? 0
+    }
+    
+    func getCodeBlocksCount() -> Int {
+        return codeBlocks?.count ?? 0
     }
 }
 
