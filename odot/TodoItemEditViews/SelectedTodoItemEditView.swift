@@ -72,23 +72,13 @@ struct SelectedTodoItemEditView: View {
     }
     
     private func onActionSave(){
-        print("Saving too...")
-        print(docID)
-        let docRef = FirebaseUtil.firebaseUtil.getUserCollection().document(docID)
-    
-            let docData: [String : Any] = [
-                    "title": todoItem.title,
-                    "note" : todoItem.note,
-                 ]
-      
-            docRef.updateData(docData){ err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
+
+        let docData: [String : Any] = [
+                "title": todoItem.title,
+                "note" : todoItem.note,
+             ]
         
+        FirebaseUtil.firebaseUtil.updateDocument(documentID: docID, docData: docData)
         
     }
     

@@ -24,14 +24,11 @@ class TodoDataModel: ObservableObject {
           return
         }
         
-            print("Loading docs...")
+        print("Loading docs...")
         todoData = documents.compactMap { queryDocumentSnapshot in
             return try! queryDocumentSnapshot.data(as: TodoItem.self)
         }
         
-//        todoData = documents.compactMap { querySnapshot -> TodoItem in
-//          return try? querySnapshot.data(as: TodoItem.self)
-//        }
       }
     }
 }

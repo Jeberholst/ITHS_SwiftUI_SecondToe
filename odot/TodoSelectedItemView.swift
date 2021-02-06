@@ -7,12 +7,7 @@
 
 import SwiftUI
 import Firebase
-
-//let icLink = "link"
-//let icCode = "chevron.left.slash.chevron.right"
-//let icEdit = "square.and.pencil"
-//let icCamera = "camera"
-//let icImage = "photo"
+import Combine
 
 struct TodoSelectedItemView: View {
     
@@ -23,17 +18,11 @@ struct TodoSelectedItemView: View {
     
     private let fbUtil = FirebaseUtil.firebaseUtil
     
-    @State private var imagesCount: Int = 0
-    @State private var hyperLinksCount: Int = 0
-    @State private var codeBlocksCount: Int = 0
-    
-    @State private var isEmptyPresenter = false
     @State private var isPrestentingImagePicker = false
     @State private var isPrestentingTodoItemEdit = false
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-    
     
     var body: some View {
         
@@ -86,7 +75,7 @@ struct TodoSelectedItemView: View {
                             VStack(spacing: 5) {
                                 
                                 ForEach((todoItem?.codeBlocks)!, id: \.self){ item in
-                                    CodeBlockView(codeBlockItem: item, presented: isPresentingBlockEdit)
+                                    CodeBlockView(codeBlockItem: item, presented: isPresentingBlockEdit, documentID: documentId!)
                                 }
                             }
                         }
@@ -102,11 +91,7 @@ struct TodoSelectedItemView: View {
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-              //  if let todoItem = todoItem {
-                    //if let docID = docID {
                 SelectedTodoItemEditView(todoItem: todoItem!, docID: documentId!)
-                    //}
-               // }
             }))
             .navigationBarTitle("\(todoItem!.title)")
 //            .onAppear(){
@@ -115,40 +100,24 @@ struct TodoSelectedItemView: View {
         
     }
    
-    
-    private func addNewImageItem(){
-        //isPrestentingImagePicker.toggle()
-        print("Click: Added new image...")
-    }
-    
     private func addNewHyperLinkItem(){
         addNewItem(type: .HYPERLINK)
-        print("Click: Added hyperlink item...")
     }
     
     private func addNewCodeBlockItem(){
         addNewItem(type: .CODEBLOCK)
-        print("Click: Added new code block item...")
     }
     
     private func addNewItem(type: DOC_FIELDS_NEW){
         
         if let documentId = self.documentId {
             
-            let docRef = fbUtil.getUserCollection().document(documentId)
-            
             var deterDocumentField: String
             var docData : [String: Any] = [:]
             let FIELD_HYPERLINKS = "hyperLinks"
-            let FIELD_IMAGES = "images"
             let FIELD_CODEBLOCKS = "codeBlocks"
 
             switch(type){
-            case .IMAGE:
-                
-                deterDocumentField = FIELD_IMAGES
-                
-                
             case .HYPERLINK:
                 
                 deterDocumentField = FIELD_HYPERLINKS
@@ -157,6 +126,8 @@ struct TodoSelectedItemView: View {
                     title: "New title",
                     description: "New description",
                     hyperlink: "https://linkhere.change").getAsDictionary()
+                
+                print("Click: Added hyperlink item...")
             
             case .CODEBLOCK:
                 
@@ -165,21 +136,11 @@ struct TodoSelectedItemView: View {
                 docData = CodeBlockItem(
                     code: "New description").getAsDictionary()
                 
+                print("Click: Added new code block item...")
+                
             }
             
-            print(deterDocumentField)
-            print(docData)
-            
-            docRef.updateData([
-                deterDocumentField: FieldValue.arrayUnion([docData])
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
-            
+            fbUtil.updateDocumentFieldArrayUnion(documentID: documentId, documentField: deterDocumentField, docData: docData)
             
         }
     }
@@ -187,7 +148,7 @@ struct TodoSelectedItemView: View {
 }
 
 enum DOC_FIELDS_NEW {
-    case IMAGE, HYPERLINK, CODEBLOCK;
+    case HYPERLINK, CODEBLOCK;
 }
 
 
@@ -218,6 +179,7 @@ struct CodeBlockView: View {
     
     var codeBlockItem: CodeBlockItem
     @State var presented: Bool
+    var documentID: String
      
     var body: some View {
     
@@ -242,7 +204,7 @@ struct CodeBlockView: View {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            CodeBlockEditView(codeBlockItem: codeBlockItem)
+            CodeBlockEditView(codeBlockItem: codeBlockItem, docID: documentID)
         })
         .animation(.linear)
         Divider()
@@ -254,7 +216,6 @@ struct CodeBlockView: View {
 struct HyperLinkView: View {
     
     var hyperLinkItem: HyperLinkItem
-   // var itemIndex: Int
     @State var presented: Bool
     
     var body: some View {

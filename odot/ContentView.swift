@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseUI
 import FirebaseFirestoreSwift
+import Combine
 
 let icLink = "link"
 let icCode = "chevron.left.slash.chevron.right"
@@ -36,7 +37,7 @@ struct ContentView: View {
                                 destination:
                                     TodoSelectedItemView(todoItem: item, documentId: item.id)){
 
-                                TodoItemView(todo: item, imagesCount: item.getImagesCount(), hyperLinksCount: item.getHyperLinksCount(), codeBlocksCount: item.getCodeBlocksCount())
+                                TodoItemView(todoItem: item, imagesCount: item.getImagesCount(), hyperLinksCount: item.getHyperLinksCount(), codeBlocksCount: item.getCodeBlocksCount())
 
                             }
                             
@@ -100,11 +101,11 @@ struct TodoAddNew: View {
 
 struct TodoItemView: View {
     
-    var todo: TodoItem
+    @State var todoItem: TodoItem
     
-    var imagesCount: Int
-    var hyperLinksCount: Int
-    var codeBlocksCount: Int
+    @State var imagesCount: Int
+    @State var hyperLinksCount: Int
+    @State var codeBlocksCount: Int
     
     var body: some View {
         
@@ -115,11 +116,11 @@ struct TodoItemView: View {
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text("\(todo.title)")
+                        Text("\(todoItem.title)")
                             .font(.system(size: 16))
                             .bold()
                         
-                        Text("\(todo.getFormattedDate())")
+                        Text("\(todoItem.getFormattedDate())")
                             .font(.system(size: 14))
                         
                         Spacer()
