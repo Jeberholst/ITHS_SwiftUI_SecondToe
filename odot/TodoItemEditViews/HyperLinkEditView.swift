@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Combine
+
 
 struct HyperLinkEditView: View {
     
     @State var hyperLinkItem: HyperLinkItem
-
+    var docID: String
+    
     var body: some View {
             
             VStack(alignment: .leading) {
@@ -26,21 +29,39 @@ struct HyperLinkEditView: View {
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "rosette", viewTitle: "Title",text: $hyperLinkItem.title)
+                        iconSystemName: "rosette", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.title)
+                   
+                    Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "pin", viewTitle: "Description", text:$hyperLinkItem.description)
+                        iconSystemName: "pin", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.description)
+                    
+                    Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "link",  viewTitle: "Hyperlink",text: $hyperLinkItem.hyperlink)
+                        iconSystemName: "link", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.hyperlink)
+                    
+                    Spacer()
+                    
                 }
-                Spacer()
+              
             }
         
     }
     
     private func onActionSave(){
-        print("Save")
+        
+        let documentField = "hyperLinks"
+        
+        let docData: [String : Any] = [
+            "date" : Date(),
+            "title" : hyperLinkItem.title,
+            "description" : hyperLinkItem.description,
+            "hyperlink" : hyperLinkItem.hyperlink,
+         ]
+    
+         FirebaseUtil.firebaseUtil.updateDocumentFieldArrayUnion(documentID:
+            docID, documentField: documentField, docData: docData)
     }
     
     private func onActionDelete(){
@@ -49,18 +70,11 @@ struct HyperLinkEditView: View {
     
 }
 
-
-//struct HyperLinkEditView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HyperLinkEditView(hyperLinkItem: HyperLinkItemOriginal())
-//    }
-//}
-
 private struct TextEditorCompoundView: View {
     
     var iconSystemName: String
-    var viewTitle: String
-    var text: Binding<String>
+    @State var hyperLinkState: HyperLinkItem
+    @State var hyperLinkString: Binding<String>
     
     var body: some View {
         
@@ -71,15 +85,17 @@ private struct TextEditorCompoundView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
                 
-                TextEditor(text: text)
+                TextEditor(text: hyperLinkString)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
+                    .onReceive(Just(hyperLinkState)){ text in
+                        hyperLinkState = text
+                    }
                     //.border(Color.gray, width: 0.3)
                     
             }
         }
         .padding()
-        Divider()
         
       
     }

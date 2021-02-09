@@ -11,11 +11,9 @@ import Combine
 
 struct TodoSelectedItemView: View {
     
-    //@EnvironmentObject var todos: Todos
-   
-    @State var todoItem: TodoItem? = nil
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @State var index: Int
     @State var documentId: String? = nil
-    
     private let fbUtil = FirebaseUtil.firebaseUtil
     
     @State private var isPrestentingImagePicker = false
@@ -30,16 +28,17 @@ struct TodoSelectedItemView: View {
                 
                 VStack(alignment: .leading) {
                         
-                    TitleTextView(dateFormatted: todoItem?.getFormattedDate() ?? "Date here")
+                    TitleTextView(dateFormatted: self.todoDataModel.todoData[index].getFormattedDate()) // ?? "Date here")
                     
                     Group {
-                        GroupTitleImagesView(systemName: icCamera, todoItem: todoItem!, presented: isPrestentingImagePicker)
+                        GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[index], presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             
                             HStack(spacing: 15) {
-                                ForEach((todoItem?.images)!, id: \.self){ item in
+                                ForEach(self.todoDataModel.todoData[index].images!, id: \.self){ item in
                                     ImageRowButton(presented: isPresentingLargeImage)
                                 }
+                                
                             }
                         }
                     }
@@ -53,12 +52,16 @@ struct TodoSelectedItemView: View {
                             addNewHyperLinkItem()
                         }
                         
+                        
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
-                                ForEach((todoItem?.hyperLinks)!, id: \.self){ item in
-                                    HyperLinkView(hyperLinkItem: item, presented: isPresentingHyperLinkEdit)
+                                
+                                ForEach(self.todoDataModel.todoData[index].hyperLinks!.indices, id: \.self){ subIndex in
+                                    HyperLinkView(hyperLinkItem: self.todoDataModel.todoData[index].hyperLinks![subIndex], presented: isPresentingHyperLinkEdit, documentId: documentId!)
                                 }
+                                
                             }
+
                         }
                         
                     }
@@ -74,9 +77,10 @@ struct TodoSelectedItemView: View {
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 5) {
                                 
-                                ForEach((todoItem?.codeBlocks)!, id: \.self){ item in
-                                    CodeBlockView(codeBlockItem: item, presented: isPresentingBlockEdit, documentID: documentId!)
-                                }
+                                ForEach(self.todoDataModel.todoData[index].codeBlocks!.indices, id: \.self){ subIndex in
+                                    CodeBlockView(codeBlockItem: self.todoDataModel.todoData[index].codeBlocks![subIndex], presented: isPresentingBlockEdit, codeBlockIndex: subIndex, documentID: documentId!)
+                                }.animation(.easeIn)
+                                
                             }
                         }
         
@@ -91,12 +95,13 @@ struct TodoSelectedItemView: View {
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: todoItem!, docID: documentId!)
+                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[index], docID: documentId!)
             }))
-            .navigationBarTitle("\(todoItem!.title)")
-//            .onAppear(){
+            .navigationBarTitle("\(self.todoDataModel.todoData[index].title)")
+            .onAppear(){
+//                hyperLinksCount = (todoItem?.getHyperLinksCount())!
 //                docID = (todoItem?.documentId)!
-//            }
+            }
         
     }
    
@@ -177,8 +182,10 @@ struct ImageRowButton: View {
 
 struct CodeBlockView: View {
     
-    var codeBlockItem: CodeBlockItem
+    @State var codeBlockItem: CodeBlockItem
     @State var presented: Bool
+    @State var codeBlockIndex: Int
+
     var documentID: String
      
     var body: some View {
@@ -204,7 +211,7 @@ struct CodeBlockView: View {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            CodeBlockEditView(codeBlockItem: codeBlockItem, docID: documentID)
+            CodeBlockEditView(codeBlockItem: codeBlockItem, codeBlockIndex: codeBlockIndex, docID: documentID)
         })
         .animation(.linear)
         Divider()
@@ -215,8 +222,9 @@ struct CodeBlockView: View {
 
 struct HyperLinkView: View {
     
-    var hyperLinkItem: HyperLinkItem
+    @State var hyperLinkItem: HyperLinkItem
     @State var presented: Bool
+    var documentId: String
     
     var body: some View {
         
@@ -233,7 +241,7 @@ struct HyperLinkView: View {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            HyperLinkEditView(hyperLinkItem: hyperLinkItem)
+            HyperLinkEditView(hyperLinkItem: hyperLinkItem, docID: documentId)
         })
         .background(GrayBackGroundView())
         .animation(.linear)
@@ -329,9 +337,9 @@ struct GroupTitleImagesView: View {
             .sheet(isPresented: $presented, content: {
                // ImagePickerPresenter(todoItem: todoItem, mainIndex: mainIndex)
             })
+            
 
-
-        }
+        }.animation(.linear)
         
         
     }

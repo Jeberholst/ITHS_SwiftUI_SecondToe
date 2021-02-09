@@ -19,31 +19,53 @@ let icImage = "photo"
 struct ContentView: View {
     
     @ObservedObject var todoDataModel = TodoDataModel()
-  
+    @State private var listener: AuthStateDidChangeListenerHandle? = nil
+    
     init() {
         UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
+        
+        listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
+        guard let documents = querySnapshot?.documents else {
+          print("No documents")
+          return
+        }
+        
+        print("Loading docs...")
+            todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
+            return try! queryDocumentSnapshot.data(as: TodoItem.self)
+        }
+        
+      }
     }
     
     var body: some View {
         NavigationView {
-        
             ZStack{
                 VStack {
                     List(){
-                        
-                        ForEach(todoDataModel.todoData){ item in
-                            
+                        ForEach(todoDataModel.todoData.indices, id: \.self){ index in
                             NavigationLink(
                                 destination:
-                                    TodoSelectedItemView(todoItem: item, documentId: item.id)){
+                                    TodoSelectedItemView(index: index, documentId: self.todoDataModel.todoData[index].id).environmentObject(todoDataModel)){
+                                   // TodoSelectedItemView(todoItem: item, documentId: item.id)){
 
-                                TodoItemView(todoItem: item, imagesCount: item.getImagesCount(), hyperLinksCount: item.getHyperLinksCount(), codeBlocksCount: item.getCodeBlocksCount())
-
+                                TodoItemView(index: index).environmentObject(todoDataModel)
+                                        
                             }
                             
-                        }.onDelete(perform: { indexSet in
-                            todoDataModel.todoData.remove(atOffsets: indexSet)
-                        })
+                        }
+                        
+//                        ForEach(todoDataModel.todoData, id: \.self){ item in
+//                            NavigationLink(
+//                                destination:
+//                                    TodoSelectedItemView(todoItem: item, documentId: item.id).environmentObject(todoDataModel)){
+//                                   // TodoSelectedItemView(todoItem: item, documentId: item.id)){
+//
+//                                TodoItemView(todoItem: item)
+//
+//                            }
+//
+//                        }
                  
                     }
                     .navigationBarTitleDisplayMode(.inline)
@@ -52,10 +74,8 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear(){
-            todoDataModel.fetchData()
-            //printItems()
-        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: TodoAddNew())
             
     }
     
@@ -101,11 +121,8 @@ struct TodoAddNew: View {
 
 struct TodoItemView: View {
     
-    @State var todoItem: TodoItem
-    
-    @State var imagesCount: Int
-    @State var hyperLinksCount: Int
-    @State var codeBlocksCount: Int
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @State var index: Int
     
     var body: some View {
         
@@ -116,11 +133,11 @@ struct TodoItemView: View {
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text("\(todoItem.title)")
+                        Text("\(todoDataModel.todoData[index].title)")
                             .font(.system(size: 16))
                             .bold()
                         
-                        Text("\(todoItem.getFormattedDate())")
+                        Text("\(todoDataModel.todoData[index].getFormattedDate())")
                             .font(.system(size: 14))
                         
                         Spacer()
@@ -141,21 +158,21 @@ struct TodoItemView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 16, height: 16)
-                        Text("\(imagesCount)").font(.system(size: 14))
+                        Text("\(todoDataModel.todoData[index].getImagesCount())").font(.system(size: 14))
                     }
                     HStack {
                         Image(systemName: icLink)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 16, height: 16)
-                        Text("\(hyperLinksCount)").font(.system(size: 14))
+                        Text("\(todoDataModel.todoData[index].getHyperLinksCount())").font(.system(size: 14))
                     }
                     HStack {
                         Image(systemName: icCode)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 16, height: 16)
-                        Text("\(codeBlocksCount)").font(.system(size: 14))
+                        Text("\(todoDataModel.todoData[index].getCodeBlocksCount())").font(.system(size: 14))
                     }
                 }
                 

@@ -8,17 +8,23 @@
 import Foundation
 
 struct HyperLinkItem: Codable, Hashable {
-  
+    var index: Int? = 0
+    
     var date: Date = Date()
     var title: String
     var description: String
     var hyperlink: String
     
     enum CodingKeys: String, CodingKey {
+        case index
         case date
         case title
         case description
         case hyperlink
+    }
+    
+    private func setId(){
+        
     }
     
     func getAsDictionary() -> [String : Any] {

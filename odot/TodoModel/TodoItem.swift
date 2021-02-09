@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct TodoItem: Codable, Identifiable {
+struct TodoItem: Codable, Identifiable, Hashable {
     
     @DocumentID var id: String?
     
@@ -38,14 +38,15 @@ struct TodoItem: Codable, Identifiable {
     }
     
     func getImagesCount() -> Int {
-        return images?.capacity ?? 0
+        return images?.count ?? 0
     }
     
     func getHyperLinksCount() -> Int {
-        return hyperLinks?.capacity ?? 0
+        return hyperLinks?.count ?? 0
     }
     
     func getCodeBlocksCount() -> Int {
-        return codeBlocks?.capacity ?? 0
+        return codeBlocks?.count ?? 0
     }
+    
 }

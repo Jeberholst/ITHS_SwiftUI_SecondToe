@@ -12,8 +12,7 @@ import FirebaseUI
 
 
 struct LoginRegisterView: View {
-  
-//    @ObservedObject var todos = Todos()
+      
     @State private var isLoggedIn: Bool = false
     @State private var isPresentingLoginUI = false
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
@@ -74,7 +73,7 @@ struct LoginRegisterView: View {
         }
         .onAppear(){
             print("On appear")
-            addListener()
+            addAuthListener()
         }
       
         
@@ -91,7 +90,7 @@ struct LoginRegisterView: View {
         try! authUI?.signOut()
     }
 
-    func addListener(){
+    func addAuthListener(){
         listener = Auth.auth().addStateDidChangeListener { (auth, user) in
              if let user = user {
                 self.showUserInfo(user: user)
@@ -109,6 +108,7 @@ struct LoginRegisterView: View {
              }
          }
     }
+    
     
 }
 

@@ -13,14 +13,14 @@ import FirebaseUI
 struct odotApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-   
+
     init() {
         FirebaseApp.configure()
     }
     
     var body: some Scene {
         WindowGroup {
-            LoginRegisterView()   // .environmentObject(todos)
+            LoginRegisterView()
         }
     }
  
