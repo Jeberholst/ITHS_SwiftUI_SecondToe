@@ -46,10 +46,13 @@ struct ContentView: View {
                         ForEach(todoDataModel.todoData.indices, id: \.self){ index in
                             NavigationLink(
                                 destination:
-                                    TodoSelectedItemView(index: index, documentId: self.todoDataModel.todoData[index].id).environmentObject(todoDataModel)){
+                                    TodoSelectedItemView(
+                                        todoItemIndex: index,
+                                        documentId: self.todoDataModel.todoData[index].id).environmentObject(todoDataModel)){
                                    // TodoSelectedItemView(todoItem: item, documentId: item.id)){
-
-                                TodoItemView(index: index).environmentObject(todoDataModel)
+                                    
+                                    TodoItemView(index: index).environmentObject(todoDataModel)
+                                    
                                         
                             }
                             
@@ -82,6 +85,7 @@ struct ContentView: View {
     private func removeDocument(){
         //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
     }
+
     
     
 }

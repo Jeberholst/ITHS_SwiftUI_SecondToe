@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Firebase
 
 let icCopy = "doc.text"
 let icPaste = "doc.on.doc"
@@ -98,15 +99,30 @@ struct CodeBlockEditView: View {
     private func onActionSave(){
         let documentField = "codeBlocks"
         
-        
-        
-        let docData: [String : Any] = [
-            "date" : codeBlockItem.date,
-            "code" : codeBlockItem.code,
-         ]
     
-         FirebaseUtil.firebaseUtil.updateDocumentFieldArrayUnion(documentID:
-            docID, documentField: documentField, docData: docData)
+        
+        var allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
+       
+        if let allBlocks = allCodeBlocks {
+            for item in (0 ..< allBlocks.count) {
+                print("CURRENT BLOCKS: \(item)")
+            }
+            allCodeBlocks?[codeBlockIndex] = CodeBlockItem(date: codeBlockItem.date, code: codeBlockItem.code)
+
+        }
+        
+        print("NEW DICT: ")
+        print(todoDataModel.todoData[todoDataModel.mainIndex].getHyperLinksAsDictionary())
+
+        var docData: [[String: Any]] = [[:]]
+        
+        if let allCodeBlocks = allCodeBlocks {
+            docData = allCodeBlocks.map { item in
+                item.getAsDictionary()
+            }
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
     }
     
     private func onActionDelete(){

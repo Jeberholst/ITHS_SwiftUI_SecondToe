@@ -12,7 +12,7 @@ import Combine
 struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
-    @State var index: Int
+    @State var todoItemIndex: Int
     @State var documentId: String? = nil
     private let fbUtil = FirebaseUtil.firebaseUtil
     
@@ -28,14 +28,14 @@ struct TodoSelectedItemView: View {
                 
                 VStack(alignment: .leading) {
                         
-                    TitleTextView(dateFormatted: self.todoDataModel.todoData[index].getFormattedDate()) // ?? "Date here")
+                    TitleTextView(dateFormatted: self.todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
                     
                     Group {
-                        GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[index], presented: isPrestentingImagePicker)
+                        GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[todoItemIndex], presented: isPrestentingImagePicker)
                         ScrollView(.horizontal, showsIndicators: false) {
                             
                             HStack(spacing: 15) {
-                                ForEach(self.todoDataModel.todoData[index].images!, id: \.self){ item in
+                                ForEach(self.todoDataModel.todoData[todoItemIndex].images!, id: \.self){ item in
                                     ImageRowButton(presented: isPresentingLargeImage)
                                 }
                                 
@@ -56,8 +56,8 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 
-                                ForEach(self.todoDataModel.todoData[index].hyperLinks!.indices, id: \.self){ subIndex in
-                                    HyperLinkView(hyperLinkItem: self.todoDataModel.todoData[index].hyperLinks![subIndex], presented: isPresentingHyperLinkEdit, documentId: documentId!)
+                                ForEach(self.todoDataModel.todoData[todoItemIndex].hyperLinks!.indices, id: \.self){ subIndex in
+                                    HyperLinkView(hyperLinkItem: self.todoDataModel.todoData[todoItemIndex].hyperLinks![subIndex], presented: isPresentingHyperLinkEdit, documentId: documentId!)
                                 }
                                 
                             }
@@ -77,8 +77,8 @@ struct TodoSelectedItemView: View {
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 5) {
                                 
-                                ForEach(self.todoDataModel.todoData[index].codeBlocks!.indices, id: \.self){ subIndex in
-                                    CodeBlockView(codeBlockItem: self.todoDataModel.todoData[index].codeBlocks![subIndex], presented: isPresentingBlockEdit, codeBlockIndex: subIndex, documentID: documentId!)
+                                ForEach(self.todoDataModel.todoData[todoItemIndex].codeBlocks!.indices, id: \.self){ subIndex in
+                                    CodeBlockView(codeBlockItem: self.todoDataModel.todoData[todoItemIndex].codeBlocks![subIndex], presented: isPresentingBlockEdit, codeBlockIndex: subIndex, documentID: documentId!)
                                 }.animation(.easeIn)
                                 
                             }
@@ -95,16 +95,19 @@ struct TodoSelectedItemView: View {
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[index], docID: documentId!)
+                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[todoItemIndex], docID: documentId!)
             }))
-            .navigationBarTitle("\(self.todoDataModel.todoData[index].title)")
+            .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title)")
             .onAppear(){
-//                hyperLinksCount = (todoItem?.getHyperLinksCount())!
-//                docID = (todoItem?.documentId)!
+                setSelectedMainIndex(mainIndex: self.todoItemIndex)
             }
         
     }
-   
+
+    private func setSelectedMainIndex(mainIndex: Int){
+        todoDataModel.mainIndex = mainIndex
+    }
+        
     private func addNewHyperLinkItem(){
         addNewItem(type: .HYPERLINK)
     }
@@ -225,7 +228,7 @@ struct HyperLinkView: View {
     @State var hyperLinkItem: HyperLinkItem
     @State var presented: Bool
     var documentId: String
-    
+
     var body: some View {
         
         VStack(alignment: .center, spacing: 5) {

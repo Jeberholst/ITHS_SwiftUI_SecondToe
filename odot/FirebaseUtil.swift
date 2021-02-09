@@ -37,6 +37,37 @@ struct FirebaseUtil {
         
     }
     
+    func updateDocumentField(documentID: String, docData: [String : Any]){
+        
+        print("Updating \(documentID)...")
+        
+        let docRef = getUserCollection().document(documentID)
+  
+        docRef.updateData(docData){ err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        
+    }
+    
+    func updateDocumentWholeArray(documentID: String, documentField: String, docData: [[String : Any]]){
+
+        let docRef = getUserCollection().document(documentID)
+        
+        docRef.updateData([
+            documentField: docData
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
     func updateDocumentFieldArrayUnion(documentID: String, documentField: String, docData: [String : Any]){
         
         print("Updating \(documentID) Array...")

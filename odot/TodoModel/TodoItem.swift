@@ -49,4 +49,16 @@ struct TodoItem: Codable, Identifiable, Hashable {
         return codeBlocks?.count ?? 0
     }
     
+    func getHyperLinksAsDictionary() -> [[String : Any]] {
+        
+        if let hl = hyperLinks {
+            let map = hl.map { item in
+                item.getAsDictionary()
+            }
+            return map
+        }
+       
+        return [[:]]
+    }
+    
 }
