@@ -11,7 +11,9 @@ import Combine
 
 struct HyperLinkEditView: View {
     
+    @EnvironmentObject var todoDataModel: TodoDataModel
     @State var hyperLinkItem: HyperLinkItem
+    @State var hyperLinkIndex: Int
     var docID: String
     
     var body: some View {
@@ -50,18 +52,26 @@ struct HyperLinkEditView: View {
     }
     
     private func onActionSave(){
-        
         let documentField = "hyperLinks"
+        var allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+       
+        if let allLinks = allHyperLinks {
+            for item in (0 ..< allLinks.count) {
+                print("CURRENT HYPERLINKS: \(item)")
+            }
+            allHyperLinks?[hyperLinkIndex] = hyperLinkItem
+
+        }
+
+        var docData: [[String: Any]] = [[:]]
         
-        let docData: [String : Any] = [
-            "date" : Date(),
-            "title" : hyperLinkItem.title,
-            "description" : hyperLinkItem.description,
-            "hyperlink" : hyperLinkItem.hyperlink,
-         ]
+        if let allHyperLinks = allHyperLinks {
+            docData = allHyperLinks.map { item in
+                item.getAsDictionary()
+            }
+        }
     
-         FirebaseUtil.firebaseUtil.updateDocumentFieldArrayUnion(documentID:
-            docID, documentField: documentField, docData: docData)
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
     }
     
     private func onActionDelete(){

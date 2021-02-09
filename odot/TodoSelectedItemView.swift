@@ -35,6 +35,7 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             
                             HStack(spacing: 15) {
+                                
                                 ForEach(self.todoDataModel.todoData[todoItemIndex].images!, id: \.self){ item in
                                     ImageRowButton(presented: isPresentingLargeImage)
                                 }
@@ -57,7 +58,10 @@ struct TodoSelectedItemView: View {
                             HStack(spacing: 15) {
                                 
                                 ForEach(self.todoDataModel.todoData[todoItemIndex].hyperLinks!.indices, id: \.self){ subIndex in
-                                    HyperLinkView(hyperLinkItem: self.todoDataModel.todoData[todoItemIndex].hyperLinks![subIndex], presented: isPresentingHyperLinkEdit, documentId: documentId!)
+                                    HyperLinkView(presented: isPresentingHyperLinkEdit,
+                                                  documentId: documentId!,
+                                                  hyperLinkIndex: subIndex,
+                                                  mainIndex: todoItemIndex)
                                 }
                                 
                             }
@@ -78,7 +82,11 @@ struct TodoSelectedItemView: View {
                             VStack(spacing: 5) {
                                 
                                 ForEach(self.todoDataModel.todoData[todoItemIndex].codeBlocks!.indices, id: \.self){ subIndex in
-                                    CodeBlockView(codeBlockItem: self.todoDataModel.todoData[todoItemIndex].codeBlocks![subIndex], presented: isPresentingBlockEdit, codeBlockIndex: subIndex, documentID: documentId!)
+                                    CodeBlockView(presented: isPresentingBlockEdit,
+                                                  codeBlockIndex: subIndex,
+                                                  mainIndex: todoItemIndex,
+                                                  documentID: documentId!)
+                                    
                                 }.animation(.easeIn)
                                 
                             }
@@ -185,23 +193,26 @@ struct ImageRowButton: View {
 
 struct CodeBlockView: View {
     
-    @State var codeBlockItem: CodeBlockItem
+    @EnvironmentObject var todoDataModel: TodoDataModel
     @State var presented: Bool
     @State var codeBlockIndex: Int
+    @State var mainIndex: Int
 
     var documentID: String
      
     var body: some View {
     
+        let item = todoDataModel.todoData[mainIndex].codeBlocks![codeBlockIndex]
+        
         VStack{
         
             VStack(alignment: .trailing) {
                 
-                CustomTextView(text: "\(codeBlockItem.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+                CustomTextView(text: "\(item.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
       
                 Divider()
                 
-                Text("\(codeBlockItem.code)")
+                Text(item.code)
                     .font(.system(size: 12))
                     .foregroundColor(.black)
                     .padding()
@@ -214,7 +225,7 @@ struct CodeBlockView: View {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            CodeBlockEditView(codeBlockItem: codeBlockItem, codeBlockIndex: codeBlockIndex, docID: documentID)
+            CodeBlockEditView(codeBlockItem: todoDataModel.todoData[mainIndex].codeBlocks![codeBlockIndex], codeBlockIndex: codeBlockIndex, docID: documentID)
         })
         .animation(.linear)
         Divider()
@@ -225,18 +236,22 @@ struct CodeBlockView: View {
 
 struct HyperLinkView: View {
     
-    @State var hyperLinkItem: HyperLinkItem
+    @EnvironmentObject var todoDataModel: TodoDataModel
     @State var presented: Bool
     var documentId: String
+    @State var hyperLinkIndex: Int
+    @State var mainIndex: Int
 
     var body: some View {
         
+        let item = todoDataModel.todoData[mainIndex].hyperLinks![hyperLinkIndex]
+        
         VStack(alignment: .center, spacing: 5) {
-  
-            CustomTextView(text: "\(hyperLinkItem.title)", fontSize: 12, weight: .bold)
-            CustomTextView(text: "\(hyperLinkItem.getFormattedDate())", fontSize: 10)
-            CustomTextView(text: "\(hyperLinkItem.description)", fontSize: 12, weight: .none)
-            CustomTextView(text: "\(hyperLinkItem.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: hyperLinkItem.hyperlink)
+            
+            CustomTextView(text: "\(item.title)", fontSize: 12, weight: .bold)
+            CustomTextView(text: "\(item.getFormattedDate())", fontSize: 10)
+            CustomTextView(text: "\(item.description)", fontSize: 12, weight: .none)
+            CustomTextView(text: "\(item.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: item.hyperlink)
             
         }
         .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
@@ -244,7 +259,7 @@ struct HyperLinkView: View {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            HyperLinkEditView(hyperLinkItem: hyperLinkItem, docID: documentId)
+            HyperLinkEditView(hyperLinkItem: item,hyperLinkIndex: hyperLinkIndex, docID: documentId)
         })
         .background(GrayBackGroundView())
         .animation(.linear)

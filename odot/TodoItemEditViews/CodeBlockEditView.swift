@@ -98,9 +98,6 @@ struct CodeBlockEditView: View {
     
     private func onActionSave(){
         let documentField = "codeBlocks"
-        
-    
-        
         var allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
        
         if let allBlocks = allCodeBlocks {
