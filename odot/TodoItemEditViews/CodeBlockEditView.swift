@@ -15,6 +15,8 @@ let icPasteLastLine = "arrow.down.doc"
 let icShare = "square.and.arrow.up"
 let icTitle = "chevron.left.slash.chevron.right"
 
+let documentField = "codeBlocks"
+
 struct CodeBlockEditView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
@@ -97,33 +99,38 @@ struct CodeBlockEditView: View {
     }
     
     private func onActionSave(){
-        let documentField = "codeBlocks"
-        var allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
+      
+        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
        
-        if let allBlocks = allCodeBlocks {
-            for item in (0 ..< allBlocks.count) {
-                print("CURRENT BLOCKS: \(item)")
-            }
-            allCodeBlocks?[codeBlockIndex] = CodeBlockItem(date: codeBlockItem.date, code: codeBlockItem.code)
+//        if let allCodeBlocks = allCodeBlocks {
+            
+            var newCodeBlock = allCodeBlocks
+            newCodeBlock[codeBlockIndex] = CodeBlockItem(date: codeBlockItem.date, code: codeBlockItem.code)
 
-        }
-        
-        print("NEW DICT: ")
-        print(todoDataModel.todoData[todoDataModel.mainIndex].getHyperLinksAsDictionary())
-
-        var docData: [[String: Any]] = [[:]]
-        
-        if let allCodeBlocks = allCodeBlocks {
-            docData = allCodeBlocks.map { item in
+            let docData: [[String: Any]] = newCodeBlock.map { item in
                 item.getAsDictionary()
             }
-        }
-    
-        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+        
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+//        }
+  
     }
     
     private func onActionDelete(){
-        print("Delete")
+        
+        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
+       
+//        if let allCodeBlocks = allCodeBlocks {
+            
+            var newCodeBlock = allCodeBlocks
+            newCodeBlock.remove(at: codeBlockIndex)
+
+            let docData: [[String: Any]] = newCodeBlock.map { item in
+                item.getAsDictionary()
+            }
+        
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+//        }
     }
 }
 

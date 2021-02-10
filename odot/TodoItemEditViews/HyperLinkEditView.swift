@@ -55,21 +55,21 @@ struct HyperLinkEditView: View {
         let documentField = "hyperLinks"
         var allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
        
-        if let allLinks = allHyperLinks {
-            for item in (0 ..< allLinks.count) {
-                print("CURRENT HYPERLINKS: \(item)")
-            }
-            allHyperLinks?[hyperLinkIndex] = hyperLinkItem
+//        if let allLinks = allHyperLinks {
+//            for item in (0 ..< allLinks.count) {
+//                print("CURRENT HYPERLINKS: \(item)")
+//            }
+            allHyperLinks[hyperLinkIndex] = hyperLinkItem
 
-        }
+//        }
 
         var docData: [[String: Any]] = [[:]]
         
-        if let allHyperLinks = allHyperLinks {
+//        if let allHyperLinks = allHyperLinks {
             docData = allHyperLinks.map { item in
                 item.getAsDictionary()
             }
-        }
+//        }
     
         FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
     }

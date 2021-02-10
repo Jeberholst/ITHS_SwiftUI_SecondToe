@@ -8,7 +8,7 @@
 import Foundation
 
 struct CodeBlockItem: Codable, Hashable {
-    
+   
     var date: Date = Date()
     var code: String
     
@@ -30,4 +30,5 @@ struct CodeBlockItem: Codable, Hashable {
         dateFormatter.dateStyle = .medium
         return dateFormatter.string(from: self.date)
     }
+    
 }

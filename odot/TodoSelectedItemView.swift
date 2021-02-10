@@ -12,8 +12,10 @@ import Combine
 struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
+//    @State var codeBlockData : [CodeBlockItem]
     @State var todoItemIndex: Int
     @State var documentId: String? = nil
+    
     private let fbUtil = FirebaseUtil.firebaseUtil
     
     @State private var isPrestentingImagePicker = false
@@ -21,7 +23,7 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-    
+  
     var body: some View {
         
             ZStack {
@@ -36,7 +38,7 @@ struct TodoSelectedItemView: View {
                             
                             HStack(spacing: 15) {
                                 
-                                ForEach(self.todoDataModel.todoData[todoItemIndex].images!, id: \.self){ item in
+                                ForEach(self.todoDataModel.todoData[todoItemIndex].images, id: \.self){ item in
                                     ImageRowButton(presented: isPresentingLargeImage)
                                 }
                                 
@@ -57,12 +59,13 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 
-                                ForEach(self.todoDataModel.todoData[todoItemIndex].hyperLinks!.indices, id: \.self){ subIndex in
-                                    HyperLinkView(presented: isPresentingHyperLinkEdit,
-                                                  documentId: documentId!,
-                                                  hyperLinkIndex: subIndex,
-                                                  mainIndex: todoItemIndex)
-                                }
+                                ForEach(self.todoDataModel.todoData[todoItemIndex].hyperLinks.indices, id: \.self){ subIndex in
+                                        
+                                        HyperLinkView(presented: isPresentingHyperLinkEdit,
+                                                      hyperLinkIndex: subIndex,
+                                                      documentId: documentId!)
+                                            .environmentObject(todoDataModel)
+                                    }
                                 
                             }
 
@@ -77,18 +80,20 @@ struct TodoSelectedItemView: View {
                         GroupTitleTextCodeBlockView(systemName: icCode){
                             addNewCodeBlockItem()
                         }
-                        
+                            
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 5) {
-                                
-                                ForEach(self.todoDataModel.todoData[todoItemIndex].codeBlocks!.indices, id: \.self){ subIndex in
+                   
+                                ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
+                                //ForEach($codeBlockData.indices, id: \.self){ subIndex in
+                                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
                                     CodeBlockView(presented: isPresentingBlockEdit,
                                                   codeBlockIndex: subIndex,
-                                                  mainIndex: todoItemIndex,
                                                   documentID: documentId!)
-                                    
-                                }.animation(.easeIn)
-                                
+                                        .environmentObject(todoDataModel)
+                                        
+                                    }
+                                    .animation(.easeIn)
                             }
                         }
         
@@ -107,6 +112,7 @@ struct TodoSelectedItemView: View {
             }))
             .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title)")
             .onAppear(){
+//                codeBlockItems = todoDataModel.todoData[todoItemIndex].codeBlocks
                 setSelectedMainIndex(mainIndex: self.todoItemIndex)
             }
         
@@ -196,70 +202,78 @@ struct CodeBlockView: View {
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var presented: Bool
     @State var codeBlockIndex: Int
-    @State var mainIndex: Int
-
     var documentID: String
+    
+    @State private var toggleStates = ToggleStates()
+    @State private var topExpanded: Bool = true
      
     var body: some View {
     
-        let item = todoDataModel.todoData[mainIndex].codeBlocks![codeBlockIndex]
-        
-        VStack{
-        
-            VStack(alignment: .trailing) {
-                
-                CustomTextView(text: "\(item.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
-      
-                Divider()
-                
-                Text(item.code)
-                    .font(.system(size: 12))
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
-            }
+        let item = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
             
-        }
-        .background(GrayBackGroundView())
-        .onTapGesture(count: 1, perform: {
-            presented.toggle()
-        })
-        .sheet(isPresented: $presented, content: {
-            CodeBlockEditView(codeBlockItem: todoDataModel.todoData[mainIndex].codeBlocks![codeBlockIndex], codeBlockIndex: codeBlockIndex, docID: documentID)
-        })
-        .animation(.linear)
-        Divider()
+            VStack{
+            
+                VStack(alignment: .trailing) {
+                    
+                    CustomTextView(text: "\(item.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+          
+                    Divider()
+                    
+                    Text(item.code)
+                        .font(.system(size: 12))
+                        .foregroundColor(.black)
+                        .padding()
+                        .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+                }
+                
+            }
+            .background(GrayBackGroundView())
+            .onTapGesture(count: 1, perform: {
+                presented.toggle()
+            })
+            .sheet(isPresented: $presented, content: {
+                CodeBlockEditView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex], codeBlockIndex: codeBlockIndex, docID: documentID)
+            })
+            .animation(.linear)
+            Divider()
         
     }
     
 }
 
+struct ToggleStates {
+    var oneIsOn: Bool = false
+    var twoIsOn: Bool = true
+}
+
+
 struct HyperLinkView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var presented: Bool
-    var documentId: String
     @State var hyperLinkIndex: Int
-    @State var mainIndex: Int
+    var documentId: String
 
     var body: some View {
         
-        let item = todoDataModel.todoData[mainIndex].hyperLinks![hyperLinkIndex]
+        let item = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
         
         VStack(alignment: .center, spacing: 5) {
             
-            CustomTextView(text: "\(item.title)", fontSize: 12, weight: .bold)
-            CustomTextView(text: "\(item.getFormattedDate())", fontSize: 10)
-            CustomTextView(text: "\(item.description)", fontSize: 12, weight: .none)
-            CustomTextView(text: "\(item.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: item.hyperlink)
-            
+            VStack {
+                CustomTextView(text: "\(item.title)", fontSize: 12, weight: .bold)
+                CustomTextView(text: "\(item.getFormattedDate())", fontSize: 10)
+                CustomTextView(text: "\(item.description)", fontSize: 12, weight: .none)
+                CustomTextView(text: "\(item.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: item.hyperlink)
+            }
+   
         }
         .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
         .onTapGesture(count: 1, perform: {
             presented.toggle()
         })
         .sheet(isPresented: $presented, content: {
-            HyperLinkEditView(hyperLinkItem: item,hyperLinkIndex: hyperLinkIndex, docID: documentId)
+            HyperLinkEditView(hyperLinkItem: item, hyperLinkIndex: hyperLinkIndex, docID: documentId)
         })
         .background(GrayBackGroundView())
         .animation(.linear)

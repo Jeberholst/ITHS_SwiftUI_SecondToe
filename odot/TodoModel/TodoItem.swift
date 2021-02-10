@@ -9,16 +9,18 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct TodoItem: Codable, Identifiable, Hashable {
+struct TodoItem: Codable, Identifiable, Hashable, RandomAccessCollection {
+    typealias Index = Int
+    typealias Element = (index: Index, element: CodeBlockItem)
     
     @DocumentID var id: String?
     
     var title: String
     var note: String
     var date: Date
-    var hyperLinks: [HyperLinkItem]? = []
-    var codeBlocks: [CodeBlockItem]? = []
-    var images: [ImagesItem]? = []
+    var hyperLinks: [HyperLinkItem] = []
+    var codeBlocks: [CodeBlockItem] = []
+    var images: [ImagesItem] = []
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -38,27 +40,47 @@ struct TodoItem: Codable, Identifiable, Hashable {
     }
     
     func getImagesCount() -> Int {
-        return images?.count ?? 0
+        return images.count
     }
     
     func getHyperLinksCount() -> Int {
-        return hyperLinks?.count ?? 0
+        return hyperLinks.count
     }
     
     func getCodeBlocksCount() -> Int {
-        return codeBlocks?.count ?? 0
+        return codeBlocks.count
     }
     
     func getHyperLinksAsDictionary() -> [[String : Any]] {
         
-        if let hl = hyperLinks {
-            let map = hl.map { item in
+        if hyperLinks.count != 0 {
+            let map = hyperLinks.map { item in
                 item.getAsDictionary()
             }
             return map
         }
        
         return [[:]]
+    }
+    
+    var startIndex: Index { codeBlocks.startIndex }
+
+    var endIndex: Index { codeBlocks.endIndex }
+
+    func index(after i: Index) -> Index {
+        codeBlocks.index(after: i)
+    }
+
+    func index(before i: Index) -> Index {
+        codeBlocks.index(before: i)
+    }
+
+    func index(_ i: Index, offsetBy distance: Int) -> Index {
+        codeBlocks.index(i, offsetBy: distance)
+    }
+
+    subscript(position: Index) -> Element {
+        (index: position, element: codeBlocks[position])
     }
     
 }

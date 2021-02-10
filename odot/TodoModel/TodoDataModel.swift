@@ -10,29 +10,32 @@ import FirebaseUI
 import Firebase
 import FirebaseFirestoreSwift
 
-class TodoDataModel: ObservableObject {
-
-    @Published var todoData = [TodoItem]()
-    @Published var mainIndex = 0
+class TodoDataModel: ObservableObject, RandomAccessCollection {
+    typealias Index = Int
+    typealias Element = (index: Index, element: TodoItem)
     
+   
+      @Published var todoData = [TodoItem]()
+      @Published var mainIndex = 0
 
-//    init() {
-//        fetchData()
-//    }
-//    
-//    func fetchData() {
-//        
-//        Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
-//        guard let documents = querySnapshot?.documents else {
-//          print("No documents")
-//          return
-//        }
-//        
-//        print("Loading docs...")
-//        todoData = documents.compactMap { queryDocumentSnapshot in
-//            return try! queryDocumentSnapshot.data(as: TodoItem.self)
-//        }
-//        
-//      }
-//    }
+      var startIndex: Index { todoData.startIndex }
+
+      var endIndex: Index { todoData.endIndex }
+
+      func index(after i: Index) -> Index {
+            todoData.index(after: i)
+      }
+
+      func index(before i: Index) -> Index {
+            todoData.index(before: i)
+      }
+
+      func index(_ i: Index, offsetBy distance: Int) -> Index {
+            todoData.index(i, offsetBy: distance)
+      }
+
+      subscript(position: Index) -> Element {
+          (index: position, element: todoData[position])
+      }
+ 
 }

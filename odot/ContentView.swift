@@ -15,6 +15,7 @@ let icCode = "chevron.left.slash.chevron.right"
 let icEdit = "square.and.pencil"
 let icCamera = "camera"
 let icImage = "photo"
+let icTrash = "trash"
 
 struct ContentView: View {
     
@@ -31,10 +32,10 @@ struct ContentView: View {
         }
         
         print("Loading docs...")
-            todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
+        todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
             return try! queryDocumentSnapshot.data(as: TodoItem.self)
         }
-        
+            
       }
     }
     
