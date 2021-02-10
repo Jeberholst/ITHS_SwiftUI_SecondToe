@@ -12,19 +12,21 @@ import Combine
 struct HyperLinkEditView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
-    @State var hyperLinkItem: HyperLinkItem
-    @State var hyperLinkIndex: Int
+    @Binding var hyperLinkIndex: Int
     var docID: String
     
     let documentField = "hyperLinks"
     
+    @State private var newHyperLinkItem = HyperLinkItem(title: "", description: "", hyperlink: "")
+    
     var body: some View {
             
+        ZStack(alignment: .top) {
             VStack(alignment: .leading) {
                 
                 VStack {
                     
-                    SheetEditBarView(title: "\(hyperLinkItem.getFormattedDate())"){
+                    SheetEditBarView(title: "\(newHyperLinkItem.getFormattedDate())"){
                         onActionSave()
                     } actionDelete: {
                         onActionDelete()
@@ -33,17 +35,17 @@ struct HyperLinkEditView: View {
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "rosette", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.title)
+                        iconSystemName: "rosette", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.title)
                    
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "pin", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.description)
+                        iconSystemName: "pin", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.description)
                     
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "link", hyperLinkState: hyperLinkItem, hyperLinkString: $hyperLinkItem.hyperlink)
+                        iconSystemName: "link", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.hyperlink)
                     
                     Spacer()
                     
@@ -51,19 +53,20 @@ struct HyperLinkEditView: View {
               
             }
             .onAppear(){
+                newHyperLinkItem = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
                 print("HyperLinkIndex: \(hyperLinkIndex)")
             }
-        
+        }
     }
     
     private func onActionSave(){
       
-        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+        let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
        
        // if let allCodeBlocks = allCodeBlocks {
             
-            var newCodeBlock = allCodeBlocks
-        newCodeBlock[hyperLinkIndex] = HyperLinkItem(date: hyperLinkItem.date, title: hyperLinkItem.title, description: hyperLinkItem.title, hyperlink: hyperLinkItem.hyperlink)
+            var newCodeBlock = allHyperLinks
+            newCodeBlock[hyperLinkIndex] = newHyperLinkItem
 
             let docData: [[String: Any]] = newCodeBlock.map { item in
                 item.getAsDictionary()
@@ -112,6 +115,7 @@ private struct TextEditorCompoundView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
                     .onReceive(Just(hyperLinkState)){ text in
+                        print(text)
                         hyperLinkState = text
                     }
                     //.border(Color.gray, width: 0.3)

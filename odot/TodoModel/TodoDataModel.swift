@@ -14,7 +14,6 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
     typealias Index = Int
     typealias Element = (index: Index, element: TodoItem)
     
-   
       @Published var todoData = [TodoItem]()
       @Published var mainIndex = 0
 
