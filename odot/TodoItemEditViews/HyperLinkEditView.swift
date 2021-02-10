@@ -55,13 +55,15 @@ struct HyperLinkEditView: View {
         let documentField = "hyperLinks"
         var allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
        
-//        if let allLinks = allHyperLinks {
+     //   if let allLinks = allHyperLinks {
 //            for item in (0 ..< allLinks.count) {
 //                print("CURRENT HYPERLINKS: \(item)")
 //            }
-            allHyperLinks[hyperLinkIndex] = hyperLinkItem
+           // allHyperLinks?[hyperLinkIndex] = hyperLinkItem
+        allHyperLinks[hyperLinkIndex] = hyperLinkItem
 
-//        }
+
+      //  }
 
         var docData: [[String: Any]] = [[:]]
         

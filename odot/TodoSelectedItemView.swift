@@ -14,7 +14,7 @@ struct TodoSelectedItemView: View {
     @EnvironmentObject var todoDataModel: TodoDataModel
 //    @State var codeBlockData : [CodeBlockItem]
     @State var todoItemIndex: Int
-    @State var documentId: String? = nil
+    @State var documentId: String
     
     private let fbUtil = FirebaseUtil.firebaseUtil
     
@@ -59,14 +59,14 @@ struct TodoSelectedItemView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 
-                                ForEach(self.todoDataModel.todoData[todoItemIndex].hyperLinks.indices, id: \.self){ subIndex in
-                                        
-                                        HyperLinkView(presented: isPresentingHyperLinkEdit,
-                                                      hyperLinkIndex: subIndex,
-                                                      documentId: documentId!)
-                                            .environmentObject(todoDataModel)
-                                    }
-                                
+//                                ForEach(self.todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks.indices, id: \.self){ subIndex in
+//
+//                                        HyperLinkView(presented: isPresentingHyperLinkEdit,
+//                                                      hyperLinkIndex: subIndex,
+//                                                      documentId: documentId)
+//                                            .environmentObject(todoDataModel)
+//                                    }
+//
                             }
 
                         }
@@ -82,19 +82,22 @@ struct TodoSelectedItemView: View {
                         }
                             
                         ScrollView(.vertical, showsIndicators: true) {
-                            VStack(spacing: 5) {
-                   
-                                ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
-                                //ForEach($codeBlockData.indices, id: \.self){ subIndex in
-                                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
-                                    CodeBlockView(presented: isPresentingBlockEdit,
-                                                  codeBlockIndex: subIndex,
-                                                  documentID: documentId!)
-                                        .environmentObject(todoDataModel)
-                                        
-                                    }
-                                    .animation(.easeIn)
-                            }
+                            createCodeViews(documentID: documentId)
+                            //VStack(spacing: 5) {
+
+                                //createCodeViews(documentID: documentId)
+
+                                //ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
+//                            ForEach(Array(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.enumerated()), id: \.self){ subIndex in
+//                                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
+//                                    CodeBlockView(presented: isPresentingBlockEdit,
+//                                                  codeBlockIndex: subIndex,
+//                                                  documentID: documentId!)
+//                                        .environmentObject(todoDataModel)
+//
+//                                    }
+//                                    .animation(.easeIn)
+                           // }
                         }
         
                     }
@@ -108,11 +111,10 @@ struct TodoSelectedItemView: View {
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[todoItemIndex], docID: documentId!)
+                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[todoItemIndex], docID: documentId)
             }))
             .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title)")
             .onAppear(){
-//                codeBlockItems = todoDataModel.todoData[todoItemIndex].codeBlocks
                 setSelectedMainIndex(mainIndex: self.todoItemIndex)
             }
         
@@ -132,7 +134,7 @@ struct TodoSelectedItemView: View {
     
     private func addNewItem(type: DOC_FIELDS_NEW){
         
-        if let documentId = self.documentId {
+//        if let documentId = self.documentId {
             
             var deterDocumentField: String
             var docData : [String: Any] = [:]
@@ -164,13 +166,65 @@ struct TodoSelectedItemView: View {
             
             fbUtil.updateDocumentFieldArrayUnion(documentID: documentId, documentField: deterDocumentField, docData: docData)
             
-        }
+//        }
     }
 
 }
 
 enum DOC_FIELDS_NEW {
     case HYPERLINK, CODEBLOCK;
+}
+
+struct createCodeViews: View {
+    @EnvironmentObject var todoDataModel: TodoDataModel
+   
+    @State var documentID: String
+    
+    @State private var isPresentingBlockEdit: Bool = false
+    @State private var selectedItem: Int = 0
+    
+    func selectItem(index: Int){
+        selectedItem = index
+    }
+    
+    var body: some View {
+        
+        //VStack(spacing: 5) {
+        
+            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
+                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
+                    VStack{
+                    
+                        VStack(alignment: .trailing) {
+                            
+                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+                  
+                            Divider()
+                            
+                            Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
+                                .font(.system(size: 12))
+                                .foregroundColor(.black)
+                                .padding()
+                                .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+                        }
+                        
+                    }
+                    .background(GrayBackGroundView())
+                    .onTapGesture(count: 1, perform: {
+                        selectItem(index: subIndex)
+                        isPresentingBlockEdit.toggle()
+                    })
+                    .sheet(isPresented: $isPresentingBlockEdit, content: {
+                        CodeBlockEditView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[selectedItem], codeBlockIndex: selectedItem, docID: documentID)
+                    })
+                    .animation(.linear)
+                    Divider()
+                    
+                }
+                .animation(.easeIn)
+       // }
+    }
+    
 }
 
 
@@ -203,9 +257,6 @@ struct CodeBlockView: View {
     @State var presented: Bool
     @State var codeBlockIndex: Int
     var documentID: String
-    
-    @State private var toggleStates = ToggleStates()
-    @State private var topExpanded: Bool = true
      
     var body: some View {
     

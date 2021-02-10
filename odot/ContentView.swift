@@ -49,7 +49,7 @@ struct ContentView: View {
                                 destination:
                                     TodoSelectedItemView(
                                         todoItemIndex: index,
-                                        documentId: self.todoDataModel.todoData[index].id).environmentObject(todoDataModel)){
+                                        documentId: self.todoDataModel.todoData[index].id ?? "0").environmentObject(todoDataModel)){
                                    // TodoSelectedItemView(todoItem: item, documentId: item.id)){
                                     
                                     TodoItemView(index: index).environmentObject(todoDataModel)

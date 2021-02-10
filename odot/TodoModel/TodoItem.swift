@@ -9,9 +9,9 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct TodoItem: Codable, Identifiable, Hashable, RandomAccessCollection {
-    typealias Index = Int
-    typealias Element = (index: Index, element: CodeBlockItem)
+struct TodoItem: Codable, Identifiable, Hashable {
+//    typealias Index = Int
+//    typealias Element = (index: Index, element: CodeBlockItem)
     
     @DocumentID var id: String?
     
@@ -63,24 +63,24 @@ struct TodoItem: Codable, Identifiable, Hashable, RandomAccessCollection {
         return [[:]]
     }
     
-    var startIndex: Index { codeBlocks.startIndex }
-
-    var endIndex: Index { codeBlocks.endIndex }
-
-    func index(after i: Index) -> Index {
-        codeBlocks.index(after: i)
-    }
-
-    func index(before i: Index) -> Index {
-        codeBlocks.index(before: i)
-    }
-
-    func index(_ i: Index, offsetBy distance: Int) -> Index {
-        codeBlocks.index(i, offsetBy: distance)
-    }
-
-    subscript(position: Index) -> Element {
-        (index: position, element: codeBlocks[position])
-    }
+//    var startIndex: Index { codeBlocks.startIndex }
+//
+//    var endIndex: Index { codeBlocks.endIndex }
+//
+//    func index(after i: Index) -> Index {
+//        codeBlocks.index(after: i)
+//    }
+//
+//    func index(before i: Index) -> Index {
+//        codeBlocks.index(before: i)
+//    }
+//
+//    func index(_ i: Index, offsetBy distance: Int) -> Index {
+//        codeBlocks.index(i, offsetBy: distance)
+//    }
+//
+//    subscript(position: Index) -> Element {
+//        (index: position, element: codeBlocks[position])
+//    }
     
 }

@@ -84,7 +84,7 @@ struct CodeBlockEditView: View {
                     }
                     .padding()
                     .onAppear(){
-                        print("CodeBlockIndex: \(self.codeBlockIndex)")
+                        print("CodeBlockIndex: \(codeBlockIndex)")
                         
                     }
                     
@@ -102,7 +102,7 @@ struct CodeBlockEditView: View {
       
         let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
        
-//        if let allCodeBlocks = allCodeBlocks {
+       // if let allCodeBlocks = allCodeBlocks {
             
             var newCodeBlock = allCodeBlocks
             newCodeBlock[codeBlockIndex] = CodeBlockItem(date: codeBlockItem.date, code: codeBlockItem.code)
@@ -112,7 +112,7 @@ struct CodeBlockEditView: View {
             }
         
             FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
-//        }
+     //   }
   
     }
     
