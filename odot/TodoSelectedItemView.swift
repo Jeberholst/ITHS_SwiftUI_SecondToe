@@ -55,20 +55,8 @@ struct TodoSelectedItemView: View {
                             addNewHyperLinkItem()
                         }
                         
-                        
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 15) {
-                                
-//                                ForEach(self.todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks.indices, id: \.self){ subIndex in
-//
-//                                        HyperLinkView(presented: isPresentingHyperLinkEdit,
-//                                                      hyperLinkIndex: subIndex,
-//                                                      documentId: documentId)
-//                                            .environmentObject(todoDataModel)
-//                                    }
-//
-                            }
-
+                            HyperLinkViews(documentID: documentId)
                         }
                         
                     }
@@ -77,27 +65,13 @@ struct TodoSelectedItemView: View {
                     Divider()
                     
                     Group {
+                        
                         GroupTitleTextCodeBlockView(systemName: icCode){
                             addNewCodeBlockItem()
                         }
                             
                         ScrollView(.vertical, showsIndicators: true) {
-                            createCodeViews(documentID: documentId)
-                            //VStack(spacing: 5) {
-
-                                //createCodeViews(documentID: documentId)
-
-                                //ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
-//                            ForEach(Array(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.enumerated()), id: \.self){ subIndex in
-//                                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
-//                                    CodeBlockView(presented: isPresentingBlockEdit,
-//                                                  codeBlockIndex: subIndex,
-//                                                  documentID: documentId!)
-//                                        .environmentObject(todoDataModel)
-//
-//                                    }
-//                                    .animation(.easeIn)
-                           // }
+                            CodeBlockViews(documentID: documentId)
                         }
         
                     }
@@ -175,9 +149,67 @@ enum DOC_FIELDS_NEW {
     case HYPERLINK, CODEBLOCK;
 }
 
-struct createCodeViews: View {
+struct CodeBlockViews: View {
     @EnvironmentObject var todoDataModel: TodoDataModel
-   
+    
+    @State var documentID: String
+    
+    @State private var isPresentingBlockEdit: Bool = false
+    @State private var selectedItem: Int = 0
+    
+    @State private var expandItem: Bool = false
+    
+    func selectItem(index: Int){
+        selectedItem = index
+    }
+    
+    var body: some View {
+        
+            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
+                    VStack{
+                    
+                        DisclosureGroup(isExpanded: $expandItem,
+                                        content: {
+                                            Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
+                                                .font(.system(size: 12))
+                                                .foregroundColor(.black)
+                                                .padding()
+                                                .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+                                        }, label: {
+                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+                                        })
+                        
+//                        DisclosureGroup("\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", isExpanded: $expandItem){
+//
+//                        }
+                        
+                    }
+                    .background(GrayBackGroundView(alpha: 0.0))
+                    .onTapGesture(count: 2, perform: {
+                        selectItem(index: subIndex)
+                        isPresentingBlockEdit.toggle()
+                    })
+                    .onTapGesture(count: 1, perform: {
+                        expandItem.toggle()
+                       // isPresentingBlockEdit.toggle()
+                    })
+                    .sheet(isPresented: $isPresentingBlockEdit, content: {
+                        CodeBlockEditView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[selectedItem], codeBlockIndex: selectedItem, docID: documentID)
+                    })
+                    .animation(.linear)
+                    Divider()
+                    
+                }
+                .animation(.easeIn)
+
+    }
+    
+}
+
+struct HyperLinkViews: View {
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @Environment(\.openURL) var openURL
+    
     @State var documentID: String
     
     @State private var isPresentingBlockEdit: Bool = false
@@ -188,41 +220,36 @@ struct createCodeViews: View {
     }
     
     var body: some View {
-        
-        //VStack(spacing: 5) {
-        
-            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
-                    //CodeBlockView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex],
-                    VStack{
+        HStack {
+            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks.indices, id: \.self){ subIndex in
                     
-                        VStack(alignment: .trailing) {
-                            
-                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
-                  
-                            Divider()
-                            
-                            Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
-                                .font(.system(size: 12))
-                                .foregroundColor(.black)
-                                .padding()
-                                .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
+                        VStack(alignment: .leading, spacing: 5) {
+                                
+                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
+                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].getFormattedDate())", fontSize: 10)
+                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .none)
+//                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)
+                          //  }
+                   
                         }
+                        .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
+                        .onTapGesture(count: 2, perform: {
+                            openURL(URL(string: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")!)
+                            print("Double tap detected")
+                        })
+                        .onTapGesture(count: 1, perform: {
+                            selectItem(index: subIndex)
+                            isPresentingBlockEdit.toggle()
+                        })
+                        .sheet(isPresented: $isPresentingBlockEdit, content: {
+                            HyperLinkEditView(hyperLinkItem: todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[selectedItem], hyperLinkIndex: selectedItem, docID: documentID)
+                        })
+                        .background(GrayBackGroundView(alpha: 0.1))
+                        .animation(.linear)
                         
                     }
-                    .background(GrayBackGroundView())
-                    .onTapGesture(count: 1, perform: {
-                        selectItem(index: subIndex)
-                        isPresentingBlockEdit.toggle()
-                    })
-                    .sheet(isPresented: $isPresentingBlockEdit, content: {
-                        CodeBlockEditView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[selectedItem], codeBlockIndex: selectedItem, docID: documentID)
-                    })
-                    .animation(.linear)
-                    Divider()
-                    
-                }
-                .animation(.easeIn)
-       // }
+    
+        }
     }
     
 }
@@ -249,88 +276,6 @@ struct ImageRowButton: View {
         }
 
     }
-}
-
-struct CodeBlockView: View {
-    
-    @EnvironmentObject var todoDataModel: TodoDataModel
-    @State var presented: Bool
-    @State var codeBlockIndex: Int
-    var documentID: String
-     
-    var body: some View {
-    
-        let item = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
-            
-            VStack{
-            
-                VStack(alignment: .trailing) {
-                    
-                    CustomTextView(text: "\(item.getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
-          
-                    Divider()
-                    
-                    Text(item.code)
-                        .font(.system(size: 12))
-                        .foregroundColor(.black)
-                        .padding()
-                        .frame(width: UIScreen.main.bounds.width - 30, height: 100, alignment: .topLeading)
-                }
-                
-            }
-            .background(GrayBackGroundView())
-            .onTapGesture(count: 1, perform: {
-                presented.toggle()
-            })
-            .sheet(isPresented: $presented, content: {
-                CodeBlockEditView(codeBlockItem: todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex], codeBlockIndex: codeBlockIndex, docID: documentID)
-            })
-            .animation(.linear)
-            Divider()
-        
-    }
-    
-}
-
-struct ToggleStates {
-    var oneIsOn: Bool = false
-    var twoIsOn: Bool = true
-}
-
-
-struct HyperLinkView: View {
-    
-    @EnvironmentObject var todoDataModel: TodoDataModel
-    @State var presented: Bool
-    @State var hyperLinkIndex: Int
-    var documentId: String
-
-    var body: some View {
-        
-        let item = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
-        
-        VStack(alignment: .center, spacing: 5) {
-            
-            VStack {
-                CustomTextView(text: "\(item.title)", fontSize: 12, weight: .bold)
-                CustomTextView(text: "\(item.getFormattedDate())", fontSize: 10)
-                CustomTextView(text: "\(item.description)", fontSize: 12, weight: .none)
-                CustomTextView(text: "\(item.hyperlink.prefix(20) + "...")", fontSize: 12, fontColor: Color.blue, link: item.hyperlink)
-            }
-   
-        }
-        .frame(width: UIScreen.main.bounds.width/2, height: 100, alignment: .center)
-        .onTapGesture(count: 1, perform: {
-            presented.toggle()
-        })
-        .sheet(isPresented: $presented, content: {
-            HyperLinkEditView(hyperLinkItem: item, hyperLinkIndex: hyperLinkIndex, docID: documentId)
-        })
-        .background(GrayBackGroundView())
-        .animation(.linear)
-
-    }
-
 }
 
 struct CustomTextView: View {

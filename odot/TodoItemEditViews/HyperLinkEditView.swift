@@ -16,6 +16,8 @@ struct HyperLinkEditView: View {
     @State var hyperLinkIndex: Int
     var docID: String
     
+    let documentField = "hyperLinks"
+    
     var body: some View {
             
             VStack(alignment: .leading) {
@@ -48,36 +50,45 @@ struct HyperLinkEditView: View {
                 }
               
             }
+            .onAppear(){
+                print("HyperLinkIndex: \(hyperLinkIndex)")
+            }
         
     }
     
     private func onActionSave(){
-        let documentField = "hyperLinks"
-        var allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+      
+        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
        
-     //   if let allLinks = allHyperLinks {
-//            for item in (0 ..< allLinks.count) {
-//                print("CURRENT HYPERLINKS: \(item)")
-//            }
-           // allHyperLinks?[hyperLinkIndex] = hyperLinkItem
-        allHyperLinks[hyperLinkIndex] = hyperLinkItem
+       // if let allCodeBlocks = allCodeBlocks {
+            
+            var newCodeBlock = allCodeBlocks
+        newCodeBlock[hyperLinkIndex] = HyperLinkItem(date: hyperLinkItem.date, title: hyperLinkItem.title, description: hyperLinkItem.title, hyperlink: hyperLinkItem.hyperlink)
 
-
-      //  }
-
-        var docData: [[String: Any]] = [[:]]
-        
-//        if let allHyperLinks = allHyperLinks {
-            docData = allHyperLinks.map { item in
+            let docData: [[String: Any]] = newCodeBlock.map { item in
                 item.getAsDictionary()
             }
-//        }
-    
-        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+        
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+     //   }
+  
     }
     
     private func onActionDelete(){
-        print("Delete")
+        
+        let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+       
+//        if let allCodeBlocks = allCodeBlocks {
+            
+            var newHyperLink = allHyperLinks
+            newHyperLink.remove(at: hyperLinkIndex)
+
+            let docData: [[String: Any]] = newHyperLink.map { item in
+                item.getAsDictionary()
+            }
+        
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+//        }
     }
     
 }

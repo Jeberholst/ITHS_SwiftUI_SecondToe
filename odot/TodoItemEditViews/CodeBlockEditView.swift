@@ -15,7 +15,7 @@ let icPasteLastLine = "arrow.down.doc"
 let icShare = "square.and.arrow.up"
 let icTitle = "chevron.left.slash.chevron.right"
 
-let documentField = "codeBlocks"
+
 
 struct CodeBlockEditView: View {
     
@@ -23,6 +23,8 @@ struct CodeBlockEditView: View {
     @State var codeBlockItem: CodeBlockItem
     @State var codeBlockIndex: Int
     var docID: String
+    
+    let documentField = "codeBlocks"
 
     var body: some View {
         
@@ -85,7 +87,6 @@ struct CodeBlockEditView: View {
                     .padding()
                     .onAppear(){
                         print("CodeBlockIndex: \(codeBlockIndex)")
-                        
                     }
                     
                     Spacer()
