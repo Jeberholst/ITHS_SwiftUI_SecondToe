@@ -33,7 +33,6 @@
 		43B4CDD025BDC84A00C59D08 /* odotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDCF25BDC84A00C59D08 /* odotTests.swift */; };
 		43B4CDDB25BDC84A00C59D08 /* odotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDDA25BDC84A00C59D08 /* odotUITests.swift */; };
 		43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */; };
-		43B5795A25D53D4B008B7B50 /* FirebaseImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B5795925D53D4B008B7B50 /* FirebaseImageUtil.swift */; };
 		55C9B818E0027A93721FFE5F /* Pods_odot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B4248C0EC336CC628A3E096 /* Pods_odot.framework */; };
 		C2420CE03F04F451B5D0C7B6 /* Pods_odotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2D1ED698E09AD8A762CA3A5 /* Pods_odotTests.framework */; };
 		CA20725A191F447342C6BCB6 /* Pods_odot_odotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17034B2F9B7966846C095DBE /* Pods_odot_odotUITests.framework */; };
@@ -91,7 +90,6 @@
 		43B4CDDA25BDC84A00C59D08 /* odotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotUITests.swift; sourceTree = "<group>"; };
 		43B4CDDC25BDC84A00C59D08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSelectedItemView.swift; sourceTree = "<group>"; };
-		43B5795925D53D4B008B7B50 /* FirebaseImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseImageUtil.swift; sourceTree = "<group>"; };
 		53925DE65C6ABAB7AC1A2086 /* Pods-odotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odotTests.release.xcconfig"; path = "Target Support Files/Pods-odotTests/Pods-odotTests.release.xcconfig"; sourceTree = "<group>"; };
 		5BFDA2B6F82B5C81A7A9FD6D /* Pods-odot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.release.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.release.xcconfig"; sourceTree = "<group>"; };
 		7B4248C0EC336CC628A3E096 /* Pods_odot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,7 +251,6 @@
 			isa = PBXGroup;
 			children = (
 				4356968D25CC86340072D09E /* FirebaseUtil.swift */,
-				43B5795925D53D4B008B7B50 /* FirebaseImageUtil.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -573,7 +570,6 @@
 				43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */,
 				4318E1D525CEFD2100D795E4 /* TodoObservable.swift in Sources */,
 				431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */,
-				43B5795A25D53D4B008B7B50 /* FirebaseImageUtil.swift in Sources */,
 				4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */,
 				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,
 				4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */,

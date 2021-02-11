@@ -50,26 +50,13 @@ struct ContentView: View {
                                     TodoSelectedItemView(
                                         todoItemIndex: index,
                                         documentId: self.todoDataModel.todoData[index].id ?? "0").environmentObject(todoDataModel)){
-                                   // TodoSelectedItemView(todoItem: item, documentId: item.id)){
-                                    
+                                
                                     TodoItemView(index: index).environmentObject(todoDataModel)
                                     
                                         
                             }
                             
                         }
-                        
-//                        ForEach(todoDataModel.todoData, id: \.self){ item in
-//                            NavigationLink(
-//                                destination:
-//                                    TodoSelectedItemView(todoItem: item, documentId: item.id).environmentObject(todoDataModel)){
-//                                   // TodoSelectedItemView(todoItem: item, documentId: item.id)){
-//
-//                                TodoItemView(todoItem: item)
-//
-//                            }
-//
-//                        }
                  
                     }
                     .navigationBarTitleDisplayMode(.inline)

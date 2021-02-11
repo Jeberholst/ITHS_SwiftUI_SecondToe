@@ -15,7 +15,7 @@ struct ImagePickerPresenter: View {
     var docID: String
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
-    @State var imageURL: URL? = URL(string: "")
+    @State var imageData: Data? = Data()
     
     var body: some View {
         
@@ -31,7 +31,7 @@ struct ImagePickerPresenter: View {
                 .frame(width: UIScreen.main.bounds.width / 1.5, height: 250, alignment: .center)
                 .padding()
             
-            ImagePicker(image: self.$image, imageURL: self.$imageURL)
+            ImagePicker(image: self.$image, imageURL: self.$imageData)
             
         }
         
@@ -40,7 +40,6 @@ struct ImagePickerPresenter: View {
     private func actionSave(){
         
         print("Saving image...")
-        print(imageURL?.absoluteURL as Any)
         
         let storage = Storage.storage()
         let storageRef = storage.reference()
@@ -50,13 +49,13 @@ struct ImagePickerPresenter: View {
             let folderRef = storageRef.child("\(user.uid)")
             let uuid = UUID().uuidString
             let storageRef = folderRef.child("\(uuid).jpeg")
-            //var newImageItem = ImagesItem(date: Date(), storageReference: storageRef.fullPath)
-            //UPPLOAD ImagesItem to document array
-            if let imageUrl = imageURL {
+           
+            if let imageUrl = imageData {
                 
-                //let localFile = imageURL
+                let metaData =  StorageMetadata()
+                metaData.contentType = "image/jpg"
 
-                let uploadTask = storageRef.putFile(from: imageUrl, metadata: nil) { metadata, error in
+                let uploadTask = storageRef.putData(imageUrl, metadata: metaData) { metadata, error in
                   guard let metadata = metadata else {
                     return
                   }
@@ -64,6 +63,7 @@ struct ImagePickerPresenter: View {
                   // Metadata contains file metadata such as size, content-type.
                   //let size = metadata.size
                   // You can also access to download URL after upload.
+                   
                   storageRef.downloadURL { (url, error) in
                     guard let downloadURL = url else {
                       return
@@ -97,35 +97,35 @@ struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var image: Image?
-    @Binding var imageURL: URL?
+    @Binding var imageURL: Data?
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
         @Binding var presentationMode: PresentationMode
         @Binding var image: Image?
-        @Binding var imageURL: URL?
+        @Binding var imageData: Data?
 
-        init(presentationMode: Binding<PresentationMode>, image: Binding<Image?>, imageURL: Binding<URL?>) {
+        init(presentationMode: Binding<PresentationMode>, image: Binding<Image?>, imageURL: Binding<Data?>) {
             _presentationMode = presentationMode
             _image = image
-            _imageURL = imageURL
+            _imageData = imageURL
         }
 
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             
             let uiImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            image = Image(uiImage: uiImage)
-         
-            if let imgUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+                
+            let targetSize = CGSize(width: 200, height: 200)
+            let scaledImage = uiImage.scalePreservingAspectRatio(
+                targetSize: targetSize
+            )
             
-                let imgName = imgUrl.lastPathComponent
-                let documentDirectory = NSTemporaryDirectory()
-                let localPath = documentDirectory.appending(imgName)
-                imageURL = URL.init(fileURLWithPath: localPath)
-               
-            }
-            
+            image = Image(uiImage: scaledImage)
+            var data = Data()
+            data = scaledImage.jpegData(compressionQuality: 0.8)!
+            imageData = data
+          
         }
 
     }
@@ -148,6 +148,37 @@ struct ImagePicker: UIViewControllerRepresentable {
             
     }
     
+}
+
+
+extension UIImage {
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
+        // Determine the scale factor that preserves aspect ratio
+        let widthRatio = targetSize.width / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        // Compute the new image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+
+        // Draw and return the resized UIImage
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
+    }
 }
 //
 //struct CaptureImageView_Previews: PreviewProvider {

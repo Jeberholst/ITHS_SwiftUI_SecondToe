@@ -14,6 +14,7 @@ target 'odot' do
   pod 'FirebaseUI/Google'
   pod 'FirebaseFirestoreSwift', '~> 7.0-beta'
   pod 'Firebase/Storage'
+  pod 'SDWebImageSwiftUI'
 
   target 'odotTests' do
     inherit! :search_paths

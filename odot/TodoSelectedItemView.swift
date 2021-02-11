@@ -8,6 +8,8 @@
 import SwiftUI
 import Firebase
 import Combine
+import FirebaseStorage
+import SDWebImageSwiftUI
 
 struct TodoSelectedItemView: View {
     
@@ -75,7 +77,6 @@ struct TodoSelectedItemView: View {
                                         })
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
-                        Divider()
                         
                     }
                 }
@@ -177,7 +178,8 @@ struct CodeBlockViews: View {
                                                 .padding()
                                                 .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                         }, label: {
-                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10).padding()
+                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+                                                .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
                                         })
                         
                     }
@@ -238,12 +240,13 @@ struct HyperLinkViews: View {
                                             
                                            
                                         }, label: {
-                                            ZStack {
+                                            //ZStack {
                                                 VStack(alignment: .leading, spacing: 5) {
                                                     CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
                                                     CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
-                                                }.padding()
-                                            }
+                                                }
+                                                .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
+                                           // }
                                         })
                         
                     }
@@ -275,49 +278,57 @@ struct ImagesViews: View {
     @State private var isPresenting: Bool = false
     @State var documentID: String
     @State private var selectedItem: Int = 0
+    @State private var selectedImage: String = ""
     
     private let firebaseImageUtil: FirebaseImageUtil = FirebaseImageUtil()
     
     private func selectItem(index: Int){
         selectedItem = index
-        print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
+       // print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
+    }
+    private func selectImage(imageRef: String){
+        selectedImage = imageRef
     }
     
     var body: some View {
-        
+        HStack {
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
                     HStack{
                         
-                        let image =
-                            firebaseImageUtil.loadImage(storageReference: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
+                        let imageRef = todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference
                         
-                        if let image = image {
-                            Image(uiImage: image)
+                        if let imageRef = imageRef {
+                            
+                            WebImage(url: URL(string: imageRef))
+                               .resizable()
+                               .aspectRatio(contentMode: .fit)
+                               .frame(width: 75, height: 75)
+                            
+                        } else {
+                           
+                            Image(systemName: "photo")
                                 .resizable()
                                 .padding()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 30, height: 30)
+                                .frame(width: 75, height: 75)
                         }
                     
                     }
-                    .onTapGesture(count: 2, perform: {
+                    .onTapGesture(count: 1, perform: {
                         selectItem(index: subIndex)
+                        selectImage(imageRef: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
                         isPresenting.toggle()
                     })
-                    .onTapGesture(count: 1, perform: {
-                       // expandItem.toggle()
-                       // isPresentingBlockEdit.toggle()
-                    })
                     .sheet(isPresented: $isPresenting, content: {
-                        //ImageLargeDisplayView(image: image)
+                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
-                    Divider()
                     
                 }
                 .animation(.easeIn)
-      
+        }
+    
     }
     
 }
