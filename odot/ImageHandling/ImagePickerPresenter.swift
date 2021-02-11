@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import FirebaseStorage
+import FirebaseAuth
 
 struct ImagePickerPresenter: View {
-    
-    private let FIU: FirebaseImageUtil = FirebaseImageUtil()
-    @State var todoItem: TodoItem
+        
+    private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
+    var docID: String
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
     @State var imageURL: URL? = URL(string: "")
@@ -36,10 +38,53 @@ struct ImagePickerPresenter: View {
     }
     
     private func actionSave(){
+        
         print("Saving image...")
         print(imageURL?.absoluteURL as Any)
         
-        FIU.uploadImageFromDevice(imagePath: (imageURL)!)
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        if let user = Auth.auth().currentUser {
+            
+            let folderRef = storageRef.child("\(user.uid)")
+            let uuid = UUID().uuidString
+            let storageRef = folderRef.child("\(uuid).jpeg")
+            //var newImageItem = ImagesItem(date: Date(), storageReference: storageRef.fullPath)
+            //UPPLOAD ImagesItem to document array
+            if let imageUrl = imageURL {
+                
+                //let localFile = imageURL
+
+                let uploadTask = storageRef.putFile(from: imageUrl, metadata: nil) { metadata, error in
+                  guard let metadata = metadata else {
+                    return
+                  }
+                  print(metadata)
+                  // Metadata contains file metadata such as size, content-type.
+                  //let size = metadata.size
+                  // You can also access to download URL after upload.
+                  storageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                      return
+                    }
+                    let documentField = "images"
+                    let newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
+                    let docData : [String: Any] = newImageItem.getAsDictionary()
+                    //docData = newImageItem.getAsDictionary()
+                    fbUtil.updateDocumentFieldArrayUnion(documentID: docID, documentField: documentField, docData: docData)
+                    
+                    
+                  }
+            
+                }
+                
+                
+                
+            }
+            
+            
+        }
         
     }
     

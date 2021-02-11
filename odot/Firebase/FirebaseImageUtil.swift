@@ -31,40 +31,43 @@ class FirebaseImageUtil {
         
     }
     
-    func uploadImageFromDevice(imagePath: URL){
-        
-        let storageRef = storage.reference()
-        
-        if let user = Auth.auth().currentUser {
-            
-            let folderRef = storageRef.child("\(user.uid)")
-            let uuid = UUID().uuidString
-            let storageRef = folderRef.child("\(uuid).jpeg")
-            //var newImageItem = ImagesItem(date: Date(), storageReference: storageRef.fullPath)
-            //UPPLOAD ImagesItem to document array
-            
-            let localFile = imagePath
-
-            let uploadTask = storageRef.putFile(from: localFile, metadata: nil) { metadata, error in
-              guard let metadata = metadata else {
-                return
-              }
-              print(metadata)
-              // Metadata contains file metadata such as size, content-type.
-              //let size = metadata.size
-              // You can also access to download URL after upload.
-              storageRef.downloadURL { (url, error) in
-                guard let downloadURL = url else {
-                  return
-                }
-                var newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
-              }
-        
-            }
-            
-            
-        }
-        
-    }
+//    func uploadImageFromDevice(documentID: String, imagePath: URL){
+//
+//        let storageRef = storage.reference()
+//
+//        if let user = Auth.auth().currentUser {
+//
+//            let folderRef = storageRef.child("\(user.uid)")
+//            let uuid = UUID().uuidString
+//            let storageRef = folderRef.child("\(uuid).jpeg")
+//            //var newImageItem = ImagesItem(date: Date(), storageReference: storageRef.fullPath)
+//            //UPPLOAD ImagesItem to document array
+//
+//            let localFile = imagePath
+//
+//            let uploadTask = storageRef.putFile(from: localFile, metadata: nil) { metadata, error in
+//              guard let metadata = metadata else {
+//                return
+//              }
+//              print(metadata)
+//              // Metadata contains file metadata such as size, content-type.
+//              //let size = metadata.size
+//              // You can also access to download URL after upload.
+//              storageRef.downloadURL { (url, error) in
+//                guard let downloadURL = url else {
+//                  return
+//                }
+//                var newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
+//                self.saveToCollection(documentID: documentID, imageItem: newImageItem)
+//
+//              }
+//
+//            }
+//
+//
+//        }
+//
+//    }
+    
     
 }

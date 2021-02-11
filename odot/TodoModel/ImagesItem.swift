@@ -16,6 +16,14 @@ struct ImagesItem: Codable, Hashable {
         case date
         case storageReference
     }
+    
+    func getAsDictionary() -> [String : Any] {
+       return [
+                "date": self.date,
+                "storageReference": self.storageReference
+            ]
+    }
+    
 }
 
 struct ImagesItemOriginal: Identifiable {

@@ -40,7 +40,7 @@ struct TodoSelectedItemView: View {
                                             
                                             }
                                         }, label: {
-                                            GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[todoItemIndex], presented: isPrestentingImagePicker)
+                                            GroupTitleImagesView(systemName: icCamera, documentID: documentId, presented: isPrestentingImagePicker)
                                                 //addNewHyperLinkItem()
                                         })
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
@@ -407,7 +407,7 @@ struct CustomTextView: View {
 struct GroupTitleImagesView: View {
     
     var systemName: String
-    @State var todoItem: TodoItem
+    @State var documentID: String
     @State var presented: Bool
     
     var body: some View {
@@ -429,7 +429,7 @@ struct GroupTitleImagesView: View {
                 presented.toggle()
             })
             .sheet(isPresented: $presented, content: {
-                ImagePickerPresenter(todoItem: todoItem)
+                ImagePickerPresenter(docID: documentID)
             })
             
 
