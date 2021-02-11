@@ -22,10 +22,6 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-    
-    @State private var isImagesGroupExpanded = false
-    @State private var isHyperLinksGroupExpanded = false
-    @State private var isCodeBlockGroupExpanded = false
   
     var body: some View {
         
@@ -36,17 +32,17 @@ struct TodoSelectedItemView: View {
                             
                         TitleTextView(dateFormatted: self.todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
                         
-                        DisclosureGroup(isExpanded: $isImagesGroupExpanded,
+                        DisclosureGroup(
                                         content : {
                                             ScrollView(.horizontal, showsIndicators: false) {
+                                                
+                                                
+                                                
                                                 
                                             }
                                         }, label: {
                                             GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[todoItemIndex], presented: isPrestentingImagePicker)
                                                 //addNewHyperLinkItem()
-                                            .onTapGesture {
-                                                isImagesGroupExpanded.toggle()
-                                            }
                                         })
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
@@ -54,9 +50,9 @@ struct TodoSelectedItemView: View {
                         
                         DisclosureGroup(
                                         content : {
-                                                ScrollView(.vertical, showsIndicators: true) {
-                                                    HyperLinkViews(documentID: documentId)
-                                                }
+                                            ScrollView(.vertical, showsIndicators: true) {
+                                                HyperLinkViews(documentID: documentId)
+                                            }
                                             
                                         }, label: {
                                             GroupTitleHyperLinkView(systemName: icLink) {
@@ -236,7 +232,6 @@ struct HyperLinkViews: View {
                                                 
                                                 CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
                                                     .padding()
-                                                    //.frame(height: 100, alignment: .topLeading)
                                                     .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                                    
                                             }
@@ -275,11 +270,55 @@ struct HyperLinkViews: View {
     
 }
 
-
+struct ImagesViews: View {
+    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @State private var isPresenting: Bool = false
+    @State var documentID: String
+    @State private var selectedItem: Int = 0
+    
+    private func selectItem(index: Int){
+        selectedItem = index
+        print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
+    }
+    
+    var body: some View {
+        
+            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
+                    HStack{
+                        
+                        Image(systemName: icImage)
+                            .padding()
+                            .foregroundColor(Color.black)
+                    
+                        
+                    }
+                    .onTapGesture(count: 2, perform: {
+                        selectItem(index: subIndex)
+                        isPresenting.toggle()
+                    })
+                    .onTapGesture(count: 1, perform: {
+                       // expandItem.toggle()
+                       // isPresentingBlockEdit.toggle()
+                    })
+                    .sheet(isPresented: $isPresenting, content: {
+                        ImageLargeDisplayView(image: icImage)
+                    })
+                    .padding()
+                    .background(GrayBackGroundView(alpha: 0.0))
+                    Divider()
+                    
+                }
+                .animation(.easeIn)
+      
+    }
+    
+}
 
 struct ImageRowButton: View {
     
     @State var presented: Bool
+    
     
     var body: some View {
  
@@ -383,13 +422,13 @@ struct GroupTitleImagesView: View {
                 presented.toggle()
             })
             .sheet(isPresented: $presented, content: {
-               // ImagePickerPresenter(todoItem: todoItem, mainIndex: mainIndex)
+                ImagePickerPresenter(todoItem: todoItem)
             })
             
 
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        .background(GrayBackGroundView(alpha: 0.1))
+        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         
@@ -419,7 +458,7 @@ struct GroupTitleHyperLinkView: View {
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        .background(GrayBackGroundView(alpha: 0.1))
+        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         
@@ -448,7 +487,7 @@ struct GroupTitleTextCodeBlockView: View {
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        .background(GrayBackGroundView(alpha: 0.1))
+        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         

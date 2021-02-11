@@ -10,7 +10,7 @@ import SwiftUI
 struct ImageLargeDisplayView: View {
     
     //@EnvironmentObject private var todos : Todos
-    var image: String
+    @Binding var image: UIImage
     
     var body: some View {
         
@@ -27,7 +27,7 @@ struct ImageLargeDisplayView: View {
                 Divider()
                 Spacer()
                 
-                Image(systemName: "\(image)")
+                Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
@@ -48,12 +48,6 @@ struct ImageLargeDisplayView: View {
         print("Delete")
     }
     
-}
-
-struct ImageLargeDisplayView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageLargeDisplayView(image: "photo")
-    }
 }
 
 
