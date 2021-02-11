@@ -37,7 +37,7 @@ struct ImagePickerPresenter: View {
     
     private func actionSave(){
         print("Saving image...")
-        print(imageURL?.absoluteURL)
+        print(imageURL?.absoluteURL as Any)
         
         FIU.uploadImageFromDevice(imagePath: (imageURL)!)
         

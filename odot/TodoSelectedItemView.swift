@@ -36,9 +36,8 @@ struct TodoSelectedItemView: View {
                                         content : {
                                             ScrollView(.horizontal, showsIndicators: false) {
                                                 
-                                                
-                                                
-                                                
+                                                ImagesViews(documentID: documentId)
+                                            
                                             }
                                         }, label: {
                                             GroupTitleImagesView(systemName: icCamera, todoItem: self.todoDataModel.todoData[todoItemIndex], presented: isPrestentingImagePicker)
@@ -277,6 +276,8 @@ struct ImagesViews: View {
     @State var documentID: String
     @State private var selectedItem: Int = 0
     
+    private let firebaseImageUtil: FirebaseImageUtil = FirebaseImageUtil()
+    
     private func selectItem(index: Int){
         selectedItem = index
         print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
@@ -287,11 +288,17 @@ struct ImagesViews: View {
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
                     HStack{
                         
-                        Image(systemName: icImage)
-                            .padding()
-                            .foregroundColor(Color.black)
-                    
+                        let image =
+                            firebaseImageUtil.loadImage(storageReference: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
                         
+                        if let image = image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .padding()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 30, height: 30)
+                        }
+                    
                     }
                     .onTapGesture(count: 2, perform: {
                         selectItem(index: subIndex)
@@ -302,7 +309,7 @@ struct ImagesViews: View {
                        // isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresenting, content: {
-                        ImageLargeDisplayView(image: icImage)
+                        //ImageLargeDisplayView(image: image)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -314,30 +321,30 @@ struct ImagesViews: View {
     }
     
 }
-
-struct ImageRowButton: View {
-    
-    @State var presented: Bool
-    
-    
-    var body: some View {
- 
-        Button(action: {
-            presented.toggle()
-            
-        }, label: {
-            Image(systemName: icImage)
-                .padding()
-                .foregroundColor(Color.black)
-        })
-        .background(GrayBackGroundView())
-        .sheet(isPresented: $presented) {
-            ImageLargeDisplayView(
-                image: icImage)
-        }
-
-    }
-}
+//
+//struct ImageRowButton: View {
+//
+//    @State var presented: Bool
+//
+//
+//    var body: some View {
+//
+//        Button(action: {
+//            presented.toggle()
+//
+//        }, label: {
+//            Image(systemName: icImage)
+//                .padding()
+//                .foregroundColor(Color.black)
+//        })
+//        .background(GrayBackGroundView())
+//        .sheet(isPresented: $presented) {
+//            ImageLargeDisplayView(
+//                image: icImage)
+//        }
+//
+//    }
+//}
 
 struct CustomTextView: View {
     
