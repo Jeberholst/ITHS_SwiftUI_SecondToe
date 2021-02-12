@@ -14,8 +14,6 @@ struct ImageLargeDisplayView: View {
     @Binding var imagesSelectedIndex: Int
     @Binding var selectedImage: String
     
-    private let firebaseImageUtil: FirebaseImageUtil = FirebaseImageUtil()
-    
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
     @State private var viewState = CGSize.zero

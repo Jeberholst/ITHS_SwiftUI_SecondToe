@@ -24,7 +24,8 @@ struct CodeBlockEditView: View {
     @Binding var codeBlockIndex: Int
     var docID: String
     
-    let documentField = "codeBlocks"
+    private let documentField = "codeBlocks"
+    @State private var isSharingPresented = false
     
     @State private var newCodeBlockItem = CodeBlockItem(date: Date(), code: "")
 
@@ -74,7 +75,9 @@ struct CodeBlockEditView: View {
                                     })
                                     ClipBoardActionView(iconSystemName: icShare, label: "xShare", onAction: {
                                         print("Share to...")
+                                        isSharingPresented.toggle()
                                     })
+
                                 }.padding()
                             }
                             Divider()
@@ -99,7 +102,10 @@ struct CodeBlockEditView: View {
                 
             }
             
-        }
+        }.sheet(isPresented: $isSharingPresented, content: {
+            //ShareController()
+            ShareController(text: $newCodeBlockItem.code)
+        })
         
     }
     
@@ -140,6 +146,7 @@ struct CodeBlockEditView: View {
 }
 
 
+
 struct ClipBoardActionView: View {
     
     var iconSystemName: String
@@ -154,7 +161,7 @@ struct ClipBoardActionView: View {
             } label: {
                 Image(systemName: iconSystemName)
                     .resizable()
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("Icons"))
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
             }

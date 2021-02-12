@@ -17,13 +17,15 @@ let icCamera = "camera"
 let icImage = "photo"
 let icTrash = "trash"
 
+let bcOff = Color("BackgrounderOffset")
+
 struct ContentView: View {
     
     @ObservedObject var todoDataModel = TodoDataModel()
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
     
     init() {
-        UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
+//        UITableView.appearance().backgroundColor = UIColor(cgColor: bcOff.cgColor!)// Uses UIColor
         
         listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
         guard let documents = querySnapshot?.documents else {
@@ -40,8 +42,9 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack{
+        ZStack{
+            NavigationView {
+            
                 VStack {
                     List(){
                         ForEach(todoDataModel.todoData.indices, id: \.self){ index in
@@ -51,7 +54,7 @@ struct ContentView: View {
                                         todoItemIndex: index,
                                         documentId: self.todoDataModel.todoData[index].id ?? "0").environmentObject(todoDataModel)){
                                 
-                                    TodoItemView(index: index).environmentObject(todoDataModel)
+                                TodoItemView(index: index).environmentObject(todoDataModel)
                                     
                                         
                             }
@@ -63,12 +66,15 @@ struct ContentView: View {
                     .navigationBarItems(trailing: TodoAddNew())
                     
                 }
+                
             }
+           
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: TodoAddNew())
-            
+        .frame(width: UIScreen.main.bounds.width)
     }
+    
     
     private func removeDocument(){
         //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
@@ -170,7 +176,9 @@ struct TodoItemView: View {
                 
             }
             
-        }.padding() 
+        }
+    
+        .padding()
         
     }
 

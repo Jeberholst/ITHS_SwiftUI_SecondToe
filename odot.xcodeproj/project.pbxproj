@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */; };
 		4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416F25C301920065B537 /* ImageLargeDisplayView.swift */; };
-		4318E1D525CEFD2100D795E4 /* TodoObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318E1D425CEFD2100D795E4 /* TodoObservable.swift */; };
 		431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92D725C36C8600F08481 /* SheetEditBarView.swift */; };
 		431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */; };
 		431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */; };
@@ -22,6 +21,7 @@
 		4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4383056925C973C200DFFEF8 /* ImagesItem.swift */; };
 		4383056F25CAE4FD00DFFEF8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */; };
 		4393035A25C6276100B6546F /* SheetSaveOnlyBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4393035925C6276100B6546F /* SheetSaveOnlyBarView.swift */; };
+		4399278B25D5DB5100FAED5A /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4399278A25D5DB5100FAED5A /* ShareController.swift */; };
 		43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */; };
 		43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */; };
 		43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118A025CB48C900F9A9FB /* AppDelegate.swift */; };
@@ -60,7 +60,6 @@
 		3E9D61807D46A3FE8BE7D10B /* Pods-odot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.debug.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.debug.xcconfig"; sourceTree = "<group>"; };
 		4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayBackGroundView.swift; sourceTree = "<group>"; };
 		4313416F25C301920065B537 /* ImageLargeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLargeDisplayView.swift; sourceTree = "<group>"; };
-		4318E1D425CEFD2100D795E4 /* TodoObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoObservable.swift; sourceTree = "<group>"; };
 		431A92D725C36C8600F08481 /* SheetEditBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetEditBarView.swift; sourceTree = "<group>"; };
 		431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTodoItemEditView.swift; sourceTree = "<group>"; };
 		431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerPresenter.swift; sourceTree = "<group>"; };
@@ -73,6 +72,7 @@
 		4383056925C973C200DFFEF8 /* ImagesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesItem.swift; sourceTree = "<group>"; };
 		4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4393035925C6276100B6546F /* SheetSaveOnlyBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSaveOnlyBarView.swift; sourceTree = "<group>"; };
+		4399278A25D5DB5100FAED5A /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkEditView.swift; sourceTree = "<group>"; };
 		43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockEditView.swift; sourceTree = "<group>"; };
 		43B118A025CB48C900F9A9FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -199,6 +199,7 @@
 				43A9245025C1A2CF00FAD285 /* TodoItemEditViews */,
 				43B4CDBF25BDC84900C59D08 /* ContentView.swift */,
 				43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */,
+				4399278A25D5DB5100FAED5A /* ShareController.swift */,
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
 				43B4CDC625BDC84A00C59D08 /* Info.plist */,
 				43B118A025CB48C900F9A9FB /* AppDelegate.swift */,
@@ -237,7 +238,6 @@
 		43B4CDF325BDCA0E00C59D08 /* TodoModel */ = {
 			isa = PBXGroup;
 			children = (
-				4318E1D425CEFD2100D795E4 /* TodoObservable.swift */,
 				435696C625CD94980072D09E /* TodoItem.swift */,
 				4375066525C09E66006158E4 /* HyperLinkItem.swift */,
 				435696BC25CC96AB0072D09E /* TodoDataModel.swift */,
@@ -562,13 +562,13 @@
 				435696C225CD94550072D09E /* CodeBlockItem.swift in Sources */,
 				435696BD25CC96AB0072D09E /* TodoDataModel.swift in Sources */,
 				431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */,
+				4399278B25D5DB5100FAED5A /* ShareController.swift in Sources */,
 				431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */,
 				4383055F25C8A93000DFFEF8 /* LoginRegisterView.swift in Sources */,
 				43B4CE0325BDD13100C59D08 /* TodoSelectedItemView.swift in Sources */,
 				4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */,
 				43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */,
 				43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */,
-				4318E1D525CEFD2100D795E4 /* TodoObservable.swift in Sources */,
 				431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */,
 				4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */,
 				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,

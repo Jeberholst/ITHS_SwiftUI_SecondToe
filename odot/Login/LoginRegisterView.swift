@@ -18,65 +18,65 @@ struct LoginRegisterView: View {
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
 
     var body: some View {
-        
-        VStack {
+    
+            VStack {
+                
+                VStack{}.sheet(isPresented: $isPresentingLoginUI) {
+                    SignInTestUI()
+                }
+                VStack{}.fullScreenCover(isPresented: $isLoggedIn) {
+                    ContentView()
+                }
+             
+                Spacer()
+                
+                HStack(alignment: .center, spacing: 0) {
             
-            VStack{}.sheet(isPresented: $isPresentingLoginUI) {
-                SignInTestUI()
-            }
-            VStack{}.fullScreenCover(isPresented: $isLoggedIn) {
-                ContentView()
-            }
-         
-            Spacer()
-            
-            HStack(alignment: .center, spacing: 0) {
-        
-                HStack(spacing: 1) {
-                    Text("S")
-                        .font(.system(size: 48))
-                    Text("ECOND")
-                        .font(.system(size: 24))
+                    HStack(spacing: 1) {
+                        Text("S")
+                            .font(.system(size: 48))
+                        Text("ECOND")
+                            .font(.system(size: 24))
+                    }
+                    
+                    HStack(spacing: 1) {
+                        Text("T")
+                            .font(.system(size: 48))
+                        Text("OE")
+                            .font(.system(size: 24))
+                    }
+                    
                 }
                 
-                HStack(spacing: 1) {
-                    Text("T")
-                        .font(.system(size: 48))
-                    Text("OE")
-                        .font(.system(size: 24))
-                }
+                Spacer()
                 
+                Button(action: {
+                    if(Auth.auth().currentUser != nil){
+                        print("IsLoggedIn: \(isLoggedIn)")
+                        isLoggedIn = true
+                        print("IsLoggedIn toggled: \(isLoggedIn)")
+                    } else {
+                        isPresentingLoginUI = true
+                    }
+                }, label: {
+                    Text("Login / Register")
+                })
+                .padding()
+                
+                Button(action: {
+                    self.signOut()
+                }, label: {
+                    Text("SignOut (test)")
+                }).padding()
+                
+                Spacer()
             }
-            
-            Spacer()
-            
-            Button(action: {
-                if(Auth.auth().currentUser != nil){
-                    print("IsLoggedIn: \(isLoggedIn)")
-                    isLoggedIn = true
-                    print("IsLoggedIn toggled: \(isLoggedIn)")
-                } else {
-                    isPresentingLoginUI = true
-                }
-            }, label: {
-                Text("Login / Register")
-            })
-            .padding()
-            
-            Button(action: {
-                self.signOut()
-            }, label: {
-                Text("SignOut (test)")
-            }).padding()
-            
-            Spacer()
-        }
-        .onAppear(){
-            print("On appear")
-            addAuthListener()
-        }
-      
-        
+            .background(bcOff)
+            .onAppear(){
+                print("On appear")
+                addAuthListener()
+            }
+       
     }
     
     func showUserInfo(user: User){
@@ -112,10 +112,3 @@ struct LoginRegisterView: View {
     
 }
 
-
-
-struct LoginRegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginRegisterView()
-    }
-}

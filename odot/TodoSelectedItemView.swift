@@ -11,6 +11,8 @@ import Combine
 import FirebaseStorage
 import SDWebImageSwiftUI
 
+let bc = Color("Background")
+
 struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
@@ -81,6 +83,7 @@ struct TodoSelectedItemView: View {
                     }
                 }
             }
+            //.background(bc)
             .navigationBarItems(trailing: Button(action: {
                 isPrestentingTodoItemEdit.toggle()
             }, label: {
@@ -174,7 +177,7 @@ struct CodeBlockViews: View {
                                         content: {
                                             Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
                                                 .font(.system(size: 12))
-                                                .foregroundColor(.black)
+                                                //.foregroundColor(Color("Font"))
                                                 .padding()
                                                 .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                         }, label: {
@@ -280,8 +283,6 @@ struct ImagesViews: View {
     @State private var selectedItem: Int = 0
     @State private var selectedImage: String = ""
     
-    private let firebaseImageUtil: FirebaseImageUtil = FirebaseImageUtil()
-    
     private func selectItem(index: Int){
         selectedItem = index
        // print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
@@ -332,30 +333,6 @@ struct ImagesViews: View {
     }
     
 }
-//
-//struct ImageRowButton: View {
-//
-//    @State var presented: Bool
-//
-//
-//    var body: some View {
-//
-//        Button(action: {
-//            presented.toggle()
-//
-//        }, label: {
-//            Image(systemName: icImage)
-//                .padding()
-//                .foregroundColor(Color.black)
-//        })
-//        .background(GrayBackGroundView())
-//        .sheet(isPresented: $presented) {
-//            ImageLargeDisplayView(
-//                image: icImage)
-//        }
-//
-//    }
-//}
 
 struct CustomTextView: View {
     
@@ -373,7 +350,7 @@ struct CustomTextView: View {
                 Link(destination: URL(string: "\(link)")!, label: {
                     Text("\(text)")
                         .font(.system(size: fontSize))
-                        .foregroundColor(checkColor())
+                        //.foregroundColor(Color("Font"))
                         .fontWeight(checkFontWeight())
                         .padding(checkPadding())
                 })
@@ -381,21 +358,21 @@ struct CustomTextView: View {
         } else {
             Text("\(text)")
                 .font(.system(size: fontSize))
-                .foregroundColor(checkColor())
+                //.foregroundColor(Color("Font"))
                 .fontWeight(checkFontWeight())
                 .padding(checkPadding())
         }
         
     }
     
-    private func checkColor() -> Color {
-        if let fColor = fontColor {
-            return fColor
-        }else{
-            return Color.black
-        }
-    }
-    
+//    private func checkColor() -> Color {
+//        if let fColor = fontColor {
+//            return fColor
+//        }else{
+//            return Color("Font")
+//        }
+//    }
+//
     private func checkFontWeight() -> Optional<Font.Weight> {
         if let fWeight = weight {
             return fWeight
@@ -427,7 +404,7 @@ struct GroupTitleImagesView: View {
             
             Image(systemName: "\(systemName)")
                 .resizable()
-                .foregroundColor(.black)
+                .foregroundColor(Color("Icons"))
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
@@ -464,7 +441,7 @@ struct GroupTitleHyperLinkView: View {
             
             Image(systemName: "\(systemName)")
                 .resizable()
-                .foregroundColor(.black)
+                .foregroundColor(Color("Icons"))
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
@@ -493,7 +470,7 @@ struct GroupTitleTextCodeBlockView: View {
         HStack {
             Image(systemName: "\(systemName)")
                 .resizable()
-                .foregroundColor(.black)
+                .foregroundColor(Color("Icons"))
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
@@ -519,6 +496,7 @@ struct TitleTextView: View {
     var body: some View {
         Text("\(dateFormatted)")
             .font(.system(size: 10))
+            .foregroundColor(Color("AccentColor"))
             .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
     }
 }
@@ -533,9 +511,9 @@ struct ItemCountView: View {
                 .frame(width: 32, height: 32, alignment: .center)
             Circle()
                 .frame(width: 30, height: 30, alignment: .center)
-                .foregroundColor(.white)
+                .foregroundColor(Color("AccentColor"))
             Text("\(itemCount)")
-                .foregroundColor(.black)
+                .foregroundColor(Color("AccentColor"))
         }
     }
 }
