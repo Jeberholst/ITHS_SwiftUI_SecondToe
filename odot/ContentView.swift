@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseUI
 import FirebaseFirestoreSwift
 import Combine
+import SDWebImageSwiftUI
 
 let icLink = "link"
 let icCode = "chevron.left.slash.chevron.right"
@@ -23,6 +24,7 @@ struct ContentView: View {
     
     @ObservedObject var todoDataModel = TodoDataModel()
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
+    @State private var isPresentingProfile = false
     
     init() {
         UITableView.appearance().backgroundColor = UIColor(Color("Background"))
@@ -67,7 +69,7 @@ struct ContentView: View {
                     }
                  
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(trailing: TodoAddNew())
+                    .navigationBarItems(leading: ProfileNavigateView(isPresenting: $isPresentingProfile), trailing: TodoAddNew())
                     
                 }
               
@@ -78,6 +80,9 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: TodoAddNew())
         .frame(width: UIScreen.main.bounds.width)
+        .sheet(isPresented: $isPresentingProfile, content: {
+            LoggedInProfileView()
+        })
         
     }
     
@@ -89,6 +94,41 @@ struct ContentView: View {
     
     
 }
+struct ProfileNavigateView: View {
+    
+    @Binding var isPresenting: Bool
+    
+    var body: some View {
+        
+        Button(action: {
+
+            isPresenting.toggle()
+
+        }, label: {
+            
+            HStack {
+                
+                WebImage(url: URL(string: "https://lh3.googleusercontent.com/a-/AOh14GjV5Adi6ATykn6P-5s96XfBvyd2U351IN9OIXR6JA=s96-c-rg-br100"))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(50)
+                    .frame(width: 25, height: 25)
+                
+                if let userName = Auth.auth().currentUser?.displayName {
+                    Text("\(userName)")
+                        .font(.system(size: 12))
+                        .frame(alignment: .center)
+                        .foregroundColor(Color("AccentColor"))
+                }
+                
+            }
+            
+        })
+        
+    }
+    
+}
+
 
 struct TodoAddNew: View {
     
@@ -96,18 +136,6 @@ struct TodoAddNew: View {
     
     var body: some View {
         HStack {
-            
-            Button(action: {
-
-                let authUI = FUIAuth.defaultAuthUI()
-                print("Trying to sign out user...")
-                try! authUI?.signOut()
-                
-            }, label: {
-                Text("Sign out")
-            }).padding()
-            
-            
             Button(action: {
                 let newItem = TodoItem(title: "A new title", note: "A new note", date: Date())
                 do {
@@ -118,7 +146,7 @@ struct TodoAddNew: View {
                 
             }, label: {
                 Image(systemName: "plus")
-            }).padding()
+            })
         }
     }
 }
