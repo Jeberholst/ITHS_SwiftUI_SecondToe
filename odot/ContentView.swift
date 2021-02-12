@@ -12,13 +12,13 @@ import Combine
 import SDWebImageSwiftUI
 
 let icLink = "link"
+let icLinkAdd = "link.badge.plus"
 let icCode = "chevron.left.slash.chevron.right"
 let icEdit = "square.and.pencil"
 let icCamera = "camera"
 let icImage = "photo"
 let icTrash = "trash"
-
-let bcOff = Color("BackgrounderOffset")
+let icPlus = "plus"
 
 struct ContentView: View {
     
@@ -61,7 +61,6 @@ struct ContentView: View {
                                 
                                 TodoItemView(index: index).environmentObject(todoDataModel)
                                     
-                                        
                             }
                             
                         }.listRowBackground(Color("BackgroundOver"))
@@ -73,7 +72,6 @@ struct ContentView: View {
                     
                 }
               
-                
             }
            
         }
@@ -86,12 +84,9 @@ struct ContentView: View {
         
     }
     
-    
     private func removeDocument(){
         //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
     }
-
-    
     
 }
 struct ProfileNavigateView: View {
@@ -108,11 +103,14 @@ struct ProfileNavigateView: View {
             
             HStack {
                 
-                WebImage(url: URL(string: "https://lh3.googleusercontent.com/a-/AOh14GjV5Adi6ATykn6P-5s96XfBvyd2U351IN9OIXR6JA=s96-c-rg-br100"))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(50)
-                    .frame(width: 25, height: 25)
+                if let image = Auth.auth().currentUser?.photoURL {
+                    
+                    WebImage(url: URL(string: image.absoluteString))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(25)
+                        .frame(width: 25, height: 25)
+                }
                 
                 if let userName = Auth.auth().currentUser?.displayName {
                     Text("\(userName)")
@@ -137,15 +135,12 @@ struct TodoAddNew: View {
     var body: some View {
         HStack {
             Button(action: {
+                
                 let newItem = TodoItem(title: "A new title", note: "A new note", date: Date())
-                do {
-                    try userColRef.document().setData(from: newItem)
-                } catch let error {
-                    print("Error writing city to Firestore: \(error)")
-                }
+                FirebaseUtil.firebaseUtil.updateUserDocument(newTodoItem: newItem)
                 
             }, label: {
-                Image(systemName: "plus")
+                Image(systemName: icPlus)
             })
         }
     }
@@ -172,13 +167,13 @@ struct TodoItemView: View {
                         Text("\(todoDataModel.todoData[index].getFormattedDate())")
                             .font(.system(size: 14))
                         
-                        Spacer()
-   
-                        //Text("\(todo.note)")
-                          //  .font(.system(size: 14))
-                    
+                        Spacer().frame(height: 10)
+                        
+                        Text("\(todoDataModel.todoData[index].note)")
+                            .font(.system(size: 14))
+                        
+                        Spacer().frame(height: 10)
                     }
-                   
                 }
                 
                 Spacer()

@@ -28,7 +28,7 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingBlockEdit = false
     
     var body: some View {
-        
+
             ZStack {
                 ScrollView(.vertical){
                     
@@ -83,7 +83,6 @@ struct TodoSelectedItemView: View {
                     }
                 }
             }
-            //.background(bc)
             .navigationBarItems(trailing: Button(action: {
                 isPrestentingTodoItemEdit.toggle()
             }, label: {
@@ -113,7 +112,6 @@ struct TodoSelectedItemView: View {
     private func addNewItem(type: DOC_FIELDS_NEW){
         
 //        if let documentId = self.documentId {
-            
             var deterDocumentField: String
             var docData : [String: Any] = [:]
             let FIELD_HYPERLINKS = "hyperLinks"
@@ -143,7 +141,6 @@ struct TodoSelectedItemView: View {
             }
             
             fbUtil.updateDocumentFieldArrayUnion(documentID: documentId, documentField: deterDocumentField, docData: docData)
-            
 //        }
     }
 
@@ -154,6 +151,7 @@ enum DOC_FIELDS_NEW {
 }
 
 struct CodeBlockViews: View {
+    
     @EnvironmentObject var todoDataModel: TodoDataModel
     
     @State var documentID: String
@@ -165,14 +163,13 @@ struct CodeBlockViews: View {
     
     func selectItem(index: Int){
         selectedItem = index
-        print("Sel. CBLOCK index: \(index) Sel. SELECTEDITEM_INDEX: \(selectedItem)")
+//        print("Sel. CBLOCK index: \(index) Sel. SELECTEDITEM_INDEX: \(selectedItem)")
     }
     
     var body: some View {
         
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
                     VStack{
-                    
                         DisclosureGroup(
                                         content: {
                                             Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
@@ -218,11 +215,11 @@ struct HyperLinkViews: View {
     @State private var isPresentingEdit: Bool = false
     @State private var selectedItem: Int = 0
     
-    @State private var expandItem: Bool = false
+//    @State private var expandItem: Bool = false
     
     private func selectItem(index: Int){
         selectedItem = index
-        print("Sel. HLINK index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
+//        print("Sel. HLINK index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
     }
     
     var body: some View {
@@ -232,6 +229,7 @@ struct HyperLinkViews: View {
                     
                         DisclosureGroup(
                                         content: {
+                                            
                                             VStack(alignment: .leading) {
                                                 
                                                 CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
@@ -240,16 +238,15 @@ struct HyperLinkViews: View {
                                                    
                                             }
                                             .background(GrayBackGroundView())
-                                            
-                                           
+                
                                         }, label: {
-                                            //ZStack {
-                                                VStack(alignment: .leading, spacing: 5) {
-                                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
-                                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
-                                                }
-                                                .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
-                                           // }
+                                            
+                                            VStack(alignment: .leading, spacing: 5) {
+                                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
+                                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
+                                            }
+                                            .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
+                                       
                                         })
                         
                     }
@@ -278,6 +275,7 @@ struct HyperLinkViews: View {
 struct ImagesViews: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
+    
     @State private var isPresenting: Bool = false
     @State var documentID: String
     @State private var selectedItem: Int = 0
@@ -295,15 +293,15 @@ struct ImagesViews: View {
         HStack {
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
                     HStack{
-                        
                         let imageRef = todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference
                         
                         if let imageRef = imageRef {
                             
                             WebImage(url: URL(string: imageRef))
-                               .resizable()
-                               .aspectRatio(contentMode: .fit)
-                               .frame(width: 75, height: 75)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(5)
+                                .frame(width: 75, height: 75)
                             
                         } else {
                            
@@ -321,7 +319,7 @@ struct ImagesViews: View {
                         isPresenting.toggle()
                     })
                     .sheet(isPresented: $isPresenting, content: {
-                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage)
+                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage, docID: documentID)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -350,7 +348,6 @@ struct CustomTextView: View {
                 Link(destination: URL(string: "\(link)")!, label: {
                     Text("\(text)")
                         .font(.system(size: fontSize))
-                        //.foregroundColor(Color("Font"))
                         .fontWeight(checkFontWeight())
                         .padding(checkPadding())
                 })
@@ -358,21 +355,12 @@ struct CustomTextView: View {
         } else {
             Text("\(text)")
                 .font(.system(size: fontSize))
-                //.foregroundColor(Color("Font"))
                 .fontWeight(checkFontWeight())
                 .padding(checkPadding())
         }
         
     }
     
-//    private func checkColor() -> Color {
-//        if let fColor = fontColor {
-//            return fColor
-//        }else{
-//            return Color("Font")
-//        }
-//    }
-//
     private func checkFontWeight() -> Optional<Font.Weight> {
         if let fWeight = weight {
             return fWeight
@@ -423,7 +411,6 @@ struct GroupTitleImagesView: View {
 
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         
@@ -453,7 +440,6 @@ struct GroupTitleHyperLinkView: View {
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         
@@ -482,7 +468,6 @@ struct GroupTitleTextCodeBlockView: View {
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
-        //.background(GrayBackGroundView(alpha: 0.1))
         .animation(.linear)
         
         
@@ -501,25 +486,19 @@ struct TitleTextView: View {
     }
 }
 
-struct ItemCountView: View {
-    
-    var itemCount: Int
-    
-    var body: some View {
-        ZStack{
-            Circle()
-                .frame(width: 32, height: 32, alignment: .center)
-            Circle()
-                .frame(width: 30, height: 30, alignment: .center)
-                .foregroundColor(Color("AccentColor"))
-            Text("\(itemCount)")
-                .foregroundColor(Color("AccentColor"))
-        }
-    }
-}
-
-//struct TodoSelectedItemView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TodoSelectedItemView(todoItem: TodoItem())
+//struct ItemCountView: View {
+//
+//    var itemCount: Int
+//
+//    var body: some View {
+//        ZStack{
+//            Circle()
+//                .frame(width: 32, height: 32, alignment: .center)
+//            Circle()
+//                .frame(width: 30, height: 30, alignment: .center)
+//                .foregroundColor(Color("AccentColor"))
+//            Text("\(itemCount)")
+//                .foregroundColor(Color("AccentColor"))
+//        }
 //    }
 //}

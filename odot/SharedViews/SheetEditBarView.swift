@@ -16,9 +16,16 @@ struct SheetEditBarView: View {
     
     var body: some View {
         HStack(spacing: 15) {
+           
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+               
+                Text("\(title)")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color("AccentColor"))
             
-            Text("\(title)")
-                .font(.system(size: 12))
+            })
             
             Spacer()
             
@@ -29,7 +36,7 @@ struct SheetEditBarView: View {
                 Image(systemName: "checkmark.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 42, height: 42)
+                    .frame(width: 32, height: 32)
                     .foregroundColor(.green)
             })
             Button(action: {
@@ -39,7 +46,7 @@ struct SheetEditBarView: View {
                 Image(systemName: "trash.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 42, height: 42)
+                    .frame(width: 32, height: 32)
                     .foregroundColor(.red)
             })
             

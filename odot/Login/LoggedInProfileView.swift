@@ -10,15 +10,21 @@ import SDWebImageSwiftUI
 import FirebaseUI
 
 struct LoggedInProfileView: View {
+    
+    @Environment(\.presentationMode) private var presentationMode
+    
     var body: some View {
         
         VStack {
-            WebImage(url: URL(string: "https://lh3.googleusercontent.com/a-/AOh14GjV5Adi6ATykn6P-5s96XfBvyd2U351IN9OIXR6JA=s96-c-rg-br100"))
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .cornerRadius(50)
-                .frame(width: 125, height: 125)
-                .animation(.linear)
+            
+            if let image = Auth.auth().currentUser?.photoURL {
+                
+                WebImage(url: URL(string: image.absoluteString))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(25)
+                    .frame(width: 125, height: 125)
+            }
             
             if let userName = Auth.auth().currentUser?.displayName {
                 Text("\(userName)")
@@ -26,17 +32,16 @@ struct LoggedInProfileView: View {
                     .bold()
                     .frame(alignment: .center)
                     .padding()
-                    .animation(.linear)
                     
             }
             
             Button(action: {
-                
+                signOut()
             }, label: {
                 Text("Sign Out")
                     .font(.system(size: 16))
-                    .animation(.linear)
             })
+            .padding()
             
             Button(action: {
                 
@@ -44,21 +49,25 @@ struct LoggedInProfileView: View {
                 Text("Remove account")
                     .foregroundColor(.red)
                     .font(.system(size: 16))
-                    .animation(.linear)
             })
+            .padding()
             
             
-        }
+        }.animation(.linear)
         
         
     }
     
-    
     func signOut(){
         let authUI = FUIAuth.defaultAuthUI()
         print("Trying to sign out user...")
+        presentationMode.wrappedValue.dismiss()
         try! authUI?.signOut()
         
+    }
+    
+    func removeAccount(){
+        print("!IMPLEMENT! trying to remove account...")
     }
     
 }

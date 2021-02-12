@@ -60,7 +60,6 @@ struct SelectedTodoItemEditView: View {
                                     print(text)
                                     todoItem.note = text
                                 }
-                                //.border(Color.gray, width: 0.3)
                         }
                     }
                     .padding()
@@ -78,7 +77,7 @@ struct SelectedTodoItemEditView: View {
                 "note" : todoItem.note,
              ]
         
-        FirebaseUtil.firebaseUtil.updateDocument(documentID: docID, docData: docData)
+        FirebaseUtil.firebaseUtil.updateDocumentField(documentID: docID, docData: docData)
         
     }
     

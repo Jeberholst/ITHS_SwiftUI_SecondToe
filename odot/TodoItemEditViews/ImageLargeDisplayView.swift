@@ -7,12 +7,16 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import FirebaseUI
 
 struct ImageLargeDisplayView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
+    private let fbUtil = FirebaseUtil.firebaseUtil
+    
     @Binding var imagesSelectedIndex: Int
     @Binding var selectedImage: String
+    @State var docID: String
     
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
@@ -80,11 +84,25 @@ struct ImageLargeDisplayView: View {
     }
     
     private func onActionSave(){
-        print("Save")
+        print("!DELETE! Save")
     }
     
     private func onActionDelete(){
-        print("Delete")
+        print("Deleting image...")
+        let storage = Storage.storage()
+        let storageRef = storage.reference(forURL: selectedImage)
+        
+        let currImages = todoDataModel.todoData[todoDataModel.mainIndex].images
+        var newImages = currImages
+        newImages.remove(at: imagesSelectedIndex)
+
+        let docData: [[String: Any]] = newImages.map { item in
+            item.getAsDictionary()
+        }
+
+        fbUtil.deleteImageFromStorage(documentID: docID, imageName: storageRef.name, docData: docData)
+        
+
     }
     
 }

@@ -28,7 +28,7 @@ struct SheetSaveOnlyBarView: View {
                 Image(systemName: "checkmark.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 42, height: 42)
+                    .frame(width: 32, height: 32)
                     .foregroundColor(.green)
             })
             

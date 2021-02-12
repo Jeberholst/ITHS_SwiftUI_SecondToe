@@ -21,6 +21,7 @@ struct odotApp: App {
     var body: some Scene {
         WindowGroup {
             LoginRegisterView().background(Color("Background").ignoresSafeArea())
+                .environment(\.colorScheme, .dark)
         }
     }
  

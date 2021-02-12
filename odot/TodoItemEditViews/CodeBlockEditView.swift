@@ -15,8 +15,6 @@ let icPasteLastLine = "arrow.down.doc"
 let icShare = "square.and.arrow.up"
 let icTitle = "chevron.left.slash.chevron.right"
 
-
-
 struct CodeBlockEditView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel

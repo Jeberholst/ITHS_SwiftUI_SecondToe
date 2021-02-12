@@ -38,54 +38,8 @@ struct ImagePickerPresenter: View {
     }
     
     private func actionSave(){
-        
         print("Saving image...")
-        
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        
-        if let user = Auth.auth().currentUser {
-            
-            let folderRef = storageRef.child("\(user.uid)")
-            let uuid = UUID().uuidString
-            let storageRef = folderRef.child("\(uuid).jpeg")
-           
-            if let imageUrl = imageData {
-                
-                let metaData =  StorageMetadata()
-                metaData.contentType = "image/jpg"
-
-                let uploadTask = storageRef.putData(imageUrl, metadata: metaData) { metadata, error in
-                  guard let metadata = metadata else {
-                    return
-                  }
-                  print(metadata)
-                  // Metadata contains file metadata such as size, content-type.
-                  //let size = metadata.size
-                  // You can also access to download URL after upload.
-                   
-                  storageRef.downloadURL { (url, error) in
-                    guard let downloadURL = url else {
-                      return
-                    }
-                    let documentField = "images"
-                    let newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
-                    let docData : [String: Any] = newImageItem.getAsDictionary()
-                    //docData = newImageItem.getAsDictionary()
-                    fbUtil.updateDocumentFieldArrayUnion(documentID: docID, documentField: documentField, docData: docData)
-                    
-                    
-                  }
-            
-                }
-                
-                
-                
-            }
-            
-            
-        }
-        
+        fbUtil.uploadImageToStorage(documentID: docID,imageData: imageData)
     }
     
     
@@ -123,7 +77,7 @@ struct ImagePicker: UIViewControllerRepresentable {
             
             image = Image(uiImage: scaledImage)
             var data = Data()
-            data = scaledImage.jpegData(compressionQuality: 0.8)!
+            data = scaledImage.jpegData(compressionQuality: 1.0)!
             imageData = data
           
         }

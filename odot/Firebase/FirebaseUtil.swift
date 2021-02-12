@@ -9,9 +9,12 @@ import Foundation
 import FirebaseFirestore
 import FirebaseUI
 
+
+
 struct FirebaseUtil {
     static let firebaseUtil = FirebaseUtil()
     var instance = Firestore.firestore()
+    let documentFieldImages = "images"
     
     private init(){}
     
@@ -21,25 +24,16 @@ struct FirebaseUtil {
         return Firestore.firestore().collection("\(currUserUid)")
     }
     
-    func updateDocument(documentID: String, docData: [String : Any]){
+    func updateUserDocument(newTodoItem: TodoItem){
         
-        print("Updating \(documentID)...")
-        
-        let docRef = getUserCollection().document(documentID)
-  
-        docRef.updateData(docData){ err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
+        do {
+            try getUserCollection().document().setData(from: newTodoItem)
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
         }
-        
     }
     
     func updateDocumentField(documentID: String, docData: [String : Any]){
-        
-        print("Updating \(documentID)...")
         
         let docRef = getUserCollection().document(documentID)
   
@@ -70,8 +64,6 @@ struct FirebaseUtil {
     
     func updateDocumentFieldArrayUnion(documentID: String, documentField: String, docData: [String : Any]){
         
-        print("Updating \(documentID) Array...")
-
         let docRef = getUserCollection().document(documentID)
         
         docRef.updateData([
@@ -82,6 +74,64 @@ struct FirebaseUtil {
             } else {
                 print("Document successfully updated")
             }
+        }
+    }
+    
+    func uploadImageToStorage(documentID: String, imageData: Data?){
+        
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        if let user = Auth.auth().currentUser {
+            
+            let folderRef = storageRef.child("\(user.uid)")
+            let uuid = UUID().uuidString
+            let storageRef = folderRef.child("\(uuid).jpeg")
+           
+            if let imageData = imageData {
+                
+                let metaData =  StorageMetadata()
+                metaData.contentType = "image/jpg"
+
+                let uploadTask = storageRef.putData(imageData, metadata: metaData) { metadata, error in
+                  guard let metadata = metadata else {
+                    return
+                  }
+                   
+                  storageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                      return
+                    }
+              
+                    let newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
+                    let docData : [String: Any] = newImageItem.getAsDictionary()
+                    updateDocumentFieldArrayUnion(documentID: documentID, documentField: documentFieldImages, docData: docData)
+                    
+                  }
+            
+                }
+            }
+        }
+    }
+    
+    func deleteImageFromStorage(documentID: String, imageName: String, docData: [[String: Any]]){
+        
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        if let user = Auth.auth().currentUser {
+            
+            let folderRef = storageRef.child("\(user.uid)")
+            let imageStorageRef = folderRef.child("\(imageName)")
+           
+            imageStorageRef.delete { error in
+              if let error = error {
+                // Uh-oh, an error occurred!
+              } else {
+                updateDocumentWholeArray(documentID: documentID, documentField: documentFieldImages, docData: docData)
+              }
+            }
+             
         }
     }
     

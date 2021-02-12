@@ -115,16 +115,12 @@ private struct TextEditorCompoundView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
                     .onReceive(Just(hyperLinkState)){ text in
-                        print(text)
                         hyperLinkState = text
                     }
-                    //.border(Color.gray, width: 0.3)
-                    
             }
         }
         .padding()
         
-      
     }
 }
 
