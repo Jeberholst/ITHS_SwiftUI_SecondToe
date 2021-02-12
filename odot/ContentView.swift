@@ -25,7 +25,7 @@ struct ContentView: View {
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
     
     init() {
-//        UITableView.appearance().backgroundColor = UIColor(cgColor: bcOff.cgColor!)// Uses UIColor
+        UITableView.appearance().backgroundColor = UIColor(Color("Background"))
         
         listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
         guard let documents = querySnapshot?.documents else {
@@ -43,6 +43,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack{
+           
             NavigationView {
             
                 VStack {
@@ -52,20 +53,24 @@ struct ContentView: View {
                                 destination:
                                     TodoSelectedItemView(
                                         todoItemIndex: index,
-                                        documentId: self.todoDataModel.todoData[index].id ?? "0").environmentObject(todoDataModel)){
+                                        documentId: self.todoDataModel.todoData[index].id ?? "0")
+                                            .background(Color("Background").ignoresSafeArea())
+                                            .environmentObject(todoDataModel)){
                                 
                                 TodoItemView(index: index).environmentObject(todoDataModel)
                                     
                                         
                             }
                             
-                        }
+                        }.listRowBackground(Color("BackgroundOver"))
                  
                     }
+                 
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationBarItems(trailing: TodoAddNew())
                     
                 }
+              
                 
             }
            
@@ -73,6 +78,7 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: TodoAddNew())
         .frame(width: UIScreen.main.bounds.width)
+        
     }
     
     
@@ -123,7 +129,7 @@ struct TodoItemView: View {
     @State var index: Int
     
     var body: some View {
-        
+
         HStack {
             
             VStack(alignment: .leading){
@@ -177,9 +183,7 @@ struct TodoItemView: View {
             }
             
         }
-    
         .padding()
-        
     }
 
 }

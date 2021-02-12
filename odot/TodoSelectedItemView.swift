@@ -26,7 +26,7 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-  
+    
     var body: some View {
         
             ZStack {

@@ -16,9 +16,10 @@ struct LoginRegisterView: View {
     @State private var isLoggedIn: Bool = false
     @State private var isPresentingLoginUI = false
     @State private var listener: AuthStateDidChangeListenerHandle? = nil
+    
 
     var body: some View {
-    
+        ZStack {
             VStack {
                 
                 VStack{}.sheet(isPresented: $isPresentingLoginUI) {
@@ -63,20 +64,14 @@ struct LoginRegisterView: View {
                 })
                 .padding()
                 
-                Button(action: {
-                    self.signOut()
-                }, label: {
-                    Text("SignOut (test)")
-                }).padding()
-                
                 Spacer()
             }
-            .background(bcOff)
             .onAppear(){
                 print("On appear")
                 addAuthListener()
             }
-       
+        }
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     
     func showUserInfo(user: User){
