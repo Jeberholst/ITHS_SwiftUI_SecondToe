@@ -9,23 +9,19 @@ import Foundation
 import FirebaseFirestore
 import FirebaseUI
 
-
-
 struct FirebaseUtil {
     static let firebaseUtil = FirebaseUtil()
+    
     var instance = Firestore.firestore()
     let documentFieldImages = "images"
     
     private init(){}
     
     func getUserCollection() -> CollectionReference {
-        let currUserUid = Auth.auth().currentUser!.uid
-        print(currUserUid)
-        return Firestore.firestore().collection("\(currUserUid)")
+        return Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)")
     }
     
     func updateUserDocument(newTodoItem: TodoItem){
-        
         do {
             try getUserCollection().document().setData(from: newTodoItem)
         } catch let error {
@@ -132,6 +128,36 @@ struct FirebaseUtil {
               }
             }
              
+        }
+    }
+    
+    func removeUserAccount(){
+        
+        let authUI = FUIAuth.defaultAuthUI()
+        let userAcc = Auth.auth().currentUser
+        print("Trying to sign out user...")
+        try! authUI?.signOut()
+        userAcc?.delete { error in
+          if let error = error {
+            print("Delete account error: \(error)")
+          } else {
+            print("Account deleted")
+          }
+        }
+   
+    }
+    
+    
+    private func deleteUserStorageFolder() {
+        
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        if let user = Auth.auth().currentUser {
+            
+            let folderRef = storageRef.child("\(user.uid)")
+            folderRef.delete()
+          
         }
     }
     

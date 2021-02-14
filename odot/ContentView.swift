@@ -22,28 +22,34 @@ let icPlus = "plus"
 
 struct ContentView: View {
     
+    @EnvironmentObject var authUtil: AuthUtil
     @ObservedObject var todoDataModel = TodoDataModel()
-    @State private var listener: AuthStateDidChangeListenerHandle? = nil
-    @State private var isPresentingProfile = false
+    @State private var listener: ListenerRegistration? = nil
+    @State var delIndex: Int = 0
     
     init() {
         UITableView.appearance().backgroundColor = UIColor(Color("Background"))
-        
-        listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
-        guard let documents = querySnapshot?.documents else {
-          print("No documents")
-          return
+        if listener == nil {
+
+            listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+              print("No documents")
+              return
+            }
+
+            print("Loading docs...")
+            todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
+                return try! queryDocumentSnapshot.data(as: TodoItem.self)
+            }
+
+          }
+
         }
-        
-        print("Loading docs...")
-        todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
-            return try! queryDocumentSnapshot.data(as: TodoItem.self)
-        }
-            
-      }
+    
     }
     
     var body: some View {
+        
         ZStack{
            
             NavigationView {
@@ -63,13 +69,15 @@ struct ContentView: View {
                                     
                             }
                             
-                        }.listRowBackground(Color("BackgroundOver"))
+                        }
+                        .listRowBackground(Color("BackgroundOver"))
                  
                     }
-                 
+                    .onTapGesture {
+                        print(index)
+                    }
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(leading: ProfileNavigateView(isPresenting: $isPresentingProfile), trailing: TodoAddNew())
-                    
+                    .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
                 }
               
             }
@@ -78,12 +86,18 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: TodoAddNew())
         .frame(width: UIScreen.main.bounds.width)
-        .sheet(isPresented: $isPresentingProfile, content: {
+        .sheet(isPresented: $authUtil.isPresentingProfile, content: {
             LoggedInProfileView()
         })
         
+        
     }
     
+    func delete(at offsets: IndexSet) {
+        print("Delete \(offsets)")
+        //todoDataModel.todoData[].remove(atOffsets: offsets)
+    }
+
     private func removeDocument(){
         //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
     }
@@ -91,6 +105,7 @@ struct ContentView: View {
 }
 struct ProfileNavigateView: View {
     
+    @EnvironmentObject var todoDataModel: TodoDataModel
     @Binding var isPresenting: Bool
     
     var body: some View {
@@ -129,9 +144,7 @@ struct ProfileNavigateView: View {
 
 
 struct TodoAddNew: View {
-    
-    let userColRef = FirebaseUtil.firebaseUtil.getUserCollection()
-    
+
     var body: some View {
         HStack {
             Button(action: {
@@ -144,6 +157,7 @@ struct TodoAddNew: View {
             })
         }
     }
+    
 }
 
 struct TodoItemView: View {

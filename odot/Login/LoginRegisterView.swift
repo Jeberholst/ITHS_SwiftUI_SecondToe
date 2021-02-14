@@ -13,20 +13,17 @@ import FirebaseUI
 
 struct LoginRegisterView: View {
       
-    @State private var isLoggedIn: Bool = false
-    @State private var isPresentingLoginUI = false
-    @State private var listener: AuthStateDidChangeListenerHandle? = nil
-    
+    @EnvironmentObject private var authUtil: AuthUtil
 
     var body: some View {
         ZStack {
             VStack {
                 
-                VStack{}.sheet(isPresented: $isPresentingLoginUI) {
-                    SignInTestUI()
+                VStack{}.sheet(isPresented: $authUtil.isPresentingLoginUI) {
+                    SignInTestUI().environmentObject(authUtil)
                 }
-                VStack{}.fullScreenCover(isPresented: $isLoggedIn) {
-                    ContentView()
+                VStack{}.fullScreenCover(isPresented: $authUtil.isLoggedIn) {
+                    ContentView().environmentObject(authUtil)
                 }
              
                 Spacer()
@@ -52,12 +49,11 @@ struct LoginRegisterView: View {
                 Spacer()
                 
                 Button(action: {
-                    if(Auth.auth().currentUser != nil){
-                        print("IsLoggedIn: \(isLoggedIn)")
-                        isLoggedIn = true
-                        print("IsLoggedIn toggled: \(isLoggedIn)")
+                    if(Auth.auth().currentUser == nil){
+                        authUtil.displaySignIn()
                     } else {
-                        isPresentingLoginUI = true
+                        print("IsLoggedIn: \($authUtil.isLoggedIn)")
+                        print("IsLoggedIn toggled: \($authUtil.isLoggedIn)")
                     }
                 }, label: {
                     Text("Login / Register")
@@ -68,42 +64,13 @@ struct LoginRegisterView: View {
             }
             .onAppear(){
                 print("On appear")
-                addAuthListener()
+                if authUtil.listener == nil {
+                    authUtil.addAuthListener()
+                }
             }
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
-    
-    func showUserInfo(user: User){
-        print(user.email!)
-        print(user.displayName!)
-    }
-   
-    func signOut(){
-        let authUI = FUIAuth.defaultAuthUI()
-        print("Trying to sign out user...")
-        try! authUI?.signOut()
-    }
-
-    func addAuthListener(){
-        listener = Auth.auth().addStateDidChangeListener { (auth, user) in
-             if let user = user {
-                self.showUserInfo(user: user)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    isPresentingLoginUI = false
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    isLoggedIn = true
-                }
-                print("isLoggedIn: \(isLoggedIn)")
-             } else {
-                 print("No user signed in")
-                 isLoggedIn = false
-             }
-         }
-    }
-    
     
 }
 

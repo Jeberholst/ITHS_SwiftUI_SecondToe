@@ -89,29 +89,23 @@ struct CodeBlockEditView: View {
                                         
                                             VStack(alignment: HorizontalAlignment.leading) {
                                                 
-                                                
                                                 TextEditor(text: $lines)
                                                 
                                                     .font(.system(size: 12))
                                                     .lineSpacing(5)
-                                                    //.background(Color(.red))
-                                                    //.fixedSize(horizontal: true, vertical: false)
                                                     .disabled(true)
                                                     .frame(width: 35)
                                                     .onAppear {
                                                         UITextView.appearance().backgroundColor = .clear
                                                     }
                                                 
-                                                    
                                             }
-                                           
                                             
                                             VStack(alignment: HorizontalAlignment.leading) {
                                                 TextEditor(text: $newCodeBlockItem.code)
                                                     .font(.system(size: 12))
                                                     .lineSpacing(5)
                                                     .onReceive(Just(newCodeBlockItem.code)){ text in
-                                                        //print(text)
                                                         newCodeBlockItem.code = text
                                                     }.onChange(of: newCodeBlockItem.code) { value in
                                                   
@@ -121,19 +115,12 @@ struct CodeBlockEditView: View {
                                                         updateLines(lineCount: (lineCount + ladd))
                                                       
                                                     }
-                                                    
-                                                
                                             }
                                             
-                                      
                                         }
                                         .frame(height: CGFloat(lineCount * 25))
-                                        //.background(Color(.green))
-                                 
-                                    
                                 }
-                               // .background(GrayBackGroundView(alpha: 0.2))
-                                  
+                            
                             }
                             
                         }

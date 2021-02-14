@@ -11,7 +11,9 @@ import FirebaseUI
 
 struct LoggedInProfileView: View {
     
+    @EnvironmentObject private var authUtil: AuthUtil
     @Environment(\.presentationMode) private var presentationMode
+    private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
     
     var body: some View {
         
@@ -26,8 +28,9 @@ struct LoggedInProfileView: View {
                     .frame(width: 125, height: 125)
             }
             
-            if let userName = Auth.auth().currentUser?.displayName {
-                Text("\(userName)")
+            if let displayName = Auth.auth().currentUser?.displayName {
+                
+                Text("\(displayName)")
                     .font(.system(size: 16))
                     .bold()
                     .frame(alignment: .center)
@@ -36,7 +39,7 @@ struct LoggedInProfileView: View {
             }
             
             Button(action: {
-                signOut()
+                authUtil.signOut()
             }, label: {
                 Text("Sign Out")
                     .font(.system(size: 16))
@@ -44,7 +47,8 @@ struct LoggedInProfileView: View {
             .padding()
             
             Button(action: {
-                
+                print("!IMPLEMENT! trying to remove account...")
+               // authUtil.removeAccount()
             }, label: {
                 Text("Remove account")
                     .foregroundColor(.red)
@@ -55,19 +59,6 @@ struct LoggedInProfileView: View {
             
         }.animation(.linear)
         
-        
-    }
-    
-    func signOut(){
-        let authUI = FUIAuth.defaultAuthUI()
-        print("Trying to sign out user...")
-        presentationMode.wrappedValue.dismiss()
-        try! authUI?.signOut()
-        
-    }
-    
-    func removeAccount(){
-        print("!IMPLEMENT! trying to remove account...")
     }
     
 }

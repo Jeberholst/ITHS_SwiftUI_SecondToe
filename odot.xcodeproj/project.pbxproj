@@ -13,6 +13,7 @@
 		431A92E825C4724900F08481 /* SelectedTodoItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */; };
 		431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */; };
 		433D9D4025D69619003382CF /* LoggedInProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433D9D3F25D69619003382CF /* LoggedInProfileView.swift */; };
+		433D9D4525D9CAF8003382CF /* AuthUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433D9D4425D9CAF7003382CF /* AuthUtil.swift */; };
 		4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356968D25CC86340072D09E /* FirebaseUtil.swift */; };
 		435696BD25CC96AB0072D09E /* TodoDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435696BC25CC96AB0072D09E /* TodoDataModel.swift */; };
 		435696C225CD94550072D09E /* CodeBlockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435696C125CD94550072D09E /* CodeBlockItem.swift */; };
@@ -65,6 +66,7 @@
 		431A92E725C4724900F08481 /* SelectedTodoItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTodoItemEditView.swift; sourceTree = "<group>"; };
 		431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerPresenter.swift; sourceTree = "<group>"; };
 		433D9D3F25D69619003382CF /* LoggedInProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInProfileView.swift; sourceTree = "<group>"; };
+		433D9D4425D9CAF7003382CF /* AuthUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUtil.swift; sourceTree = "<group>"; };
 		4356968D25CC86340072D09E /* FirebaseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtil.swift; sourceTree = "<group>"; };
 		435696BC25CC96AB0072D09E /* TodoDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDataModel.swift; sourceTree = "<group>"; };
 		435696C125CD94550072D09E /* CodeBlockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockItem.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				4356968D25CC86340072D09E /* FirebaseUtil.swift */,
+				433D9D4425D9CAF7003382CF /* AuthUtil.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 				433D9D4025D69619003382CF /* LoggedInProfileView.swift in Sources */,
 				43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */,
 				43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */,
+				433D9D4525D9CAF8003382CF /* AuthUtil.swift in Sources */,
 				4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */,
 				43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */,
 				435696C725CD94980072D09E /* TodoItem.swift in Sources */,

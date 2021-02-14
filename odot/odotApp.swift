@@ -13,15 +13,18 @@ import FirebaseUI
 struct odotApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    @ObservedObject var authUtil: AuthUtil
+    
     init() {
         FirebaseApp.configure()
+        authUtil = AuthUtil()
     }
     
     var body: some Scene {
         WindowGroup {
-            LoginRegisterView().background(Color("Background").ignoresSafeArea())
-                .environment(\.colorScheme, .dark)
+            LoginRegisterView()
+                .background(Color("Background").ignoresSafeArea())
+                .environmentObject(authUtil)
         }
     }
  
