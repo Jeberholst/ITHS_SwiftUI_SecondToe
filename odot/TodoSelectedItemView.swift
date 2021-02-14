@@ -38,7 +38,7 @@ struct TodoSelectedItemView: View {
                         
                         DisclosureGroup(
                                         content : {
-                                            ScrollView(.horizontal, showsIndicators: false) {
+                                            ScrollView(.horizontal, showsIndicators: true) {
                                                 
                                                 ImagesViews(documentID: documentId)
                                             
@@ -178,7 +178,7 @@ struct CodeBlockViews: View {
                                                 .padding()
                                                 .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                         }, label: {
-                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .light, padding: 10)
+                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .semibold, padding: 10)
                                                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
                                         })
                         

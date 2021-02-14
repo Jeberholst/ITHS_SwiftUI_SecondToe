@@ -24,6 +24,8 @@ struct CodeBlockEditView: View {
     
     private let documentField = "codeBlocks"
     @State private var isSharingPresented = false
+    @State private var lineCount: Int = 0
+    @State private var lines: String = ""
     
     @State private var newCodeBlockItem = CodeBlockItem(date: Date(), code: "")
 
@@ -79,22 +81,70 @@ struct CodeBlockEditView: View {
                                 }.padding()
                             }
                             Divider()
-                            
-                            TextEditor(text: $newCodeBlockItem.code)
-                                .frame(minWidth: UIScreen.main.bounds.width - 30, idealWidth: 100, maxWidth: .infinity, minHeight: UIScreen.main.bounds.height / 2, idealHeight: .infinity, maxHeight: .infinity, alignment: .center)
-                                .onReceive(Just(newCodeBlockItem.code)){ text in
-                                    print(text)
-                                    newCodeBlockItem.code = text
+               
+                            HStack(alignment: .top) {
+                                ScrollView(.vertical, showsIndicators: true) {
+                                    
+                                        HStack {
+                                        
+                                            VStack(alignment: HorizontalAlignment.leading) {
+                                                
+                                                
+                                                TextEditor(text: $lines)
+                                                
+                                                    .font(.system(size: 12))
+                                                    .lineSpacing(5)
+                                                    //.background(Color(.red))
+                                                    //.fixedSize(horizontal: true, vertical: false)
+                                                    .disabled(true)
+                                                    .frame(width: 35)
+                                                    .onAppear {
+                                                        UITextView.appearance().backgroundColor = .clear
+                                                    }
+                                                
+                                                    
+                                            }
+                                           
+                                            
+                                            VStack(alignment: HorizontalAlignment.leading) {
+                                                TextEditor(text: $newCodeBlockItem.code)
+                                                    .font(.system(size: 12))
+                                                    .lineSpacing(5)
+                                                    .onReceive(Just(newCodeBlockItem.code)){ text in
+                                                        //print(text)
+                                                        newCodeBlockItem.code = text
+                                                    }.onChange(of: newCodeBlockItem.code) { value in
+                                                  
+                                                        let lf = value.split(omittingEmptySubsequences: false){ $0.isNewline }
+                                                        self.lineCount = lf.count
+                                                        let ladd = Int(Double((lineCount/5)) * 0.4)
+                                                        updateLines(lineCount: (lineCount + ladd))
+                                                      
+                                                    }
+                                                    
+                                                
+                                            }
+                                            
+                                      
+                                        }
+                                        .frame(height: CGFloat(lineCount * 25))
+                                        //.background(Color(.green))
+                                 
+                                    
                                 }
+                               // .background(GrayBackGroundView(alpha: 0.2))
+                                  
+                            }
+                            
                         }
-                    }
-                    .padding()
-                    .onAppear(){
-                        newCodeBlockItem = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
-                        print("CodeBlockIndex: \(codeBlockIndex)")
-                    }
-                    
-                    Spacer()
+                }
+                .padding()
+                .onAppear(){
+                    newCodeBlockItem = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
+                    print("CodeBlockIndex: \(codeBlockIndex)")
+                }
+                
+                Spacer()
                     
                 }
                 
@@ -105,6 +155,16 @@ struct CodeBlockEditView: View {
             ShareController(text: $newCodeBlockItem.code)
         })
         
+        
+    }
+    
+    private func updateLines(lineCount: Int){
+        var lines: String = ""
+        for i in 0 ..< lineCount {
+            lines = lines.appending("\(i + 1) \n")
+        }
+        self.lines = lines
+        print("LineCount: \(self.lineCount)")
     }
     
     private func onActionSave(){
@@ -142,8 +202,6 @@ struct CodeBlockEditView: View {
 //        }
     }
 }
-
-
 
 struct ClipBoardActionView: View {
     
