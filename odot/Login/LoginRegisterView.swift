@@ -14,16 +14,22 @@ import FirebaseUI
 struct LoginRegisterView: View {
       
     @EnvironmentObject private var authUtil: AuthUtil
+    @EnvironmentObject private var todoDataModel: TodoDataModel
 
     var body: some View {
         ZStack {
             VStack {
                 
                 VStack{}.sheet(isPresented: $authUtil.isPresentingLoginUI) {
-                    SignInTestUI().environmentObject(authUtil)
+                    SignInTestUI()
+                        .environmentObject(todoDataModel)
+                        .environmentObject(authUtil)
+                    
                 }
                 VStack{}.fullScreenCover(isPresented: $authUtil.isLoggedIn) {
-                    ContentView().environmentObject(authUtil)
+                    ContentView()
+                        .environmentObject(todoDataModel)
+                        .environmentObject(authUtil)
                 }
              
                 Spacer()
@@ -64,6 +70,7 @@ struct LoginRegisterView: View {
             }
             .onAppear(){
                 print("On appear")
+                print(todoDataModel)
                 if authUtil.listener == nil {
                     authUtil.addAuthListener()
                 }

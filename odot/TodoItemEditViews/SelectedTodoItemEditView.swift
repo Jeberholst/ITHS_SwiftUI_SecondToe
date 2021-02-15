@@ -84,9 +84,3 @@ struct SelectedTodoItemEditView: View {
 }
 
 
-struct SelectedTodoItemEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelectedTodoItemEditView(todoItem: TodoItem(title: "Title", note: "Note", date: Date()), docID: "SomeID")
-    }
-}
-

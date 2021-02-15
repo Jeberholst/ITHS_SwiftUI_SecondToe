@@ -22,66 +22,29 @@ let icPlus = "plus"
 
 struct ContentView: View {
     
-    @EnvironmentObject var authUtil: AuthUtil
-    @ObservedObject var todoDataModel = TodoDataModel()
-    @State private var listener: ListenerRegistration? = nil
-    @State var delIndex: Int = 0
+    @EnvironmentObject private var authUtil: AuthUtil
+    @EnvironmentObject private var todoDataModel: TodoDataModel
+
+    @State private var delIndex: Int = 0
     
     init() {
         UITableView.appearance().backgroundColor = UIColor(Color("Background"))
-        if listener == nil {
-
-            listener = Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)").addSnapshotListener { [self] (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-              print("No documents")
-              return
-            }
-
-            print("Loading docs...")
-            todoDataModel.todoData = documents.compactMap { queryDocumentSnapshot in
-                return try! queryDocumentSnapshot.data(as: TodoItem.self)
-            }
-
-          }
-
-        }
-    
     }
     
     var body: some View {
         
         ZStack{
-           
             NavigationView {
-            
-                VStack {
-                    List(){
-                        ForEach(todoDataModel.todoData.indices, id: \.self){ index in
-                            NavigationLink(
-                                destination:
-                                    TodoSelectedItemView(
-                                        todoItemIndex: index,
-                                        documentId: self.todoDataModel.todoData[index].id ?? "0")
-                                            .background(Color("Background").ignoresSafeArea())
-                                            .environmentObject(todoDataModel)){
-                                
-                                TodoItemView(index: index).environmentObject(todoDataModel)
-                                    
-                            }
-                            
-                        }
-                        .listRowBackground(Color("BackgroundOver"))
-                 
+                List(){
+                    ForEach(todoDataModel.todoData.indices, id: \.self){ index in
+                        NavigationViews(index: index).environmentObject(todoDataModel)
                     }
-                    .onTapGesture {
-                        print(index)
-                    }
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
+                    .onDelete(perform: delete)
+                    .listRowBackground(Color("BackgroundOver"))
                 }
-              
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
             }
-           
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: TodoAddNew())
@@ -89,20 +52,66 @@ struct ContentView: View {
         .sheet(isPresented: $authUtil.isPresentingProfile, content: {
             LoggedInProfileView()
         })
-        
+        .onAppear {
+            todoDataModel.initializeListener()
+        }
         
     }
     
     func delete(at offsets: IndexSet) {
-        print("Delete \(offsets)")
-        //todoDataModel.todoData[].remove(atOffsets: offsets)
+        let index = offsets[offsets.startIndex]
+        FirebaseUtil.firebaseUtil.archiveDocument(documentID: self.todoDataModel.todoData[index].id ?? "")
     }
 
-    private func removeDocument(){
-        //ADD FUNCTIONALITY HERE? OR IN ITEM-VIEW?
+}
+
+struct NavigationViews: View {
+    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @EnvironmentObject var authUtil: AuthUtil
+    @State var index: Int
+    
+    var body: some View {
+        
+            if let docId = todoDataModel.todoData[index].id {
+                VStack {
+                    NavigationLink(
+                        destination:
+                            TodoSelectedItemView(
+                                todoItemIndex: index,
+                                documentId: docId)
+                                    .background(Color("Background").ignoresSafeArea())
+                                    .environmentObject(todoDataModel)){
+                        
+                            TodoItemView(index: index).environmentObject(todoDataModel)
+                        
+                    }
+                }
+            }
+            
+    }
+
+}
+
+struct DeterView: View {
+    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @State var index: Int
+    
+    @ViewBuilder var resultView: some View {
+        if todoDataModel.todoData.indices.contains(index) {
+            TodoItemView(index: index)
+        } else {
+            EmptyView()
+        }
+    }
+    
+    var body: some View {
+        return resultView
     }
     
 }
+
 struct ProfileNavigateView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
@@ -133,11 +142,8 @@ struct ProfileNavigateView: View {
                         .frame(alignment: .center)
                         .foregroundColor(Color("AccentColor"))
                 }
-                
             }
-            
         })
-        
     }
     
 }
@@ -148,10 +154,8 @@ struct TodoAddNew: View {
     var body: some View {
         HStack {
             Button(action: {
-                
-                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date())
+                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date(), archive: false)
                 FirebaseUtil.firebaseUtil.updateUserDocument(newTodoItem: newItem)
-                
             }, label: {
                 Image(systemName: icPlus)
             })
@@ -164,21 +168,19 @@ struct TodoItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var index: Int
-    
+
     var body: some View {
 
         HStack {
-            
             VStack(alignment: .leading){
-                
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text("\(todoDataModel.todoData[index].title)")
+                        Text(todoDataModel.todoData[index].title)
                             .font(.system(size: 16))
                             .bold()
                         
-                        Text("\(todoDataModel.todoData[index].getFormattedDate())")
+                        Text(todoDataModel.todoData[index].getFormattedDate())
                             .font(.system(size: 14))
                         
                         Spacer().frame(height: 10)
@@ -216,17 +218,10 @@ struct TodoItemView: View {
                         Text("\(todoDataModel.todoData[index].getCodeBlocksCount())").font(.system(size: 14))
                     }
                 }
-                
             }
-            
         }
         .padding()
-    }
 
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
+

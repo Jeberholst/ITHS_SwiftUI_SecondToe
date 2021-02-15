@@ -16,6 +16,7 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
     
       @Published var todoData = [TodoItem]()
       @Published var mainIndex = 0
+      private var listener: ListenerRegistration? = nil
 
       var startIndex: Index { todoData.startIndex }
 
@@ -36,5 +37,35 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
       subscript(position: Index) -> Element {
           (index: position, element: todoData[position])
       }
- 
+    
+        func updateList(list: [TodoItem]){
+            self.todoData = list
+            
+        }
+    
+
+    func initializeListener(){
+      
+        if listener == nil {
+
+            listener = Firestore.firestore()
+                .collection("\(Auth.auth().currentUser!.uid)")
+                .whereField("archive", isEqualTo: false)
+                .addSnapshotListener { [self] (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+              print("No documents")
+              return
+            }
+
+            print("Loading docs...")
+            updateList(list: documents.compactMap { queryDocumentSnapshot in
+                return try! queryDocumentSnapshot.data(as: TodoItem.self)
+            })
+            
+                    
+          }
+          
+        }
+    }
+
 }

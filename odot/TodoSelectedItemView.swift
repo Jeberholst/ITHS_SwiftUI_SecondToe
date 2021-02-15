@@ -27,6 +27,7 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
     
+    
     var body: some View {
 
             ZStack {
@@ -398,7 +399,7 @@ struct GroupTitleImagesView: View {
                 .padding(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
             
             VStack {
-                Image(systemName: "plus")
+                Image(systemName: icPlus)
                     .foregroundColor(.blue)
             }
             .onTapGesture(perform: {
@@ -436,7 +437,7 @@ struct GroupTitleHyperLinkView: View {
             Button(action: {
                 onAction()
             }, label: {
-                Image(systemName: "plus")
+                Image(systemName: icPlus)
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
@@ -464,7 +465,7 @@ struct GroupTitleTextCodeBlockView: View {
             Button(action: {
                 onAction()
             }, label: {
-                Image(systemName: "plus")
+                Image(systemName: icPlus)
             })
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)

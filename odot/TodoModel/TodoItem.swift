@@ -16,6 +16,7 @@ struct TodoItem: Codable, Identifiable, Hashable {
     var title: String
     var note: String
     var date: Date
+    var archive: Bool
     var hyperLinks: [HyperLinkItem] = []
     var codeBlocks: [CodeBlockItem] = []
     var images: [ImagesItem] = []
@@ -25,6 +26,7 @@ struct TodoItem: Codable, Identifiable, Hashable {
         case title
         case note
         case date
+        case archive
         case hyperLinks
         case codeBlocks
         case images

@@ -13,11 +13,13 @@ import FirebaseUI
 struct odotApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @ObservedObject var authUtil: AuthUtil
+    @ObservedObject private var authUtil: AuthUtil
+    @ObservedObject private var todoDataModel: TodoDataModel
     
     init() {
         FirebaseApp.configure()
         authUtil = AuthUtil()
+        todoDataModel = TodoDataModel()
     }
     
     var body: some Scene {
@@ -25,6 +27,7 @@ struct odotApp: App {
             LoginRegisterView()
                 .background(Color("Background").ignoresSafeArea())
                 .environmentObject(authUtil)
+                .environmentObject(todoDataModel)
         }
     }
  

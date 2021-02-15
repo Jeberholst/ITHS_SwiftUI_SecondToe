@@ -17,21 +17,54 @@ struct FirebaseUtil {
     
     private init(){}
     
-    func getUserCollection() -> CollectionReference {
+    func getUserCollection() -> CollectionReference? {
         return Firestore.firestore().collection("\(Auth.auth().currentUser!.uid)")
     }
     
     func updateUserDocument(newTodoItem: TodoItem){
+        guard let docRef = getUserCollection() else { return }
+        
         do {
-            try getUserCollection().document().setData(from: newTodoItem)
+            try docRef.document().setData(from: newTodoItem)
         } catch let error {
             print("Error writing city to Firestore: \(error)")
         }
     }
     
-    func updateDocumentField(documentID: String, docData: [String : Any]){
+    func archiveDocument(documentID: String){
         
-        let docRef = getUserCollection().document(documentID)
+        guard let docRef = getUserCollection()?.document(documentID) else { return }
+        
+        docRef.updateData(
+            ["archive" : true]
+        ){ err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+     
+        
+    }
+    
+    func deleteSingleUserDocument(documentID: String){
+        
+        guard let docRef = getUserCollection()?.document(documentID) else { return }
+        
+        docRef.delete(){ err in
+            if let err = err {
+                print("Error deleting document: \(err)")
+            } else {
+                print("Document successfully deleted")
+            }
+        }
+        
+    }
+    
+    
+    func updateDocumentField(documentID: String, docData: [String : Any]){
+        guard let docRef = getUserCollection()?.document(documentID) else { return }
   
         docRef.updateData(docData){ err in
             if let err = err {
@@ -45,7 +78,7 @@ struct FirebaseUtil {
     
     func updateDocumentWholeArray(documentID: String, documentField: String, docData: [[String : Any]]){
 
-        let docRef = getUserCollection().document(documentID)
+        guard let docRef = getUserCollection()?.document(documentID) else { return }
         
         docRef.updateData([
             documentField: docData
@@ -60,7 +93,7 @@ struct FirebaseUtil {
     
     func updateDocumentFieldArrayUnion(documentID: String, documentField: String, docData: [String : Any]){
         
-        let docRef = getUserCollection().document(documentID)
+        guard let docRef = getUserCollection()?.document(documentID) else { return }
         
         docRef.updateData([
             documentField: FieldValue.arrayUnion([docData])
