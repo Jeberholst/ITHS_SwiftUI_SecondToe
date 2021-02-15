@@ -37,7 +37,9 @@ struct ContentView: View {
             NavigationView {
                 List(){
                     ForEach(todoDataModel.todoData.indices, id: \.self){ index in
-                        NavigationViews(index: index).environmentObject(todoDataModel)
+                        if todoDataModel.todoData[index].archive == false {
+                            NavigationViews(index: index).environmentObject(todoDataModel)
+                        }
                     }
                     .onDelete(perform: delete)
                     .listRowBackground(Color("BackgroundOver"))

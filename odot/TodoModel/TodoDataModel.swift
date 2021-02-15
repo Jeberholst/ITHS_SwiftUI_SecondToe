@@ -50,7 +50,7 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
 
             listener = Firestore.firestore()
                 .collection("\(Auth.auth().currentUser!.uid)")
-                .whereField("archive", isEqualTo: false)
+//                .whereField("archive", isEqualTo: false)
                 .addSnapshotListener { [self] (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
               print("No documents")
