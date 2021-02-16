@@ -178,10 +178,11 @@ struct CodeBlockScrollView: View {
                                                 .padding()
                                                 .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                         }, label: {
+                                        
                                             CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .semibold, padding: 10)
                                                 .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
+                                            
                                         })
-                        
                     }
                     .onTapGesture(count: 2, perform: {
                         selectItem(index: subIndex)
@@ -196,7 +197,7 @@ struct CodeBlockScrollView: View {
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
-                    Divider()
+                    //Divider()
                     
                 }
                 .animation(.easeIn)
@@ -230,11 +231,11 @@ struct HyperLinksScrollView: View {
                                             VStack(alignment: .leading) {
                                                 
                                                 CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
+                                                    .textCase(.lowercase)
                                                     .padding()
                                                     .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                                    
                                             }
-                                            .background(GrayBackGroundView())
                 
                                         }, label: {
                                             
@@ -260,7 +261,7 @@ struct HyperLinksScrollView: View {
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
-                    Divider()
+                    
                     
                 }
                 .animation(.easeIn)
@@ -309,7 +310,7 @@ struct ImagesScrollView: View {
                         }
                     
                     }
-                    .onTapGesture(count: 1, perform: {
+                    .onTapGesture(count: 2, perform: {
                         selectItem(index: subIndex)
                         selectImage(imageRef: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
                         isPresenting.toggle()
@@ -341,7 +342,7 @@ struct CustomTextView: View {
         
         if link != nil {
             if let link = link {
-                Link(destination: URL(string: "\(link)")!, label: {
+                Link(destination: URL(string: "https://\(link)")!, label: {
                     Text("\(text)")
                         .font(.system(size: fontSize))
                         .fontWeight(checkFontWeight())
@@ -481,20 +482,3 @@ struct TitleTextView: View {
             .padding(.init(top: 20, leading: 25, bottom: 15, trailing: 0))
     }
 }
-
-//struct ItemCountView: View {
-//
-//    var itemCount: Int
-//
-//    var body: some View {
-//        ZStack{
-//            Circle()
-//                .frame(width: 32, height: 32, alignment: .center)
-//            Circle()
-//                .frame(width: 30, height: 30, alignment: .center)
-//                .foregroundColor(Color("AccentColor"))
-//            Text("\(itemCount)")
-//                .foregroundColor(Color("AccentColor"))
-//        }
-//    }
-//}

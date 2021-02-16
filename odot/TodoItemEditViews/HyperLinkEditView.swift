@@ -54,7 +54,7 @@ struct HyperLinkEditView: View {
             }
             .onAppear(){
                 newHyperLinkItem = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
-                print("HyperLinkIndex: \(hyperLinkIndex)")
+                //print("HyperLinkIndex: \(hyperLinkIndex)")
             }
         }
     }
@@ -67,7 +67,7 @@ struct HyperLinkEditView: View {
             
             var newCodeBlock = allHyperLinks
             newCodeBlock[hyperLinkIndex] = newHyperLinkItem
-
+    
             let docData: [[String: Any]] = newCodeBlock.map { item in
                 item.getAsDictionary()
             }
@@ -114,6 +114,7 @@ private struct TextEditorCompoundView: View {
                 TextEditor(text: hyperLinkString)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
+                    .keyboardType(.URL)
                     .onReceive(Just(hyperLinkState)){ text in
                         hyperLinkState = text
                     }
