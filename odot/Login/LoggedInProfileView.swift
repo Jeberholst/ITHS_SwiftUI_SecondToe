@@ -13,6 +13,8 @@ struct LoggedInProfileView: View {
     
     @EnvironmentObject private var authUtil: AuthUtil
     @Environment(\.presentationMode) private var presentationMode
+    @State private var isPresentingSignOutAlert: Bool = false
+    
     private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
     
     var body: some View {
@@ -39,23 +41,33 @@ struct LoggedInProfileView: View {
             }
             
             Button(action: {
-                authUtil.signOut()
+                isPresentingSignOutAlert.toggle()
             }, label: {
                 Text("Sign Out")
                     .font(.system(size: 16))
-            })
+            }).alert(isPresented: $isPresentingSignOutAlert) {
+                Alert(
+                        title: Text("Sign Out"),
+                        message: Text("Are you sure you want to sign out?"),
+                        primaryButton: .destructive(Text("Sign out")) {
+                            authUtil.signOut()
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        secondaryButton: .cancel()
+                    )
+            }
             .padding()
             
-            Button(action: {
-                print("!IMPLEMENT! trying to remove account...")
-               // authUtil.removeAccount()
-            }, label: {
-                Text("Remove account")
-                    .foregroundColor(.red)
-                    .font(.system(size: 16))
-            })
-            .padding()
-            
+//            Button(action: {
+//                print("!IMPLEMENT! trying to remove account...")
+//               // authUtil.removeAccount()
+//            }, label: {
+//                Text("Remove account")
+//                    .foregroundColor(.red)
+//                    .font(.system(size: 16))
+//            })
+//            .padding()
+//
             
         }.animation(.linear)
         

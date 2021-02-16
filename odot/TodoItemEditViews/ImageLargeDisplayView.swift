@@ -28,9 +28,7 @@ struct ImageLargeDisplayView: View {
             
             VStack {
                 
-                SheetEditBarView(title: "Image \(imagesSelectedIndex)"){
-                    onActionSave()
-                } actionDelete: {
+                SheetDeleteOnlyBarView(title: "Image \(imagesSelectedIndex)"){
                     onActionDelete()
                 }
                

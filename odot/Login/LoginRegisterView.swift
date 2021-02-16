@@ -69,8 +69,6 @@ struct LoginRegisterView: View {
                 Spacer()
             }
             .onAppear(){
-                print("On appear")
-                print(todoDataModel)
                 if authUtil.listener == nil {
                     authUtil.addAuthListener()
                 }

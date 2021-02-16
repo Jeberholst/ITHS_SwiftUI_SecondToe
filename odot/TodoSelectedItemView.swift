@@ -41,7 +41,7 @@ struct TodoSelectedItemView: View {
                                         content : {
                                             ScrollView(.horizontal, showsIndicators: true) {
                                                 
-                                                ImagesViews(documentID: documentId)
+                                                ImagesScrollView(documentID: documentId)
                                             
                                             }
                                         }, label: {
@@ -55,7 +55,7 @@ struct TodoSelectedItemView: View {
                         DisclosureGroup(
                                         content : {
                                             ScrollView(.vertical, showsIndicators: true) {
-                                                HyperLinkViews(documentID: documentId)
+                                                HyperLinksScrollView(documentID: documentId)
                                             }
                                             
                                         }, label: {
@@ -71,7 +71,7 @@ struct TodoSelectedItemView: View {
                         DisclosureGroup(
                                         content : {
                                                 ScrollView(.vertical, showsIndicators: true) {
-                                                    CodeBlockViews(documentID: documentId)
+                                                    CodeBlockScrollView(documentID: documentId)
                                                 }
                                         }, label: {
                                             GroupTitleTextCodeBlockView(systemName: icCode){
@@ -151,7 +151,7 @@ enum DOC_FIELDS_NEW {
     case HYPERLINK, CODEBLOCK;
 }
 
-struct CodeBlockViews: View {
+struct CodeBlockScrollView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     
@@ -164,7 +164,6 @@ struct CodeBlockViews: View {
     
     func selectItem(index: Int){
         selectedItem = index
-//        print("Sel. CBLOCK index: \(index) Sel. SELECTEDITEM_INDEX: \(selectedItem)")
     }
     
     var body: some View {
@@ -206,7 +205,7 @@ struct CodeBlockViews: View {
     
 }
 
-struct HyperLinkViews: View {
+struct HyperLinksScrollView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @Environment(\.openURL) var openURL
@@ -216,11 +215,8 @@ struct HyperLinkViews: View {
     @State private var isPresentingEdit: Bool = false
     @State private var selectedItem: Int = 0
     
-//    @State private var expandItem: Bool = false
-    
     private func selectItem(index: Int){
         selectedItem = index
-//        print("Sel. HLINK index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
     }
     
     var body: some View {
@@ -273,7 +269,7 @@ struct HyperLinkViews: View {
     
 }
 
-struct ImagesViews: View {
+struct ImagesScrollView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     
@@ -284,7 +280,6 @@ struct ImagesViews: View {
     
     private func selectItem(index: Int){
         selectedItem = index
-       // print("Sel. IMG index: \(index) Sel. SELECTEDITEM_INDEX: \($selectedItem)")
     }
     private func selectImage(imageRef: String){
         selectedImage = imageRef
