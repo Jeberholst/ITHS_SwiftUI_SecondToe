@@ -19,7 +19,7 @@ struct SelectedTodoItemEditView: View {
                 
                 VStack {
                     
-                    SheetSaveOnlyBarView(title: "\(todoItem.getFormattedDate())"){
+                    SheetSaveOnlyBarView(title: todoItem.getFormattedDate()){
                         onActionSave()
                     }
                     
@@ -33,11 +33,12 @@ struct SelectedTodoItemEditView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 32, height: 32)
                             
-                            TextEditor(text: $todoItem.title)
+                            
+                            TextEditor(text: $todoItem.title.toNonOptional())
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                                 .cornerRadius(10.0)
                                 .onReceive(Just(todoItem.title)){ text in
-                                    print(text)
+                                    //print(text)
                                     todoItem.title = text
                                 }
                         }
@@ -53,11 +54,11 @@ struct SelectedTodoItemEditView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 32, height: 32)
                             
-                            TextEditor(text: $todoItem.note)
+                            TextEditor(text: $todoItem.note.toNonOptional())
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                                 .cornerRadius(10.0)
                                 .onReceive(Just(todoItem.note)){ text in
-                                    print(text)
+                                    //print(text)
                                     todoItem.note = text
                                 }
                         }
@@ -71,10 +72,13 @@ struct SelectedTodoItemEditView: View {
     }
     
     private func onActionSave(){
+        
+        guard let title = todoItem.title else { return }
+        guard let note = todoItem.note else { return }
 
         let docData: [String : Any] = [
-                "title": todoItem.title,
-                "note" : todoItem.note,
+                "title": title,
+                "note" : note,
              ]
         
         FirebaseUtil.firebaseUtil.updateDocumentField(documentID: docID, docData: docData)

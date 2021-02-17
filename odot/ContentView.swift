@@ -42,6 +42,7 @@ struct ContentView: View {
                         }
                     }
                     .onDelete(perform: delete)
+                    
                     .listRowBackground(Color("BackgroundOver"))
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -62,7 +63,8 @@ struct ContentView: View {
     
     func delete(at offsets: IndexSet) {
         let index = offsets[offsets.startIndex]
-        FirebaseUtil.firebaseUtil.archiveDocument(documentID: self.todoDataModel.todoData[index].id ?? "")
+        FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[index].id!)
+        //FirebaseUtil.firebaseUtil.archiveDocument(documentID: self.todoDataModel.todoData[index].id ?? "")
     }
 
 }
@@ -178,7 +180,7 @@ struct TodoItemView: View {
                 HStack {
                     
                     VStack(alignment: .leading) {
-                        Text(todoDataModel.todoData[index].title)
+                        Text(todoDataModel.todoData[index].title!)
                             .font(.system(size: 16))
                             .bold()
                         
@@ -187,7 +189,7 @@ struct TodoItemView: View {
                         
                         Spacer().frame(height: 10)
                         
-                        Text("\(todoDataModel.todoData[index].note)")
+                        Text("\(todoDataModel.todoData[index].note!)")
                             .font(.system(size: 14))
                         
                         Spacer().frame(height: 10)
@@ -227,3 +229,15 @@ struct TodoItemView: View {
     }
 }
 
+extension Binding where Value == String? {
+    func toNonOptional() -> Binding<String> {
+        return Binding<String>(
+            get: {
+                return self.wrappedValue ?? ""
+            },
+            set: {
+                self.wrappedValue = $0
+            }
+        )
+    }
+}

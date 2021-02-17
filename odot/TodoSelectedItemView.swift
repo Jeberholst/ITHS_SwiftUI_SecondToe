@@ -91,7 +91,7 @@ struct TodoSelectedItemView: View {
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
                 SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[todoItemIndex], docID: documentId)
             }))
-            .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title)")
+            .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title!)")
             .onAppear(){
                 setSelectedMainIndex(mainIndex: self.todoItemIndex)
             }

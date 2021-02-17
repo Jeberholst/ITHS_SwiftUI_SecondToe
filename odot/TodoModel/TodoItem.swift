@@ -13,10 +13,10 @@ struct TodoItem: Codable, Identifiable, Hashable {
 
     @DocumentID var id: String?
     
-    var title: String
-    var note: String
-    var date: Date
-    var archive: Bool
+    var title: String?
+    var note: String?
+    var date: Date?
+    var archive: Bool?
     var hyperLinks: [HyperLinkItem] = []
     var codeBlocks: [CodeBlockItem] = []
     var images: [ImagesItem] = []
@@ -35,7 +35,7 @@ struct TodoItem: Codable, Identifiable, Hashable {
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let date = dateFormatter.string(from: self.date)
+        let date = dateFormatter.string(from: self.date ?? Date())
         return date
     }
     
