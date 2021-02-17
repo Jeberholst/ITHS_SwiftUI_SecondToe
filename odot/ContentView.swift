@@ -37,12 +37,12 @@ struct ContentView: View {
             NavigationView {
                 List(){
                     ForEach(todoDataModel.todoData.indices, id: \.self){ index in
-                        if todoDataModel.todoData[index].archive == false {
-                            NavigationViews(index: index).environmentObject(todoDataModel)
-                        }
+                        //if todoDataModel.todoData[index].archive == false {
+                       
+                        NavigationViews(index: index).environmentObject(todoDataModel)
+                        //}
                     }
                     .onDelete(perform: delete)
-                    
                     .listRowBackground(Color("BackgroundOver"))
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -98,10 +98,10 @@ struct NavigationViews: View {
 }
 
 struct DeterView: View {
-    
+
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var index: Int
-    
+
     @ViewBuilder var resultView: some View {
         if todoDataModel.todoData.indices.contains(index) {
             TodoItemView(index: index)
@@ -109,11 +109,11 @@ struct DeterView: View {
             EmptyView()
         }
     }
-    
+
     var body: some View {
         return resultView
     }
-    
+
 }
 
 struct ProfileNavigateView: View {
@@ -158,7 +158,7 @@ struct TodoAddNew: View {
     var body: some View {
         HStack {
             Button(action: {
-                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date(), archive: false)
+                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date(), archive: false, priority: 1)
                 FirebaseUtil.firebaseUtil.updateUserDocument(newTodoItem: newItem)
             }, label: {
                 Image(systemName: icPlus)
@@ -176,6 +176,15 @@ struct TodoItemView: View {
     var body: some View {
 
         HStack {
+            
+            VStack {
+          
+                Rectangle()
+                    .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[index].priority!).opacity(0.5))
+                    .frame(width: 2)
+                
+            }
+            
             VStack(alignment: .leading){
                 HStack {
                     
@@ -227,6 +236,23 @@ struct TodoItemView: View {
         .padding()
 
     }
+}
+
+private func getPriorityColor(priority: Int) -> Color {
+    
+    switch priority {
+    
+    case 1:
+        return Color(.green)
+    case 2:
+        return Color(.orange)
+    case 3:
+        return Color(.red)
+        
+    default:
+        return Color(.gray)
+    }
+    
 }
 
 extension Binding where Value == String? {

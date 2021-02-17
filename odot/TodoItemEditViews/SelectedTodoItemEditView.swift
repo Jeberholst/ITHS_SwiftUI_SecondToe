@@ -12,7 +12,9 @@ struct SelectedTodoItemEditView: View {
     
     @State var todoItem: TodoItem
     var docID: String
-
+    private let prioritys = [1, 2, 3]
+    @State private var selectedPr = 1
+    
     var body: some View {
             
             VStack(alignment: .leading) {
@@ -32,7 +34,7 @@ struct SelectedTodoItemEditView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 32, height: 32)
-                            
+                                .padding(.init(top: 5, leading: 0, bottom: 10, trailing: 0))
                             
                             TextEditor(text: $todoItem.title.toNonOptional())
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
@@ -53,6 +55,7 @@ struct SelectedTodoItemEditView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 32, height: 32)
+                                .padding(.init(top: 5, leading: 0, bottom: 10, trailing: 0))
                             
                             TextEditor(text: $todoItem.note.toNonOptional())
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
@@ -64,11 +67,42 @@ struct SelectedTodoItemEditView: View {
                         }
                     }
                     .padding()
+                    
+                    Divider()
+                    
+                    HStack {
+                        
+                        VStack(alignment: .leading){
+                            
+                            Image(systemName: "exclamationmark.shield")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 32, height: 32)
+                                .padding(.init(top: 5, leading: 0, bottom: 10, trailing: 0))
+                            
+                            Picker("Priority", selection: $selectedPr) {
+                                ForEach(prioritys, id: \.self) {
+                                    Text("\($0)")
+                                }.onChange(of: selectedPr) { value in
+                                    print(value)
+                                    selectedPr = value
+                                }
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .frame( width: UIScreen.main.bounds.width / 3)
+                        }
+                        Spacer()
+                        
+                    }
+                    .padding()
                  
                 }
                 Spacer()
             }
-        
+            .onAppear {
+                selectedPr = todoItem.priority ?? 1
+            }
+            
     }
     
     private func onActionSave(){
@@ -79,6 +113,7 @@ struct SelectedTodoItemEditView: View {
         let docData: [String : Any] = [
                 "title": title,
                 "note" : note,
+                "priority": selectedPr
              ]
         
         FirebaseUtil.firebaseUtil.updateDocumentField(documentID: docID, docData: docData)
@@ -86,5 +121,4 @@ struct SelectedTodoItemEditView: View {
     }
     
 }
-
 

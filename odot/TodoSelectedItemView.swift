@@ -27,7 +27,6 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
     
-    
     var body: some View {
 
             ZStack {
@@ -66,8 +65,6 @@ struct TodoSelectedItemView: View {
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                         Divider()
                         
-                        
-                        
                         DisclosureGroup(
                                         content : {
                                                 ScrollView(.vertical, showsIndicators: true) {
@@ -80,7 +77,6 @@ struct TodoSelectedItemView: View {
                                         })
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
-                        
                     }
                 }
             }
