@@ -16,7 +16,7 @@ struct ImageLargeDisplayView: View {
     
     @Binding var imagesSelectedIndex: Int
     @Binding var selectedImage: String
-    @State var docID: String
+   // @State var docID: String
     
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
@@ -98,7 +98,7 @@ struct ImageLargeDisplayView: View {
             item.getAsDictionary()
         }
 
-        fbUtil.deleteImageFromStorage(documentID: docID, imageName: storageRef.name, docData: docData)
+        fbUtil.deleteImageFromStorage(documentID: todoDataModel.selectedDocId, imageName: storageRef.name, docData: docData)
         
 
     }

@@ -17,7 +17,6 @@ struct TodoSelectedItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var todoItemIndex: Int
-    @State var documentId: String
     
     private let fbUtil = FirebaseUtil.firebaseUtil
     
@@ -27,24 +26,27 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
     
+    //@State private var documentId: String? = ""
+    
     var body: some View {
-
+        
             ZStack {
+        
                 ScrollView(.vertical){
                     
                     VStack(alignment: .leading) {
                             
-                        TitleTextView(dateFormatted: self.todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
+                        TitleTextView(dateFormatted: todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
                         
                         DisclosureGroup(
                                         content : {
                                             ScrollView(.horizontal, showsIndicators: true) {
                                                 
-                                                ImagesScrollView(documentID: documentId)
+                                                ImagesScrollView(documentID: todoDataModel.selectedDocId)
                                             
                                             }
                                         }, label: {
-                                            GroupTitleImagesView(systemName: icCamera, documentID: documentId, presented: isPrestentingImagePicker)
+                                            GroupTitleImagesView(systemName: icCamera, documentID: todoDataModel.selectedDocId, presented: isPrestentingImagePicker)
                                                 //addNewHyperLinkItem()
                                         })
                                         .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
@@ -54,7 +56,7 @@ struct TodoSelectedItemView: View {
                         DisclosureGroup(
                                         content : {
                                             ScrollView(.vertical, showsIndicators: true) {
-                                                HyperLinksScrollView(documentID: documentId)
+                                                HyperLinksScrollView(documentID: todoDataModel.selectedDocId)
                                             }
                                             
                                         }, label: {
@@ -68,7 +70,9 @@ struct TodoSelectedItemView: View {
                         DisclosureGroup(
                                         content : {
                                                 ScrollView(.vertical, showsIndicators: true) {
-                                                    CodeBlockScrollView(documentID: documentId)
+                                                   
+                                                    CodeBlockScrollView(documentID: todoDataModel.selectedDocId)
+                                                  
                                                 }
                                         }, label: {
                                             GroupTitleTextCodeBlockView(systemName: icCode){
@@ -79,20 +83,28 @@ struct TodoSelectedItemView: View {
                     
                     }
                 }
+                
+                
             }
             .navigationBarItems(trailing: Button(action: {
                 isPrestentingTodoItemEdit.toggle()
             }, label: {
                 Image(systemName: icEdit)
             }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: self.todoDataModel.todoData[todoItemIndex], docID: documentId)
+                SelectedTodoItemEditView(todoItem: todoDataModel.todoData[todoItemIndex])
+                
             }))
             .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title!)")
             .onAppear(){
-                setSelectedMainIndex(mainIndex: self.todoItemIndex)
+                setSelectedMainIndex(mainIndex: todoItemIndex)
+                if let docId = todoDataModel.todoData[todoItemIndex].id {
+                    todoDataModel.setSelectedDocId(documentId: docId)
+                }
+                print(todoItemIndex)
+                print(todoDataModel.selectedDocId)
             }
-        
     }
+    
 
     private func setSelectedMainIndex(mainIndex: Int){
         todoDataModel.mainIndex = mainIndex
@@ -136,9 +148,9 @@ struct TodoSelectedItemView: View {
                 print("Click: Added new code block item...")
                 
             }
-            
-            fbUtil.updateDocumentFieldArrayUnion(documentID: documentId, documentField: deterDocumentField, docData: docData)
-//        }
+    
+            fbUtil.updateDocumentFieldArrayUnion(documentID: todoDataModel.selectedDocId, documentField: deterDocumentField, docData: docData)
+        
     }
 
 }
@@ -189,7 +201,7 @@ struct CodeBlockScrollView: View {
                        // isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingBlockEdit, content: {
-                        CodeBlockEditView(codeBlockIndex: $selectedItem, docID: documentID)
+                        CodeBlockEditView(codeBlockIndex: $selectedItem)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -253,7 +265,7 @@ struct HyperLinksScrollView: View {
                        // isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingEdit, content: {
-                        HyperLinkEditView(hyperLinkIndex: $selectedItem, docID: documentID)
+                        HyperLinkEditView(hyperLinkIndex: $selectedItem)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -312,7 +324,7 @@ struct ImagesScrollView: View {
                         isPresenting.toggle()
                     })
                     .sheet(isPresented: $isPresenting, content: {
-                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage, docID: documentID)
+                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -398,7 +410,7 @@ struct GroupTitleImagesView: View {
                 presented.toggle()
             })
             .sheet(isPresented: $presented, content: {
-                ImagePickerPresenter(docID: documentID)
+                ImagePickerPresenter()
             })
             
 

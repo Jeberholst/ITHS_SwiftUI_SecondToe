@@ -13,7 +13,7 @@ struct HyperLinkEditView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @Binding var hyperLinkIndex: Int
-    var docID: String
+    //var docID: String
     
     let documentField = "hyperLinks"
     
@@ -72,7 +72,7 @@ struct HyperLinkEditView: View {
                 item.getAsDictionary()
             }
         
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
      //   }
   
     }
@@ -90,7 +90,7 @@ struct HyperLinkEditView: View {
                 item.getAsDictionary()
             }
         
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
 //        }
     }
     

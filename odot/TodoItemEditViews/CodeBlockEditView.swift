@@ -20,7 +20,7 @@ struct CodeBlockEditView: View {
     @EnvironmentObject var todoDataModel: TodoDataModel
     
     @Binding var codeBlockIndex: Int
-    var docID: String
+    //var docID: String
     
     private let documentField = "codeBlocks"
     @State private var isSharingPresented = false
@@ -167,7 +167,7 @@ struct CodeBlockEditView: View {
                 item.getAsDictionary()
             }
         
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
      //   }
   
     }
@@ -185,7 +185,7 @@ struct CodeBlockEditView: View {
                 item.getAsDictionary()
             }
         
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: docID, documentField: documentField, docData: docData)
+            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
 //        }
     }
 }

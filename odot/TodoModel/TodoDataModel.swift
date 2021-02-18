@@ -16,6 +16,9 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
     
       @Published var todoData = [TodoItem]()
       @Published var mainIndex = 0
+      @Published var indies: Range<Int> = (0 ..< 0)
+      @Published var selectedDocId: String = ""
+    
       private var listener: ListenerRegistration? = nil
 
       var startIndex: Index { todoData.startIndex }
@@ -38,11 +41,15 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
           (index: position, element: todoData[position])
       }
     
-        func updateList(list: [TodoItem]){
-            self.todoData = list
-            
-        }
+ 
+    func updateList(list: [TodoItem]){
+        self.todoData = list
+        self.indies = list.indices
+    }
     
+    func setSelectedDocId(documentId: String){
+        selectedDocId = documentId
+    }
 
     func initializeListener(){
       

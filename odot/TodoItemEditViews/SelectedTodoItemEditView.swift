@@ -10,8 +10,9 @@ import Combine
 
 struct SelectedTodoItemEditView: View {
     
+    @EnvironmentObject private var todoDataModel: TodoDataModel
     @State var todoItem: TodoItem
-    var docID: String
+//    var docID: String
     private let prioritys = [1, 2, 3]
     @State private var selectedPr = 1
     
@@ -116,7 +117,7 @@ struct SelectedTodoItemEditView: View {
                 "priority": selectedPr
              ]
         
-        FirebaseUtil.firebaseUtil.updateDocumentField(documentID: docID, docData: docData)
+        FirebaseUtil.firebaseUtil.updateDocumentField(documentID: todoDataModel.selectedDocId, docData: docData)
         
     }
     

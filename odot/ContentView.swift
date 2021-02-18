@@ -37,6 +37,7 @@ struct ContentView: View {
             NavigationView {
                 List(){
                     ForEach(todoDataModel.todoData.indices, id: \.self){ index in
+                    //ForEach(todoDataModel.indies, id: \.self){ (index: Int?) in
                         //if todoDataModel.todoData[index].archive == false {
                        
                         NavigationViews(index: index).environmentObject(todoDataModel)
@@ -73,48 +74,46 @@ struct NavigationViews: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @EnvironmentObject var authUtil: AuthUtil
-    @State var index: Int
+    var index: Int
     
     var body: some View {
-        
-            if let docId = todoDataModel.todoData[index].id {
+                
                 VStack {
                     NavigationLink(
                         destination:
                             TodoSelectedItemView(
-                                todoItemIndex: index,
-                                documentId: docId)
+                                todoItemIndex: index)
                                     .background(Color("Background").ignoresSafeArea())
                                     .environmentObject(todoDataModel)){
                         
-                            TodoItemView(index: index).environmentObject(todoDataModel)
-                        
+                            TodoItemView(index: index) //.environmentObject(todoDataModel)
+                            
                     }
+                    
                 }
-            }
             
     }
 
 }
 
-struct DeterView: View {
-
-    @EnvironmentObject var todoDataModel: TodoDataModel
-    @State var index: Int
-
-    @ViewBuilder var resultView: some View {
-        if todoDataModel.todoData.indices.contains(index) {
-            TodoItemView(index: index)
-        } else {
-            EmptyView()
-        }
-    }
-
-    var body: some View {
-        return resultView
-    }
-
-}
+//struct DeterView: View {
+//
+//    @EnvironmentObject var todoDataModel: TodoDataModel
+//    @State var index: Int
+//
+//    @ViewBuilder var resultView: some View {
+//        if todoDataModel.todoData.indices.contains(index) {
+//            TodoItemView(index: index)
+//        } else {
+//            EmptyView()
+//        }
+//    }
+//
+//    var body: some View {
+//        return resultView
+//    }
+//
+//}
 
 struct ProfileNavigateView: View {
     
@@ -174,67 +173,69 @@ struct TodoItemView: View {
     @State var index: Int
 
     var body: some View {
+        
+        if todoDataModel.todoData.indices.contains(index){
 
-        HStack {
-            
-            VStack {
-          
-                Rectangle()
-                    .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[index].priority!).opacity(0.5))
-                    .frame(width: 2)
+            HStack {
                 
-            }
-            
-            VStack(alignment: .leading){
-                HStack {
-                    
-                    VStack(alignment: .leading) {
-                        Text(todoDataModel.todoData[index].title!)
-                            .font(.system(size: 16))
-                            .bold()
-                        
-                        Text(todoDataModel.todoData[index].getFormattedDate())
-                            .font(.system(size: 14))
-                        
-                        Spacer().frame(height: 10)
-                        
-                        Text("\(todoDataModel.todoData[index].note!)")
-                            .font(.system(size: 14))
-                        
-                        Spacer().frame(height: 10)
-                    }
+                VStack {
+    
+                    Rectangle()
+                        .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[index].priority!).opacity(0.5))
+                        .frame(width: 2)
+    
                 }
                 
-                Spacer()
-                
-                HStack {
+                VStack(alignment: .leading){
+                    HStack {
+                        
+                        VStack(alignment: .leading) {
+                            Text(todoDataModel.todoData[index].title!)
+                                .font(.system(size: 16))
+                                .bold()
+                            
+                            Text(todoDataModel.todoData[index].getFormattedDate())
+                                .font(.system(size: 14))
+                            
+                            Spacer().frame(height: 10)
+                            
+                            Text("\(todoDataModel.todoData[index].note!)")
+                                .font(.system(size: 14))
+                            
+                            Spacer().frame(height: 10)
+                        }
+                    }
+                    
+                    Spacer()
                     
                     HStack {
-                        Image(systemName: icImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(todoDataModel.todoData[index].getImagesCount())").font(.system(size: 14))
-                    }
-                    HStack {
-                        Image(systemName: icLink)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(todoDataModel.todoData[index].getHyperLinksCount())").font(.system(size: 14))
-                    }
-                    HStack {
-                        Image(systemName: icCode)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(todoDataModel.todoData[index].getCodeBlocksCount())").font(.system(size: 14))
+                        
+                        HStack {
+                            Image(systemName: icImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getImagesCount())").font(.system(size: 14))
+                        }
+                        HStack {
+                            Image(systemName: icLink)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getHyperLinksCount())").font(.system(size: 14))
+                        }
+                        HStack {
+                            Image(systemName: icCode)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getCodeBlocksCount())").font(.system(size: 14))
+                        }
                     }
                 }
             }
+            .padding()
         }
-        .padding()
-
     }
 }
 

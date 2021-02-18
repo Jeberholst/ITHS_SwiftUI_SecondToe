@@ -11,8 +11,9 @@ import FirebaseAuth
 
 struct ImagePickerPresenter: View {
         
+    @EnvironmentObject private var todoDataModel: TodoDataModel
     private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
-    var docID: String
+    
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
     @State var imageData: Data? = Data()
@@ -34,12 +35,15 @@ struct ImagePickerPresenter: View {
             ImagePicker(image: self.$image, imageURL: self.$imageData)
             
         }
+        .onAppear {
+            print(todoDataModel.selectedDocId)
+        }
         
     }
     
     private func actionSave(){
         print("Saving image...")
-        fbUtil.uploadImageToStorage(documentID: docID,imageData: imageData)
+        fbUtil.uploadImageToStorage(documentID: todoDataModel.selectedDocId, imageData: imageData)
     }
     
     
