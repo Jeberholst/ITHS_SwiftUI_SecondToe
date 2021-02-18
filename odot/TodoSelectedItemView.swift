@@ -35,6 +35,12 @@ struct TodoSelectedItemView: View {
                 ScrollView(.vertical){
                     
                     VStack(alignment: .leading) {
+                        
+                        HStack {
+                            Rectangle()
+                                .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[todoItemIndex].priority ?? 1).opacity(0.5))
+                                .frame(height: 2)
+                        }
                             
                         TitleTextView(dateFormatted: todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
                         
@@ -268,7 +274,7 @@ struct HyperLinksScrollView: View {
                         HyperLinkEditView(hyperLinkIndex: $selectedItem)
                     })
                     .padding()
-                    .background(GrayBackGroundView(alpha: 0.0))
+                    .background(Color("Background"))
                     
                     
                 }
@@ -297,6 +303,8 @@ struct ImagesScrollView: View {
     var body: some View {
         HStack {
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
+                
+                
                     HStack{
                         let imageRef = todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference
                         

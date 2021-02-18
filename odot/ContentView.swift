@@ -37,11 +37,7 @@ struct ContentView: View {
             NavigationView {
                 List(){
                     ForEach(todoDataModel.todoData.indices, id: \.self){ index in
-                    //ForEach(todoDataModel.indies, id: \.self){ (index: Int?) in
-                        //if todoDataModel.todoData[index].archive == false {
-                       
                         NavigationViews(index: index).environmentObject(todoDataModel)
-                        //}
                     }
                     .onDelete(perform: delete)
                     .listRowBackground(Color("BackgroundOver"))
@@ -65,7 +61,6 @@ struct ContentView: View {
     func delete(at offsets: IndexSet) {
         let index = offsets[offsets.startIndex]
         FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[index].id!)
-        //FirebaseUtil.firebaseUtil.archiveDocument(documentID: self.todoDataModel.todoData[index].id ?? "")
     }
 
 }
@@ -77,43 +72,24 @@ struct NavigationViews: View {
     var index: Int
     
     var body: some View {
+        
+        VStack {
+            NavigationLink(
+                destination:
+                    TodoSelectedItemView(
+                        todoItemIndex: index)
+                            .background(Color("Background").ignoresSafeArea())
+                            .environmentObject(todoDataModel)){
                 
-                VStack {
-                    NavigationLink(
-                        destination:
-                            TodoSelectedItemView(
-                                todoItemIndex: index)
-                                    .background(Color("Background").ignoresSafeArea())
-                                    .environmentObject(todoDataModel)){
-                        
-                            TodoItemView(index: index) //.environmentObject(todoDataModel)
-                            
-                    }
+                    TodoItemView(index: index)
                     
-                }
+            }
+            
+        }
             
     }
 
 }
-
-//struct DeterView: View {
-//
-//    @EnvironmentObject var todoDataModel: TodoDataModel
-//    @State var index: Int
-//
-//    @ViewBuilder var resultView: some View {
-//        if todoDataModel.todoData.indices.contains(index) {
-//            TodoItemView(index: index)
-//        } else {
-//            EmptyView()
-//        }
-//    }
-//
-//    var body: some View {
-//        return resultView
-//    }
-//
-//}
 
 struct ProfileNavigateView: View {
     
@@ -239,7 +215,7 @@ struct TodoItemView: View {
     }
 }
 
-private func getPriorityColor(priority: Int) -> Color {
+func getPriorityColor(priority: Int) -> Color {
     
     switch priority {
     
