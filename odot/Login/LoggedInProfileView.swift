@@ -58,17 +58,6 @@ struct LoggedInProfileView: View {
             }
             .padding()
             
-//            Button(action: {
-//                print("!IMPLEMENT! trying to remove account...")
-//               // authUtil.removeAccount()
-//            }, label: {   
-//                Text("Remove account")
-//                    .foregroundColor(.red)
-//                    .font(.system(size: 16))
-//            })
-//            .padding()
-//
-            
         }.animation(.linear)
         
     }

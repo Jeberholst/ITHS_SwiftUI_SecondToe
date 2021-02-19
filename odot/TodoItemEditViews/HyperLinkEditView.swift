@@ -8,12 +8,13 @@
 import SwiftUI
 import Combine
 
+let icRosette = "rosette"
+let icPin = "pin"
 
 struct HyperLinkEditView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @Binding var hyperLinkIndex: Int
-    //var docID: String
     
     let documentField = "hyperLinks"
     
@@ -35,17 +36,17 @@ struct HyperLinkEditView: View {
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "rosette", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.title)
+                        iconSystemName: icRosette, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.title)
                    
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "pin", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.description)
+                        iconSystemName: icPin, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.description)
                     
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "link", hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.hyperlink)
+                        iconSystemName: icLink, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.hyperlink)
                     
                     Spacer()
                     
@@ -54,7 +55,6 @@ struct HyperLinkEditView: View {
             }
             .onAppear(){
                 newHyperLinkItem = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
-                //print("HyperLinkIndex: \(hyperLinkIndex)")
             }
         }
     }
@@ -63,35 +63,30 @@ struct HyperLinkEditView: View {
       
         let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
        
-       // if let allCodeBlocks = allCodeBlocks {
-            
-            var newCodeBlock = allHyperLinks
-            newCodeBlock[hyperLinkIndex] = newHyperLinkItem
+        var newCodeBlock = allHyperLinks
+        newCodeBlock[hyperLinkIndex] = newHyperLinkItem
+
+        let docData: [[String: Any]] = newCodeBlock.map { item in
+            item.getAsDictionary()
+        }
     
-            let docData: [[String: Any]] = newCodeBlock.map { item in
-                item.getAsDictionary()
-            }
-        
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-     //   }
-  
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
     }
     
     private func onActionDelete(){
         
         let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
-       
-//        if let allCodeBlocks = allCodeBlocks {
-            
-            var newHyperLink = allHyperLinks
-            newHyperLink.remove(at: hyperLinkIndex)
+           
+        var newHyperLink = allHyperLinks
+        newHyperLink.remove(at: hyperLinkIndex)
 
-            let docData: [[String: Any]] = newHyperLink.map { item in
-                item.getAsDictionary()
-            }
-        
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-//        }
+        let docData: [[String: Any]] = newHyperLink.map { item in
+            item.getAsDictionary()
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
     }
     
 }

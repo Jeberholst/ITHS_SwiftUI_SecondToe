@@ -43,47 +43,48 @@ struct TodoSelectedItemView: View {
                         TitleTextView(dateFormatted: todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
                         
                         DisclosureGroup(
-                                        content : {
-                                            ScrollView(.horizontal, showsIndicators: true) {
-                                                
-                                                ImagesScrollView(documentID: todoDataModel.selectedDocId)
-                                            
-                                            }
-                                        }, label: {
-                                            GroupTitleImagesView(systemName: icCamera, documentID: todoDataModel.selectedDocId, presented: isPrestentingImagePicker)
-                                                //addNewHyperLinkItem()
-                                        })
-                                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                            content : {
+                                ScrollView(.horizontal, showsIndicators: true) {
+                                    ImagesScrollView(documentID: todoDataModel.selectedDocId)
+                                }
+                            }, label: {
+                                GroupTitleImagesView(systemName: icCamera, documentID: todoDataModel.selectedDocId, presented: isPrestentingImagePicker)
+                            }
+                        )
+                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
                         Divider()
                         
                         DisclosureGroup(
-                                        content : {
-                                            ScrollView(.vertical, showsIndicators: true) {
-                                                HyperLinksScrollView(documentID: todoDataModel.selectedDocId)
-                                            }
-                                            
-                                        }, label: {
-                                            GroupTitleHyperLinkView(systemName: icLink) {
-                                                addNewHyperLinkItem()
-                                            }
-                                        })
-                                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                            content : {
+                                ScrollView(.vertical, showsIndicators: true) {
+                                    HyperLinksScrollView(documentID: todoDataModel.selectedDocId)
+                                }
+                                
+                            }, label: {
+                                GroupTitleHyperLinkView(systemName: icLink) {
+                                    addNewHyperLinkItem()
+                                }
+                            }
+                        )
+                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                        
                         Divider()
                         
                         DisclosureGroup(
-                                        content : {
-                                                ScrollView(.vertical, showsIndicators: true) {
-                                                   
-                                                    CodeBlockScrollView(documentID: todoDataModel.selectedDocId)
-                                                  
-                                                }
-                                        }, label: {
-                                            GroupTitleTextCodeBlockView(systemName: icCode){
-                                                addNewCodeBlockItem()
-                                            }
-                                        })
-                                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                            content : {
+                                    ScrollView(.vertical, showsIndicators: true) {
+                                       
+                                        CodeBlockScrollView(documentID: todoDataModel.selectedDocId)
+                                      
+                                    }
+                            }, label: {
+                                GroupTitleTextCodeBlockView(systemName: icCode){
+                                    addNewCodeBlockItem()
+                                }
+                            }
+                        )
+                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
                     
                     }
                 }
@@ -139,16 +140,12 @@ struct TodoSelectedItemView: View {
                     description: "New description",
                     hyperlink: "https://linkhere.change").getAsDictionary()
                 
-                print("Click: Added hyperlink item...")
-            
             case .CODEBLOCK:
                 
                 deterDocumentField = FIELD_CODEBLOCKS
             
                 docData = CodeBlockItem(
                     code: "New description").getAsDictionary()
-                
-                print("Click: Added new code block item...")
                 
             }
     
@@ -185,7 +182,6 @@ struct CodeBlockScrollView: View {
                                         content: {
                                             Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
                                                 .font(.system(size: 12))
-                                                //.foregroundColor(Color("Font"))
                                                 .padding()
                                                 .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                         }, label: {
@@ -200,16 +196,14 @@ struct CodeBlockScrollView: View {
                         isPresentingBlockEdit.toggle()
                     })
                     .onTapGesture(count: 1, perform: {
-                       // expandItem.toggle()
-                       // isPresentingBlockEdit.toggle()
+//                        selectItem(index: subIndex)
+//                        isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingBlockEdit, content: {
                         CodeBlockEditView(codeBlockIndex: $selectedItem).environmentObject(todoDataModel)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
-                    //Divider()
-                    
                 }
                 .animation(.easeIn)
 
@@ -264,8 +258,8 @@ struct HyperLinksScrollView: View {
                         isPresentingEdit.toggle()
                     })
                     .onTapGesture(count: 1, perform: {
-                       // expandItem.toggle()
-                       // isPresentingBlockEdit.toggle()
+//                        selectItem(index: subIndex)
+//                        isPresentingEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingEdit, content: {
                         HyperLinkEditView(hyperLinkIndex: $selectedItem).environmentObject(todoDataModel)
@@ -423,7 +417,6 @@ struct GroupTitleImagesView: View {
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
         .animation(.linear)
         
-        
     }
 }
 
@@ -451,7 +444,6 @@ struct GroupTitleHyperLinkView: View {
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
         .animation(.linear)
-        
         
     }
 }

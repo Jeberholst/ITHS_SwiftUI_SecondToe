@@ -47,16 +47,6 @@ class AuthUtil: ObservableObject {
         }
     }
     
-//    func getPhotoUrlAbsoluteString() -> String? {
-//        guard let photoUrl = Auth.auth().currentUser?.photoURL else { return nil }
-//        return photoUrl.absoluteString
-//    }
-//
-//    func getDisplayName() -> String? {
-//        guard let displayName =  Auth.auth().currentUser?.displayName else { return nil }
-//        return displayName
-//    }
-//
     func presentingProfileToggle(){
         self.isPresentingProfile.toggle()
     }

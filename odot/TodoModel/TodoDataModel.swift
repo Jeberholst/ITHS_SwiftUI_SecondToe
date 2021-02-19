@@ -70,7 +70,6 @@ class TodoDataModel: ObservableObject, RandomAccessCollection {
                 return try! queryDocumentSnapshot.data(as: TodoItem.self)
             })
             
-                    
           }
           
         }

@@ -46,8 +46,6 @@ struct ImagePickerPresenter: View {
         fbUtil.uploadImageToStorage(documentID: todoDataModel.selectedDocId, imageData: imageData)
     }
     
-    
-    
 }
 
 struct ImagePicker: UIViewControllerRepresentable {
@@ -73,11 +71,14 @@ struct ImagePicker: UIViewControllerRepresentable {
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             
             let uiImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-                
+             
+            
             let targetSize = CGSize(width: 200, height: 200)
             let scaledImage = uiImage.scalePreservingAspectRatio(
                 targetSize: targetSize
             )
+            
+            //TODO INCREASE SCALE A BIT WHEN UPPLOADING/TWO LET WITH DIFFERENT SIZE
             
             image = Image(uiImage: scaledImage)
             var data = Data()
@@ -95,9 +96,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
         let picker = UIImagePickerController()
-     
         picker.delegate = context.coordinator
-        
         return picker
     }
 
@@ -111,19 +110,17 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 extension UIImage {
     func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
-        // Determine the scale factor that preserves aspect ratio
+        
         let widthRatio = targetSize.width / size.width
         let heightRatio = targetSize.height / size.height
         
         let scaleFactor = min(widthRatio, heightRatio)
         
-        // Compute the new image size that preserves aspect ratio
         let scaledImageSize = CGSize(
             width: size.width * scaleFactor,
             height: size.height * scaleFactor
         )
 
-        // Draw and return the resized UIImage
         let renderer = UIGraphicsImageRenderer(
             size: scaledImageSize
         )

@@ -28,7 +28,7 @@
 		43A9245225C1A38500FAD285 /* HyperLinkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */; };
 		43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */; };
 		43B118A125CB48C900F9A9FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118A025CB48C900F9A9FB /* AppDelegate.swift */; };
-		43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */; };
+		43B118CC25CB60ED00F9A9FB /* SignInUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B118CB25CB60ED00F9A9FB /* SignInUI.swift */; };
 		43B4CDBE25BDC84900C59D08 /* odotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBD25BDC84900C59D08 /* odotApp.swift */; };
 		43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B4CDBF25BDC84900C59D08 /* ContentView.swift */; };
 		43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43B4CDC125BDC84A00C59D08 /* Assets.xcassets */; };
@@ -82,7 +82,7 @@
 		43A9245125C1A38500FAD285 /* HyperLinkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperLinkEditView.swift; sourceTree = "<group>"; };
 		43A9245625C1BCAD00FAD285 /* CodeBlockEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeBlockEditView.swift; sourceTree = "<group>"; };
 		43B118A025CB48C900F9A9FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTestUI.swift; sourceTree = "<group>"; };
+		43B118CB25CB60ED00F9A9FB /* SignInUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInUI.swift; sourceTree = "<group>"; };
 		43B4CDBA25BDC84900C59D08 /* odot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = odot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B4CDBD25BDC84900C59D08 /* odotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = odotApp.swift; sourceTree = "<group>"; };
 		43B4CDBF25BDC84900C59D08 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				4383055E25C8A93000DFFEF8 /* LoginRegisterView.swift */,
-				43B118CB25CB60ED00F9A9FB /* SignInTestUI.swift */,
+				43B118CB25CB60ED00F9A9FB /* SignInUI.swift */,
 				433D9D3F25D69619003382CF /* LoggedInProfileView.swift */,
 			);
 			path = Login;
@@ -563,7 +563,7 @@
 			files = (
 				43B4CDC025BDC84900C59D08 /* ContentView.swift in Sources */,
 				433D9D4025D69619003382CF /* LoggedInProfileView.swift in Sources */,
-				43B118CC25CB60ED00F9A9FB /* SignInTestUI.swift in Sources */,
+				43B118CC25CB60ED00F9A9FB /* SignInUI.swift in Sources */,
 				43A9245725C1BCAD00FAD285 /* CodeBlockEditView.swift in Sources */,
 				433D9D4525D9CAF8003382CF /* AuthUtil.swift in Sources */,
 				4383056A25C973C200DFFEF8 /* ImagesItem.swift in Sources */,

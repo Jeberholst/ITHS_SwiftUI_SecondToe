@@ -21,7 +21,7 @@ struct LoginRegisterView: View {
             VStack {
                 
                 VStack{}.sheet(isPresented: $authUtil.isPresentingLoginUI) {
-                    SignInTestUI()
+                    SignInUI()
                         .environmentObject(todoDataModel)
                         .environmentObject(authUtil)
                     

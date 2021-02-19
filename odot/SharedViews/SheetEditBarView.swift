@@ -69,13 +69,3 @@ struct SheetEditBarView: View {
         .padding()
     }
 }
-
-struct SheetEditBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        SheetEditBarView(title: "1"){
-            
-        } actionDelete: {
-            
-        }
-    }
-}

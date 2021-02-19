@@ -45,7 +45,6 @@ struct FirebaseUtil {
             }
         }
      
-        
     }
     
     func deleteSingleUserDocument(documentID: String){
@@ -61,7 +60,6 @@ struct FirebaseUtil {
         }
         
     }
-    
     
     func updateDocumentField(documentID: String, docData: [String : Any]){
         guard let docRef = getUserCollection()?.document(documentID) else { return }
@@ -161,36 +159,6 @@ struct FirebaseUtil {
               }
             }
              
-        }
-    }
-    
-    func removeUserAccount(){
-        
-        let authUI = FUIAuth.defaultAuthUI()
-        let userAcc = Auth.auth().currentUser
-        print("Trying to sign out user...")
-        try! authUI?.signOut()
-        userAcc?.delete { error in
-          if let error = error {
-            print("Delete account error: \(error)")
-          } else {
-            print("Account deleted")
-          }
-        }
-   
-    }
-    
-    
-    private func deleteUserStorageFolder() {
-        
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        
-        if let user = Auth.auth().currentUser {
-            
-            let folderRef = storageRef.child("\(user.uid)")
-            folderRef.delete()
-          
         }
     }
     

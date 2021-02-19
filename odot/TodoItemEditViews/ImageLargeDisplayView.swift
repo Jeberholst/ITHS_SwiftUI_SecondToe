@@ -16,7 +16,6 @@ struct ImageLargeDisplayView: View {
     
     @Binding var imagesSelectedIndex: Int
     @Binding var selectedImage: String
-   // @State var docID: String
     
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
@@ -81,12 +80,8 @@ struct ImageLargeDisplayView: View {
         
     }
     
-    private func onActionSave(){
-        print("!DELETE! Save")
-    }
-    
     private func onActionDelete(){
-        print("Deleting image...")
+
         let storage = Storage.storage()
         let storageRef = storage.reference(forURL: selectedImage)
         
@@ -99,7 +94,6 @@ struct ImageLargeDisplayView: View {
         }
 
         fbUtil.deleteImageFromStorage(documentID: todoDataModel.selectedDocId, imageName: storageRef.name, docData: docData)
-        
 
     }
     

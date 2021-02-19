@@ -41,7 +41,6 @@ struct SelectedTodoItemEditView: View {
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                                 .cornerRadius(10.0)
                                 .onReceive(Just(todoItem.title)){ text in
-                                    //print(text)
                                     todoItem.title = text
                                 }
                         }
@@ -62,7 +61,6 @@ struct SelectedTodoItemEditView: View {
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                                 .cornerRadius(10.0)
                                 .onReceive(Just(todoItem.note)){ text in
-                                    //print(text)
                                     todoItem.note = text
                                 }
                         }
@@ -85,7 +83,6 @@ struct SelectedTodoItemEditView: View {
                                 ForEach(prioritys, id: \.self) {
                                     Text("\($0)")
                                 }.onChange(of: selectedPr) { value in
-                                    print(value)
                                     selectedPr = value
                                 }
                             }
