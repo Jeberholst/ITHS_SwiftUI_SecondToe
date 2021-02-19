@@ -25,9 +25,7 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-    
-    //@State private var documentId: String? = ""
-    
+   
     var body: some View {
         
             ZStack {
@@ -126,7 +124,6 @@ struct TodoSelectedItemView: View {
     
     private func addNewItem(type: DOC_FIELDS_NEW){
         
-//        if let documentId = self.documentId {
             var deterDocumentField: String
             var docData : [String: Any] = [:]
             let FIELD_HYPERLINKS = "hyperLinks"
@@ -207,7 +204,7 @@ struct CodeBlockScrollView: View {
                        // isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingBlockEdit, content: {
-                        CodeBlockEditView(codeBlockIndex: $selectedItem)
+                        CodeBlockEditView(codeBlockIndex: $selectedItem).environmentObject(todoDataModel)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))
@@ -271,7 +268,7 @@ struct HyperLinksScrollView: View {
                        // isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingEdit, content: {
-                        HyperLinkEditView(hyperLinkIndex: $selectedItem)
+                        HyperLinkEditView(hyperLinkIndex: $selectedItem).environmentObject(todoDataModel)
                     })
                     .padding()
                     .background(Color("Background"))
@@ -332,7 +329,7 @@ struct ImagesScrollView: View {
                         isPresenting.toggle()
                     })
                     .sheet(isPresented: $isPresenting, content: {
-                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage)
+                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage).environmentObject(todoDataModel)
                     })
                     .padding()
                     .background(GrayBackGroundView(alpha: 0.0))

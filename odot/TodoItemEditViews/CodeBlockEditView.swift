@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import Firebase
+import Prettier_swift
 
 let icCopy = "doc.text"
 let icPaste = "doc.on.doc"
@@ -20,7 +21,6 @@ struct CodeBlockEditView: View {
     @EnvironmentObject var todoDataModel: TodoDataModel
     
     @Binding var codeBlockIndex: Int
-    //var docID: String
     
     private let documentField = "codeBlocks"
     @State private var isSharingPresented = false
@@ -31,7 +31,6 @@ struct CodeBlockEditView: View {
 
     var body: some View {
         
-    
         ZStack(alignment: .top) {
             VStack {
                 
@@ -57,91 +56,146 @@ struct CodeBlockEditView: View {
                                 
                                 Spacer()
                                 HStack(spacing: 15) {
+                                        
                                     ClipBoardActionView(iconSystemName: icCopy, label: "Copy", onAction: {
-                                        print("Copying to clipboard")
                                         UIPasteboard.general.string = newCodeBlockItem.code
                                     })
                                     ClipBoardActionView(iconSystemName: icPaste, label: "Paste", onAction: {
-                                        print("Pasting from clipboard")
                                         if let onPasteBoard = UIPasteboard.general.string {
                                             newCodeBlockItem.code = onPasteBoard
                                         }
                                     })
                                     ClipBoardActionView(iconSystemName: icPasteLastLine, label: "Paste", onAction: {
-                                        print("Paste from clipboard last line")
                                         if let onPasteBoard = UIPasteboard.general.string {
                                             newCodeBlockItem.code = "\(newCodeBlockItem.code)\r\n\(onPasteBoard)"
                                         }
                                     })
-                                    ClipBoardActionView(iconSystemName: icShare, label: "xShare", onAction: {
-                                        print("Share to...")
+                                    ClipBoardActionView(iconSystemName: icShare, label: "Share", onAction: {
                                         isSharingPresented.toggle()
                                     })
 
                                 }.padding()
                             }
                             Divider()
+                            
+                            HStack {
+                                ScrollView(.horizontal) {
+                                    FormatCodeActionView(code: $newCodeBlockItem.code)
+                                }
+                            }
+                            
+                            Divider()
                
                             HStack(alignment: .top) {
                                 ScrollView(.vertical, showsIndicators: true) {
-                                    
-                                        HStack {
-                                        
-                                            VStack(alignment: HorizontalAlignment.leading) {
-                                                
-                                                TextEditor(text: $lines)
-                                                
-                                                    .font(.system(size: 12))
-                                                    .lineSpacing(5)
-                                                    .disabled(true)
-                                                    .frame(width: 35)
-                                                    .onAppear {
-                                                        UITextView.appearance().backgroundColor = .clear
-                                                    }
-                                                
-                                            }
-                                            
-                                            VStack(alignment: HorizontalAlignment.leading) {
-                                                TextEditor(text: $newCodeBlockItem.code)
-                                                    .font(.system(size: 12))
-                                                    .lineSpacing(5)
-                                                    .onReceive(Just(newCodeBlockItem.code)){ text in
-                                                        newCodeBlockItem.code = text
-                                                    }.onChange(of: newCodeBlockItem.code) { value in
-                                                  
-                                                        let lf = value.split(omittingEmptySubsequences: false){ $0.isNewline }
-                                                        self.lineCount = lf.count
-                                                        let ladd = Int(Double((lineCount/5)) * 0.4)
-                                                        updateLines(lineCount: (lineCount + ladd))
-                                                      
-                                                    }
-                                            }
-                                            
-                                        }
-                                        .frame(height: CGFloat(lineCount * 25))
+                                    HStack {
+                                        CodeBlockContentView(lines: $lines, code: $newCodeBlockItem.code, lineCount: $lineCount)
+                                    }
+                                    .frame(height: CGFloat(lineCount * 25))
                                 }
                             
                             }
                             
                         }
-                }
-                .padding()
-                .onAppear(){
-                    newCodeBlockItem = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
-                    print("CodeBlockIndex: \(codeBlockIndex)")
-                }
+                    }
+                    .padding()
+                    .onAppear(){
+                        newCodeBlockItem = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
+                    }
                 
                 Spacer()
                     
                 }
-                
             }
-            
         }.sheet(isPresented: $isSharingPresented, content: {
-            //ShareController()
             ShareController(text: $newCodeBlockItem.code)
         })
         
+    }
+    
+    private func onActionSave(){
+      
+        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
+       
+        var newCodeBlock = allCodeBlocks
+        newCodeBlock[codeBlockIndex] = newCodeBlockItem
+
+        let docData: [[String: Any]] = newCodeBlock.map { item in
+            item.getAsDictionary()
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
+    }
+    
+    private func onActionDelete(){
+        
+        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
+             
+        var newCodeBlock = allCodeBlocks
+        newCodeBlock.remove(at: codeBlockIndex)
+
+        let docData: [[String: Any]] = newCodeBlock.map { item in
+            item.getAsDictionary()
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
+    }
+}
+
+private enum FORMATS : CaseIterable {
+    case CSS
+    case HTML
+    case JSON
+    case TYPESCRIPT
+}
+
+private func getFormats() -> [FORMATS] {
+    var listOfFormats: [FORMATS] = []
+    for format in FORMATS.allCases {
+        listOfFormats.append(format)
+    }
+    return listOfFormats
+}
+
+struct CodeBlockContentView: View {
+    
+    @Binding var lines: String
+    @Binding var code: String
+    @Binding var lineCount: Int
+    
+    var body: some View {
+        
+        VStack(alignment: HorizontalAlignment.leading) {
+            
+            TextEditor(text: $lines)
+            
+                .font(.system(size: 12))
+                .lineSpacing(5)
+                .disabled(true)
+                .frame(width: 35)
+                .onAppear {
+                    UITextView.appearance().backgroundColor = .clear
+                }
+            
+        }
+        
+        VStack(alignment: HorizontalAlignment.leading) {
+            TextEditor(text: $code)
+                .font(.system(size: 12))
+                .lineSpacing(5)
+                .onReceive(Just(code)){ text in
+                    code = text
+                }.onChange(of: code) { value in
+              
+                    let lf = value.split(omittingEmptySubsequences: false){ $0.isNewline }
+                    lineCount = lf.count
+                    let ladd = Int(Double((lineCount/5)) * 0.4)
+                    updateLines(lineCount: (lineCount + ladd))
+                  
+                }
+        }
         
     }
     
@@ -151,42 +205,64 @@ struct CodeBlockEditView: View {
             lines = lines.appending("\(i + 1) \n")
         }
         self.lines = lines
-        print("LineCount: \(self.lineCount)")
     }
     
-    private func onActionSave(){
-      
-        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
-       
-       // if let allCodeBlocks = allCodeBlocks {
-            
-            var newCodeBlock = allCodeBlocks
-            newCodeBlock[codeBlockIndex] = newCodeBlockItem
+}
 
-            let docData: [[String: Any]] = newCodeBlock.map { item in
-                item.getAsDictionary()
-            }
+struct FormatCodeActionView: View {
+    
+    @Binding var code: String
+    
+    private let listOfFormats = getFormats()
+    
+    var body: some View {
         
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-     //   }
-  
+        HStack {
+            ForEach(listOfFormats.indices, id: \.self){ item in
+               
+                Button(action: {
+                    let output = onPrettifyCode(form: listOfFormats[item], input: code)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        if let output = output {
+                            if output != "" {
+                                code = output
+                            } else {
+                               print("Code formatting failed...")
+                            }
+                        }
+                    }
+                }) {
+                    Text(String(describing: listOfFormats[item]))
+                        .font(.system(size: 12))
+                        .foregroundColor(Color("Icons"))
+                        .bold()
+                }
+                .padding()
+            }
+        }
+        
     }
     
-    private func onActionDelete(){
+    private func onPrettifyCode(form: FORMATS, input: String) -> String? {
+                
+        let prettier = Prettier()
+        var output = ""
         
-        let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
-       
-//        if let allCodeBlocks = allCodeBlocks {
+        switch form {
+        
+        case .CSS:
+            output = prettier.prettify(input, parser: .css) ?? ""
+        case .HTML:
+            output = prettier.prettify(input, parser: .html) ?? ""
+        case .JSON:
+            output = prettier.prettify(input, parser: .json) ?? ""
+        case .TYPESCRIPT:
+            output = prettier.prettify(input, parser: .typescript) ?? ""
+        }
             
-            var newCodeBlock = allCodeBlocks
-            newCodeBlock.remove(at: codeBlockIndex)
-
-            let docData: [[String: Any]] = newCodeBlock.map { item in
-                item.getAsDictionary()
-            }
-        
-            FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-//        }
+        return output
+     
     }
 }
 

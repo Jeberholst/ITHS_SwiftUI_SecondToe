@@ -40,10 +40,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, FUIAuthDelegate {
       if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
         return true
       }
-      // other URL handling goes here.
       return false
     }
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-      // handle user and error as necessary
+     
     }
 }
