@@ -136,16 +136,16 @@ struct TodoSelectedItemView: View {
                 deterDocumentField = FIELD_HYPERLINKS
                 
                 docData = HyperLinkItem(
-                    title: "New title",
-                    description: "New description",
-                    hyperlink: "https://linkhere.change").getAsDictionary()
+                    title: LocalizeNoCom(name: "A title"),
+                    description: LocalizeNoCom(name: "A note"),
+                    hyperlink: LocalizeNoCom(name: "LinkBase")).getAsDictionary()
                 
             case .CODEBLOCK:
                 
                 deterDocumentField = FIELD_CODEBLOCKS
             
                 docData = CodeBlockItem(
-                    code: "New description").getAsDictionary()
+                    code: LocalizeNoCom(name: "A description")).getAsDictionary()
                 
             }
     

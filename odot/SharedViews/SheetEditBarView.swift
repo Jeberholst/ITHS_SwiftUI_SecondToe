@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+let icCheckmarkCircle = "checkmark.circle"
+let icTrashCircle = "trash.circle"
+
 struct SheetEditBarView: View {
     
     @Environment(\.presentationMode) private var presentationMode
@@ -37,7 +40,7 @@ struct SheetEditBarView: View {
                 presentationMode.wrappedValue.dismiss()
                 
             }, label: {
-                Image(systemName: "checkmark.circle")
+                Image(systemName: icCheckmarkCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
@@ -47,17 +50,16 @@ struct SheetEditBarView: View {
             Button(action: {
                 isPresentingAlert.toggle()
             }, label: {
-                Image(systemName: "trash.circle")
+                Image(systemName: icTrashCircle)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
                     .foregroundColor(.red)
             }).alert(isPresented: $isPresentingAlert) {
                 Alert(
-                        title: Text("Delete this item?"),
-                        message: Text("Deletion cannot be undone"),
-                        primaryButton: .destructive(Text("Delete")) {
-                            print("Deleting...")
+                        title: Text(LocalizeNoCom(name: "Delete this item?")),
+                        message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
+                        primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
                             actionDelete()
                             presentationMode.wrappedValue.dismiss()
                         },

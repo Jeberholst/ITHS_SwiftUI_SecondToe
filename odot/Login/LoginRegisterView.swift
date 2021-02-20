@@ -58,11 +58,11 @@ struct LoginRegisterView: View {
                     if(Auth.auth().currentUser == nil){
                         authUtil.displaySignIn()
                     } else {
-                        print("IsLoggedIn: \($authUtil.isLoggedIn)")
-                        print("IsLoggedIn toggled: \($authUtil.isLoggedIn)")
+                       // print("IsLoggedIn: \($authUtil.isLoggedIn)")
+                       // print("IsLoggedIn toggled: \($authUtil.isLoggedIn)")
                     }
                 }, label: {
-                    Text("Login / Register")
+                    Text(LocalizeNoCom(name: "Sign in") + " / " + LocalizeNoCom(name: "Register"))
                 })
                 .padding()
                 

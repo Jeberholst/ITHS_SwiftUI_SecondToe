@@ -37,13 +37,11 @@ struct SheetDeleteOnlyBarView: View {
                 
             }).alert(isPresented: $isPresentingAlert) {
                 Alert(
-                        title: Text("Delete this item?"),
-                        message: Text("Deletion cannot be undone"),
-                        primaryButton: .destructive(Text("Delete")) {
-                            
+                        title: Text(LocalizeNoCom(name: "Delete this item?")),
+                        message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
+                        primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
                             actionDelete()
                             presentationMode.wrappedValue.dismiss()
-                            
                         },
                         secondaryButton: .cancel()
                     )

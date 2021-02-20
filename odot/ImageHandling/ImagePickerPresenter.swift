@@ -22,7 +22,7 @@ struct ImagePickerPresenter: View {
         
         VStack {
         
-            SheetSaveOnlyBarView(title: "New Image", actionSave: actionSave)
+            SheetSaveOnlyBarView(title: LocalizeNoCom(name: "New image"), actionSave: actionSave)
             
             Divider()
             
@@ -42,7 +42,6 @@ struct ImagePickerPresenter: View {
     }
     
     private func actionSave(){
-        print("Saving image...")
         fbUtil.uploadImageToStorage(documentID: todoDataModel.selectedDocId, imageData: imageData)
     }
     
@@ -135,9 +134,3 @@ extension UIImage {
         return scaledImage
     }
 }
-//
-//struct CaptureImageView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ImagePickerPresenter(todoItem: TodoItem(),mainIndex: 0)
-//    }
-//}

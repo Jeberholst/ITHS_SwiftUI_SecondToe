@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		430A888025DBAA39008F2F72 /* SheetDeleteOnlyBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A887F25DBAA39008F2F72 /* SheetDeleteOnlyBarView.swift */; };
+		430A890A25E10268008F2F72 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 430A890C25E10268008F2F72 /* Localizable.strings */; };
+		430A891525E10D46008F2F72 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A891425E10D46008F2F72 /* Util.swift */; };
 		4313416525C2CE8F0065B537 /* GrayBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */; };
 		4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313416F25C301920065B537 /* ImageLargeDisplayView.swift */; };
 		431A92D825C36C8600F08481 /* SheetEditBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431A92D725C36C8600F08481 /* SheetEditBarView.swift */; };
@@ -62,6 +64,9 @@
 		17034B2F9B7966846C095DBE /* Pods_odot_odotUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_odot_odotUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9D61807D46A3FE8BE7D10B /* Pods-odot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-odot.debug.xcconfig"; path = "Target Support Files/Pods-odot/Pods-odot.debug.xcconfig"; sourceTree = "<group>"; };
 		430A887F25DBAA39008F2F72 /* SheetDeleteOnlyBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetDeleteOnlyBarView.swift; sourceTree = "<group>"; };
+		430A890B25E10268008F2F72 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		430A891025E10272008F2F72 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		430A891425E10D46008F2F72 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		4313416425C2CE8F0065B537 /* GrayBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayBackGroundView.swift; sourceTree = "<group>"; };
 		4313416F25C301920065B537 /* ImageLargeDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLargeDisplayView.swift; sourceTree = "<group>"; };
 		431A92D725C36C8600F08481 /* SheetEditBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetEditBarView.swift; sourceTree = "<group>"; };
@@ -211,8 +216,10 @@
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
 				43B4CDC625BDC84A00C59D08 /* Info.plist */,
 				43B118A025CB48C900F9A9FB /* AppDelegate.swift */,
+				430A891425E10D46008F2F72 /* Util.swift */,
 				4383056E25CAE4FD00DFFEF8 /* GoogleService-Info.plist */,
 				43B4CDC325BDC84A00C59D08 /* Preview Content */,
+				430A890C25E10268008F2F72 /* Localizable.strings */,
 			);
 			path = odot;
 			sourceTree = "<group>";
@@ -379,6 +386,7 @@
 			knownRegions = (
 				en,
 				Base,
+				sv,
 			);
 			mainGroup = 43B4CDB125BDC84900C59D08;
 			productRefGroup = 43B4CDBB25BDC84900C59D08 /* Products */;
@@ -398,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43B4CDC525BDC84A00C59D08 /* Preview Assets.xcassets in Resources */,
+				430A890A25E10268008F2F72 /* Localizable.strings in Resources */,
 				43B4CDC225BDC84A00C59D08 /* Assets.xcassets in Resources */,
 				4383056F25CAE4FD00DFFEF8 /* GoogleService-Info.plist in Resources */,
 			);
@@ -583,6 +592,7 @@
 				431A92FF25C612F100F08481 /* ImagePickerPresenter.swift in Sources */,
 				4356968E25CC86340072D09E /* FirebaseUtil.swift in Sources */,
 				430A888025DBAA39008F2F72 /* SheetDeleteOnlyBarView.swift in Sources */,
+				430A891525E10D46008F2F72 /* Util.swift in Sources */,
 				4375066625C09E66006158E4 /* HyperLinkItem.swift in Sources */,
 				4313417025C301920065B537 /* ImageLargeDisplayView.swift in Sources */,
 			);
@@ -618,6 +628,18 @@
 			targetProxy = 43B4CDD725BDC84A00C59D08 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		430A890C25E10268008F2F72 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				430A890B25E10268008F2F72 /* en */,
+				430A891025E10272008F2F72 /* sv */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		43B4CDDD25BDC84A00C59D08 /* Debug */ = {

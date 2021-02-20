@@ -14,7 +14,6 @@ struct GrayBackGroundView: View {
         Color.init(UIColor.systemGray4.withAlphaComponent(alpha))
             .cornerRadius(10)
     }
-    
 }
 
 struct GrayBackGroundView_Previews: PreviewProvider {

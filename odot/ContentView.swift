@@ -133,7 +133,7 @@ struct TodoAddNew: View {
     var body: some View {
         HStack {
             Button(action: {
-                let newItem = TodoItem(title: "A new title", note: "A new note", date: Date(), archive: false, priority: 1)
+                let newItem = TodoItem(title: LocalizeNoCom(name: "A title"), note: LocalizeNoCom(name: "A note"), date: Date(), archive: false, priority: 1)
                 FirebaseUtil.firebaseUtil.updateUserDocument(newTodoItem: newItem)
             }, label: {
                 Image(systemName: icPlus)

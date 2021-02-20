@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  odot
+
+  Created by Joakim Eberholst on 2021-02-20.
+  
+*/
+"A title" = "A title";
+"A note" = "A note";
+"A description" = "A description";
+"Sign out" = "Sign out";
+"Sign in" = "Sign in";
+"Register" = "Register";
+"Are you sure you want to " = "Are you sure you want to ";
+"New image" = "New image";
+"Delete this item?" = "Delete this item?";
+"Deletion cannot be undone" = "Deletion cannot be undone";
+"Delete" = "Delete";
+"LinkBase" = "https://link.change.here";

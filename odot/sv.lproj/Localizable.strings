@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  odot
+
+  Created by Joakim Eberholst on 2021-02-20.
+  
+*/
+"A title" = "En titel";
+"A note" = "En notering";
+"A description" = "En beskrivning";
+"Sign out" = "Logga ut";
+"Sign in" = "Logga in";
+"Register" = "Registrera";
+"Are you sure you want to " = "Är du säker på att du vill ";
+"New image" = "Ny bild";
+"Delete this item?" = "Ta bort detta objekt?";
+"Deletion cannot be undone" = "Borttagning kan inte ångras";
+"Delete" = "Ta bort";
+"LinkBase" = "https://ändra.länk.här";

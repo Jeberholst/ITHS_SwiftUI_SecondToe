@@ -25,9 +25,7 @@ class AuthUtil: ObservableObject {
         listener = Auth.auth().addStateDidChangeListener { (auth, user) in
              if user != nil {
                 self.alreadySignedIn()
-                print("isLoggedIn: \(self.isLoggedIn)")
              } else {
-                print("No user signed in")
                 self.isLoggedIn = false
              }
          }
@@ -55,7 +53,6 @@ class AuthUtil: ObservableObject {
         let authUI = FUIAuth.defaultAuthUI()
         self.isPresentingProfile = false
         self.isLoggedIn = false
-        print("Trying to sign out user...")
         try! authUI?.signOut()
     }
     

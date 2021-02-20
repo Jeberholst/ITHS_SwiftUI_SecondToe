@@ -43,12 +43,12 @@ struct LoggedInProfileView: View {
             Button(action: {
                 isPresentingSignOutAlert.toggle()
             }, label: {
-                Text("Sign Out")
+                Text("Sign out")
                     .font(.system(size: 16))
             }).alert(isPresented: $isPresentingSignOutAlert) {
                 Alert(
-                        title: Text("Sign Out"),
-                        message: Text("Are you sure you want to sign out?"),
+                        title: Text(LocalizeNoCom(name: "Sign out")),
+                    message: Text(LocalizeNoCom(name: "Are you sure you want to ") + LocalizeNoCom(name: "Sign out") + "?"),
                         primaryButton: .destructive(Text("Sign out")) {
                             authUtil.signOut()
                             presentationMode.wrappedValue.dismiss()
@@ -57,15 +57,10 @@ struct LoggedInProfileView: View {
                     )
             }
             .padding()
+
             
         }.animation(.linear)
         
     }
     
-}
-
-struct LoggedInProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoggedInProfileView()
-    }
 }
