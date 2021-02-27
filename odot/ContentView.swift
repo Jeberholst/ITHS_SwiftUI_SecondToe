@@ -99,9 +99,9 @@ struct NavigationViews: View {
             }
             
         }
-        .onLongPressGesture {
+        .onTapGesture(count: 1, perform: {
             isPresentingEdit.toggle()
-        }
+        })
         .sheet(isPresented: $isPresentingEdit, content: {
             SelectedTodoItemEditView(todoItem: todoDataModel.todoData[index])
         })
