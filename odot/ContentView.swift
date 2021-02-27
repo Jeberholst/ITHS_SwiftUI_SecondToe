@@ -7,151 +7,240 @@
 
 import SwiftUI
 import FirebaseUI
+import FirebaseFirestoreSwift
+import Combine
+import SDWebImageSwiftUI
 
 let icLink = "link"
+let icLinkAdd = "link.badge.plus"
 let icCode = "chevron.left.slash.chevron.right"
 let icEdit = "square.and.pencil"
 let icCamera = "camera"
 let icImage = "photo"
+let icTrash = "trash"
+let icPlus = "plus"
 
 struct ContentView: View {
     
-    @EnvironmentObject private var todos : Todos
-   // @ObservedObject private var todos = Todos()
+    @EnvironmentObject private var authUtil: AuthUtil
+    @EnvironmentObject private var todoDataModel: TodoDataModel
+
+    @State private var delIndex: Int = 0
     
     init() {
-        UITableView.appearance().backgroundColor = .systemGray6 // Uses UIColor
+        UITableView.appearance().backgroundColor = UIColor(Color("Background"))
     }
     
     var body: some View {
-        NavigationView {
         
-            ZStack{
-                VStack {
-                    List(){
-                        ForEach(0 ..< todos.listOfItems.count, id: \.self){ i in
-                            NavigationLink(
-                                destination:
-                                    TodoSelectedItemView(todoItem: todos.listOfItems[i], listItemIndex: i)){
-                                
-                                TodoItemView(todo: todos.listOfItems[i], imagesCount: 7, hyperLinksCount: todos.listOfItems[i].getHyperLinksCount(), codeBlocksCount: todos.listOfItems[i].getCodeBlocksCount())
-                                
-                            }
-                            
-                        }.onDelete(perform: { indexSet in
-                            todos.removeItem(indexSet: indexSet)
-                        })
+        ZStack{
+            NavigationView {
+                List(){
+                    ForEach(todoDataModel.todoData.indices, id: \.self){ index in
+                        NavigationViews(index: index).environmentObject(todoDataModel)
                     }
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarItems(trailing: TodoAddNew(todos: todos))
-                    
+                    .onDelete(perform: delete)
+                    .listRowBackground(Color("BackgroundOver"))
                 }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: TodoAddNew())
+        .frame(width: UIScreen.main.bounds.width)
+        .sheet(isPresented: $authUtil.isPresentingProfile, content: {
+            LoggedInProfileView()
+        })
+        .onAppear {
+            todoDataModel.initializeListener()
+        }
+        
+    }
+    
+    func delete(at offsets: IndexSet) {
+        let index = offsets[offsets.startIndex]
+        FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[index].id!)
+    }
+
+}
+
+struct NavigationViews: View {
+    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @EnvironmentObject var authUtil: AuthUtil
+    var index: Int
+    
+    var body: some View {
+        
+        VStack {
+            NavigationLink(
+                destination:
+                    TodoSelectedItemView(
+                        todoItemIndex: index)
+                            .background(Color("Background").ignoresSafeArea())
+                            .environmentObject(todoDataModel)){
+                
+                    TodoItemView(index: index)
+                    
+            }
             
+        }
+            
+    }
+
+}
+
+struct ProfileNavigateView: View {
+    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @Binding var isPresenting: Bool
+    
+    var body: some View {
+        
+        Button(action: {
+
+            isPresenting.toggle()
+
+        }, label: {
+            
+            HStack {
+                
+                if let image = Auth.auth().currentUser?.photoURL {
+                    
+                    WebImage(url: URL(string: image.absoluteString))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(25)
+                        .frame(width: 25, height: 25)
+                }
+                
+                if let userName = Auth.auth().currentUser?.displayName {
+                    Text("\(userName)")
+                        .font(.system(size: 12))
+                        .frame(alignment: .center)
+                        .foregroundColor(Color("AccentColor"))
+                }
+            }
+        })
     }
     
 }
 
+
 struct TodoAddNew: View {
-    
-    var todos: Todos
-    
+
     var body: some View {
         HStack {
-            
             Button(action: {
-
-                let authUI = FUIAuth.defaultAuthUI()
-                print("Trying to sign out user...")
-                try! authUI?.signOut()
-                
+                let newItem = TodoItem(title: LocalizeNoCom(name: "A title"), note: LocalizeNoCom(name: "A note"), date: Date(), archive: false, priority: 1)
+                FirebaseUtil.firebaseUtil.updateUserDocument(newTodoItem: newItem)
             }, label: {
-                Text("Sign out")
-            })
-            
-            
-            Button(action: {
-                let newItem = TodoItem(title: "Hej")
-                todos.addItem(todoItem: newItem)
-            }, label: {
-                Image(systemName: "plus")
+                Image(systemName: icPlus)
             })
         }
     }
+    
 }
 
 struct TodoItemView: View {
     
-    var todo: TodoItem
-    
-    var imagesCount: Int
-    var hyperLinksCount: Int
-    var codeBlocksCount: Int
-    
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @State var index: Int
+
     var body: some View {
         
-        HStack {
-            
-            VStack(alignment: .leading){
-                
-                HStack {
-                    
-                    VStack(alignment: .leading) {
-                        Text("\(todo.title)")
-                            .font(.system(size: 16))
-                            .bold()
-                        
-                        Text("\(todo.getFormattedDate())")
-                            .font(.system(size: 14))
-                        
-                        Spacer()
-                   
-                        //Text("\(todo.note)")
-                          //  .font(.system(size: 14))
-                    
-                    }
-                   
-                }
-                
-                Spacer()
-                
-                HStack {
-                    
-                    HStack {
-                        Image(systemName: icImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(imagesCount)").font(.system(size: 14))
-                    }
-                    HStack {
-                        Image(systemName: icLink)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(hyperLinksCount)").font(.system(size: 14))
-                    }
-                    HStack {
-                        Image(systemName: icCode)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                        Text("\(codeBlocksCount)").font(.system(size: 14))
-                    }
-                }
-                
-             
-            }
-            
-        }.padding() 
-        
-    }
+        if todoDataModel.todoData.indices.contains(index){
 
+            HStack {
+                
+                VStack {
+    
+                    Rectangle()
+                        .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[index].priority!).opacity(0.5))
+                        .frame(width: 2)
+    
+                }
+                
+                VStack(alignment: .leading){
+                    HStack {
+                        
+                        VStack(alignment: .leading) {
+                            Text(todoDataModel.todoData[index].title!)
+                                .font(.system(size: 16))
+                                .bold()
+                            
+                            Text(todoDataModel.todoData[index].getFormattedDate())
+                                .font(.system(size: 14))
+                            
+                            Spacer().frame(height: 10)
+                            
+                            Text("\(todoDataModel.todoData[index].note!)")
+                                .font(.system(size: 14))
+                            
+                            Spacer().frame(height: 10)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        
+                        HStack {
+                            Image(systemName: icImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getImagesCount())").font(.system(size: 14))
+                        }
+                        HStack {
+                            Image(systemName: icLink)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getHyperLinksCount())").font(.system(size: 14))
+                        }
+                        HStack {
+                            Image(systemName: icCode)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                            Text("\(todoDataModel.todoData[index].getCodeBlocksCount())").font(.system(size: 14))
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+    }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+func getPriorityColor(priority: Int) -> Color {
+    
+    switch priority {
+    
+    case 1:
+        return Color(.green)
+    case 2:
+        return Color(.orange)
+    case 3:
+        return Color(.red)
+        
+    default:
+        return Color(.gray)
+    }
+    
+}
+
+extension Binding where Value == String? {
+    func toNonOptional() -> Binding<String> {
+        return Binding<String>(
+            get: {
+                return self.wrappedValue ?? ""
+            },
+            set: {
+                self.wrappedValue = $0
+            }
+        )
     }
 }

@@ -7,13 +7,34 @@
 
 import Foundation
 
-struct HyperLinkItem: Identifiable {
-    var id = UUID()
+struct HyperLinkItem: Codable, Hashable {
+    var index: Int? = 0
     
     var date: Date = Date()
-    var title: String = "Set title here"
-    var description: String = "Set description here"
-    var hyperlink: String = "https://setlinkhere.com"
+    var title: String
+    var description: String
+    var hyperlink: String
+    
+    enum CodingKeys: String, CodingKey {
+        case index
+        case date
+        case title
+        case description
+        case hyperlink
+    }
+    
+    private func setId(){
+        
+    }
+    
+    func getAsDictionary() -> [String : Any] {
+       return [
+                "date": self.date,
+                "title": self.title,
+                "description": self.description,
+                "hyperlink": self.hyperlink
+            ]
+    }
     
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()

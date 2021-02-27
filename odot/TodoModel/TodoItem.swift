@@ -1,40 +1,44 @@
 //
-//  Note.swift
+//  TodoItem.swift
 //  odot
 //
-//  Created by Joakim Eberholst on 2021-01-24.
+//  Created by Joakim Eberholst on 2021-02-05.
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestoreSwift
 
-struct TodoItem : Identifiable {
-    var id = UUID()
+struct TodoItem: Codable, Identifiable, Hashable {
+
+    @DocumentID var id: String?
     
-    var title: String = "Title"
-    var note: String = "Note"
-    var date: Date = Date()
-    var hyperLinks: [HyperLinkItem] = [HyperLinkItem]()
-    var codeBlocks: [CodeBlockItem] = [CodeBlockItem]()
-    var images: [ImagesItem] = [ImagesItem]()
-   
+    var title: String?
+    var note: String?
+    var date: Date?
+    var archive: Bool?
+    var priority: Int?
+    var hyperLinks: [HyperLinkItem] = []
+    var codeBlocks: [CodeBlockItem] = []
+    var images: [ImagesItem] = []
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case note
+        case date
+        case priority
+        case archive
+        case hyperLinks
+        case codeBlocks
+        case images
+    }
+    
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let date = dateFormatter.string(from: self.date)
+        let date = dateFormatter.string(from: self.date ?? Date())
         return date
-        
-    }
-    
-    mutating func addImagesItem(item: ImagesItem){
-        images.append(item)
-    }
-    
-    mutating func addHyperLinkItem(item: HyperLinkItem){
-        hyperLinks.append(item)
-    }
-    
-    mutating func addCodeBlockItem(item: CodeBlockItem){
-        codeBlocks.append(item)
     }
     
     func getImagesCount() -> Int {
@@ -49,5 +53,16 @@ struct TodoItem : Identifiable {
         return codeBlocks.count
     }
     
+    func getHyperLinksAsDictionary() -> [[String : Any]] {
+        
+        if hyperLinks.count != 0 {
+            let map = hyperLinks.map { item in
+                item.getAsDictionary()
+            }
+            return map
+        }
+       
+        return [[:]]
+    }
     
 }

@@ -6,13 +6,20 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+import FirebaseUI
 
 struct ImageLargeDisplayView: View {
     
-    @EnvironmentObject private var todos : Todos
-    var image: String
-    @State var mainIndex: Int
-    @State var imageIndex: Int
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    private let fbUtil = FirebaseUtil.firebaseUtil
+    
+    @Binding var imagesSelectedIndex: Int
+    @Binding var selectedImage: String
+    
+    @State private var scale: CGFloat = 1.0
+    @State private var lastScale: CGFloat = 1.0
+    @State private var viewState = CGSize.zero
     
     var body: some View {
         
@@ -20,42 +27,76 @@ struct ImageLargeDisplayView: View {
             
             VStack {
                 
-                SheetEditBarView(title: "Image \(imageIndex)"){
-                    onActionSave()
-                } actionDelete: {
+                SheetDeleteOnlyBarView(title: "Image \(imagesSelectedIndex)"){
                     onActionDelete()
                 }
                
                 Divider()
-                Spacer()
-                
-                Image(systemName: "\(image)")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
                 
                 Spacer()
                 
+                VStack(alignment: .center){
+                    
+                    WebImage(url: URL(string: selectedImage))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .animation(.spring())
+                        .offset(x: viewState.width, y: viewState.height)
+                        .frame(width: UIScreen.main.bounds.width - 60, alignment: .center)
+                        .gesture(DragGesture()
+                              .onChanged { val in
+                                  self.viewState = val.translation
+                              }
+                        )
+                        .gesture(MagnificationGesture()
+                            .onChanged { val in
+                    
+                            let delta = val / self.lastScale
+                            self.lastScale = val
+                            if delta > 0.93 {
+                                let newScale = self.scale * delta
+                                self.scale = newScale
+                            }
+                        }
+                        .onEnded { _ in
+                            self.lastScale = 1.0
+                        })
+                        .scaleEffect(scale)
+                        
+                }
+                .frame(width: UIScreen.main.bounds.width)
+                .clipped()
+                .background(GrayBackGroundView(alpha: 0.1))
+                .onTapGesture(count: 2, perform: {
+                    self.viewState = CGSize.zero
+                    self.scale = 1.0
+                })
+                
+                Spacer()
+                      
             }
             
         }
         
     }
     
-    private func onActionSave(){
-        print("Save")
-    }
-    
     private func onActionDelete(){
-        print("Delete")
+
+        let storage = Storage.storage()
+        let storageRef = storage.reference(forURL: selectedImage)
+        
+        let currImages = todoDataModel.todoData[todoDataModel.mainIndex].images
+        var newImages = currImages
+        newImages.remove(at: imagesSelectedIndex)
+
+        let docData: [[String: Any]] = newImages.map { item in
+            item.getAsDictionary()
+        }
+
+        fbUtil.deleteImageFromStorage(documentID: todoDataModel.selectedDocId, imageName: storageRef.name, docData: docData)
+
     }
     
-}
-
-struct ImageLargeDisplayView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageLargeDisplayView(image: "photo", mainIndex: 0, imageIndex: 0)
-    }
 }
 
 

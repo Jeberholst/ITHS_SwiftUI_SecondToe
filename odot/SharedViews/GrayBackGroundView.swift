@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct GrayBackGroundView: View {
+    var alpha: CGFloat = 0.2
     
     var body: some View {
-        Color.init(UIColor.systemGray4.withAlphaComponent(0.2))
+        Color.init(UIColor.systemGray4.withAlphaComponent(alpha))
             .cornerRadius(10)
     }
-    
 }
 
 struct GrayBackGroundView_Previews: PreviewProvider {

@@ -6,20 +6,23 @@
 //
 
 import SwiftUI
+import FirebaseStorage
+import FirebaseAuth
 
 struct ImagePickerPresenter: View {
+        
+    @EnvironmentObject private var todoDataModel: TodoDataModel
+    private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
     
-    @EnvironmentObject var todos: Todos
-    @State var todoItem: TodoItem
-    @State var mainIndex: Int
     @State var isDisplayingImageChooser: Bool = false
     @State var image: Image? = Image(systemName: "photo")
+    @State var imageData: Data? = Data()
     
     var body: some View {
         
         VStack {
         
-            SheetSaveOnlyBarView(title: "New Image", actionSave: actionSave)
+            SheetSaveOnlyBarView(title: LocalizeNoCom(name: "New image"), actionSave: actionSave)
             
             Divider()
             
@@ -29,20 +32,18 @@ struct ImagePickerPresenter: View {
                 .frame(width: UIScreen.main.bounds.width / 1.5, height: 250, alignment: .center)
                 .padding()
             
-            ImagePicker(image: self.$image)
+            ImagePicker(image: self.$image, imageURL: self.$imageData)
             
+        }
+        .onAppear {
+            print(todoDataModel.selectedDocId)
         }
         
     }
     
     private func actionSave(){
-        print("Saving image...")
-        let newItem = ImagesItem(storageReference: "somestorageref")
-        todos.listOfItems[mainIndex].addImagesItem(item: newItem)
-        todoItem.addImagesItem(item: newItem)
+        fbUtil.uploadImageToStorage(documentID: todoDataModel.selectedDocId, imageData: imageData)
     }
-    
-    
     
 }
 
@@ -51,48 +52,85 @@ struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var image: Image?
+    @Binding var imageURL: Data?
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
         @Binding var presentationMode: PresentationMode
         @Binding var image: Image?
+        @Binding var imageData: Data?
 
-        init(presentationMode: Binding<PresentationMode>, image: Binding<Image?>) {
+        init(presentationMode: Binding<PresentationMode>, image: Binding<Image?>, imageURL: Binding<Data?>) {
             _presentationMode = presentationMode
             _image = image
+            _imageData = imageURL
         }
 
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            
             let uiImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            image = Image(uiImage: uiImage)
-
+             
+            
+            let targetSize = CGSize(width: 200, height: 200)
+            let scaledImage = uiImage.scalePreservingAspectRatio(
+                targetSize: targetSize
+            )
+            
+            //TODO INCREASE SCALE A BIT WHEN UPPLOADING/TWO LET WITH DIFFERENT SIZE
+            
+            image = Image(uiImage: scaledImage)
+            var data = Data()
+            data = scaledImage.jpegData(compressionQuality: 1.0)!
+            imageData = data
+          
         }
 
     }
     
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(presentationMode: presentationMode, image: $image)
+        return Coordinator(presentationMode: presentationMode, image: $image, imageURL: $imageURL)
     }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
         let picker = UIImagePickerController()
-     
         picker.delegate = context.coordinator
-        
         return picker
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController,
                                 context: UIViewControllerRepresentableContext<ImagePicker>) {
-        
+            
     }
     
 }
 
-struct CaptureImageView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImagePickerPresenter(todoItem: TodoItem(),mainIndex: 0)
+
+extension UIImage {
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
+        
+        let widthRatio = targetSize.width / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
     }
 }

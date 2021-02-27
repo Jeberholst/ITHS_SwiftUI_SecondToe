@@ -1,60 +1,40 @@
 //
-//  SheetEditBarView.swift
+//  SheetDeleteOnlyBarView.swift
 //  odot
 //
-//  Created by Joakim Eberholst on 2021-01-28.
+//  Created by Joakim Eberholst on 2021-02-16.
 //
 
 import SwiftUI
 
-let icCheckmarkCircle = "checkmark.circle"
-let icTrashCircle = "trash.circle"
-
-struct SheetEditBarView: View {
+struct SheetDeleteOnlyBarView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     @State var isPresentingAlert = false
     
     var title: String
-    var actionSave: () -> ()
     var actionDelete: () -> ()
     
     var body: some View {
         HStack(spacing: 15) {
-           
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }, label: {
-               
-                Text("\(title)")
-                    .font(.system(size: 12))
-                    .foregroundColor(Color("AccentColor"))
             
-            })
+            Text("\(title)")
+                .font(.system(size: 12))
             
             Spacer()
             
             Button(action: {
                 
-                actionSave()
-                presentationMode.wrappedValue.dismiss()
+                isPresentingAlert.toggle()
                 
             }, label: {
-                Image(systemName: icCheckmarkCircle)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 32, height: 32)
-                    .foregroundColor(.green)
-            })
-            
-            Button(action: {
-                isPresentingAlert.toggle()
-            }, label: {
-                Image(systemName: icTrashCircle)
+                
+                Image(systemName: "trash.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
                     .foregroundColor(.red)
+                
             }).alert(isPresented: $isPresentingAlert) {
                 Alert(
                         title: Text(LocalizeNoCom(name: "Delete this item?")),
@@ -71,3 +51,4 @@ struct SheetEditBarView: View {
         .padding()
     }
 }
+

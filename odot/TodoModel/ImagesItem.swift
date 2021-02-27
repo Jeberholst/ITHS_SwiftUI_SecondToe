@@ -7,7 +7,26 @@
 
 import Foundation
 
-struct ImagesItem: Identifiable {
+struct ImagesItem: Codable, Hashable {
+
+    var date: Date
+    var storageReference: String
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case storageReference
+    }
+    
+    func getAsDictionary() -> [String : Any] {
+       return [
+                "date": self.date,
+                "storageReference": self.storageReference
+            ]
+    }
+    
+}
+
+struct ImagesItemOriginal: Identifiable {
     
     var id = UUID()
     

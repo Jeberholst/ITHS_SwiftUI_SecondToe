@@ -6,18 +6,28 @@
 //
 
 import SwiftUI
+import Combine
+
+let icRosette = "rosette"
+let icPin = "pin"
 
 struct HyperLinkEditView: View {
     
-    @State var hyperLinkItem: HyperLinkItem
-
+    @EnvironmentObject var todoDataModel: TodoDataModel
+    @Binding var hyperLinkIndex: Int
+    
+    let documentField = "hyperLinks"
+    
+    @State private var newHyperLinkItem = HyperLinkItem(title: "", description: "", hyperlink: "")
+    
     var body: some View {
             
+        ZStack(alignment: .top) {
             VStack(alignment: .leading) {
                 
                 VStack {
                     
-                    SheetEditBarView(title: "\(hyperLinkItem.getFormattedDate())"){
+                    SheetEditBarView(title: "\(newHyperLinkItem.getFormattedDate())"){
                         onActionSave()
                     } actionDelete: {
                         onActionDelete()
@@ -26,41 +36,66 @@ struct HyperLinkEditView: View {
                     Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "rosette", viewTitle: "Title",text: $hyperLinkItem.title)
+                        iconSystemName: icRosette, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.title)
+                   
+                    Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "pin", viewTitle: "Description", text:$hyperLinkItem.description)
+                        iconSystemName: icPin, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.description)
+                    
+                    Divider()
                     
                     TextEditorCompoundView(
-                        iconSystemName: "link",  viewTitle: "Hyperlink",text: $hyperLinkItem.hyperlink)
+                        iconSystemName: icLink, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.hyperlink)
+                    
+                    Spacer()
+                    
                 }
-                Spacer()
+              
             }
-        
+            .onAppear(){
+                newHyperLinkItem = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
+            }
+        }
     }
     
     private func onActionSave(){
-        print("Save")
+      
+        let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+       
+        var newCodeBlock = allHyperLinks
+        newCodeBlock[hyperLinkIndex] = newHyperLinkItem
+
+        let docData: [[String: Any]] = newCodeBlock.map { item in
+            item.getAsDictionary()
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
     }
     
     private func onActionDelete(){
-        print("Delete")
+        
+        let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
+           
+        var newHyperLink = allHyperLinks
+        newHyperLink.remove(at: hyperLinkIndex)
+
+        let docData: [[String: Any]] = newHyperLink.map { item in
+            item.getAsDictionary()
+        }
+    
+        FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
+
     }
     
-}
-
-
-struct HyperLinkEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        HyperLinkEditView(hyperLinkItem: HyperLinkItem())
-    }
 }
 
 private struct TextEditorCompoundView: View {
     
     var iconSystemName: String
-    var viewTitle: String
-    var text: Binding<String>
+    @State var hyperLinkState: HyperLinkItem
+    @State var hyperLinkString: Binding<String>
     
     var body: some View {
         
@@ -71,17 +106,17 @@ private struct TextEditorCompoundView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
                 
-                TextEditor(text: text)
+                TextEditor(text: hyperLinkString)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 100)
                     .cornerRadius(10.0)
-                    //.border(Color.gray, width: 0.3)
-                    
+                    .keyboardType(.URL)
+                    .onReceive(Just(hyperLinkState)){ text in
+                        hyperLinkState = text
+                    }
             }
         }
         .padding()
-        Divider()
         
-      
     }
 }
 

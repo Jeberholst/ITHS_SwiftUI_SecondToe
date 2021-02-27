@@ -8,7 +8,7 @@
 import SwiftUI
 import FirebaseUI
 
-struct SignInTestUI: UIViewControllerRepresentable {
+struct SignInUI: UIViewControllerRepresentable {
     typealias UIViewControllerType = UINavigationController
     
     func makeUIViewController(context: Context) -> UINavigationController {
@@ -25,6 +25,6 @@ struct SignInTestUI: UIViewControllerRepresentable {
 
 struct SignInTestUI_Previews: PreviewProvider {
     static var previews: some View {
-        SignInTestUI()
+        SignInUI()
     }
 }

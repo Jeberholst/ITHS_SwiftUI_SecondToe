@@ -13,20 +13,23 @@ import FirebaseUI
 struct odotApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-   
+    @ObservedObject private var authUtil: AuthUtil
+    @ObservedObject private var todoDataModel: TodoDataModel
+    
     init() {
         FirebaseApp.configure()
+        authUtil = AuthUtil()
+        todoDataModel = TodoDataModel()
     }
-    
-    
     
     var body: some Scene {
         WindowGroup {
             LoginRegisterView()
-           // ContentView().environmentObject(todos)
+                .background(Color("Background").ignoresSafeArea())
+                .environmentObject(authUtil)
+                .environmentObject(todoDataModel)
         }
     }
-    
  
 }
 
@@ -37,10 +40,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, FUIAuthDelegate {
       if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
         return true
       }
-      // other URL handling goes here.
       return false
     }
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-      // handle user and error as necessary
+     
     }
 }
