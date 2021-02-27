@@ -168,20 +168,6 @@ struct CodeBlockContentView: View {
     var body: some View {
         
         VStack(alignment: HorizontalAlignment.leading) {
-            
-            TextEditor(text: $lines)
-            
-                .font(.system(size: 12))
-                .lineSpacing(5)
-                .disabled(true)
-                .frame(width: 35)
-                .onAppear {
-                    UITextView.appearance().backgroundColor = .clear
-                }
-            
-        }
-        
-        VStack(alignment: HorizontalAlignment.leading) {
             TextEditor(text: $code)
                 .font(.system(size: 12))
                 .lineSpacing(5)

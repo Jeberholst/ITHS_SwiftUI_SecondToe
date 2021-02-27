@@ -97,16 +97,6 @@ struct TodoSelectedItemView: View {
                 if let docId = todoDataModel.todoData[todoItemIndex].id {
                     todoDataModel.setSelectedDocId(documentId: docId)
                 }
-//                .navigationBarItems(trailing: Button(action: {
-//                    isPrestentingTodoItemEdit.toggle()
-//                }, label: {
-//                    Image(systemName: icEdit)
-//                })
-//                .sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-//                    SelectedTodoItemEditView(todoItem: todoDataModel.todoData[todoItemIndex])
-//                }))
-//                print(todoItemIndex)
-//                print(todoDataModel.selectedDocId)
             }
     }
     
@@ -191,13 +181,9 @@ struct CodeBlockScrollView: View {
                                             
                                         })
                     }
-                    .onTapGesture(count: 2, perform: {
+                    .onTapGesture(count: 1, perform: {
                         selectItem(index: subIndex)
                         isPresentingBlockEdit.toggle()
-                    })
-                    .onTapGesture(count: 1, perform: {
-//                        selectItem(index: subIndex)
-//                        isPresentingBlockEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingBlockEdit, content: {
                         CodeBlockEditView(codeBlockIndex: $selectedItem).environmentObject(todoDataModel)
@@ -253,13 +239,9 @@ struct HyperLinksScrollView: View {
                             })
                         
                     }
-                    .onTapGesture(count: 2, perform: {
+                    .onTapGesture(count: 1, perform: {
                         selectItem(index: subIndex)
                         isPresentingEdit.toggle()
-                    })
-                    .onTapGesture(count: 1, perform: {
-//                        selectItem(index: subIndex)
-//                        isPresentingEdit.toggle()
                     })
                     .sheet(isPresented: $isPresentingEdit, content: {
                         HyperLinkEditView(hyperLinkIndex: $selectedItem).environmentObject(todoDataModel)
@@ -317,7 +299,7 @@ struct ImagesScrollView: View {
                         }
                     
                     }
-                    .onTapGesture(count: 2, perform: {
+                    .onTapGesture(count: 1, perform: {
                         selectItem(index: subIndex)
                         selectImage(imageRef: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
                         isPresenting.toggle()
