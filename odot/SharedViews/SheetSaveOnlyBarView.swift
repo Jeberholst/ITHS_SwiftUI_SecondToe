@@ -36,11 +36,3 @@ struct SheetSaveOnlyBarView: View {
         .padding()
     }
 }
-
-struct SheetSaveOnlyBar_Previews: PreviewProvider {
-    static var previews: some View {
-        SheetSaveOnlyBarView(title: "1"){
-            
-        }
-    }
-}

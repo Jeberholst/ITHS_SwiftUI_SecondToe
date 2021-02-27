@@ -91,22 +91,22 @@ struct TodoSelectedItemView: View {
                 
                 
             }
-            .navigationBarItems(trailing: Button(action: {
-                isPrestentingTodoItemEdit.toggle()
-            }, label: {
-                Image(systemName: icEdit)
-            }).sheet(isPresented: $isPrestentingTodoItemEdit, content: {
-                SelectedTodoItemEditView(todoItem: todoDataModel.todoData[todoItemIndex])
-                
-            }))
             .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title!)")
             .onAppear(){
                 setSelectedMainIndex(mainIndex: todoItemIndex)
                 if let docId = todoDataModel.todoData[todoItemIndex].id {
                     todoDataModel.setSelectedDocId(documentId: docId)
                 }
-                print(todoItemIndex)
-                print(todoDataModel.selectedDocId)
+//                .navigationBarItems(trailing: Button(action: {
+//                    isPrestentingTodoItemEdit.toggle()
+//                }, label: {
+//                    Image(systemName: icEdit)
+//                })
+//                .sheet(isPresented: $isPrestentingTodoItemEdit, content: {
+//                    SelectedTodoItemEditView(todoItem: todoDataModel.todoData[todoItemIndex])
+//                }))
+//                print(todoItemIndex)
+//                print(todoDataModel.selectedDocId)
             }
     }
     
@@ -231,26 +231,26 @@ struct HyperLinksScrollView: View {
                     VStack{
                     
                         DisclosureGroup(
-                                        content: {
-                                            
-                                            VStack(alignment: .leading) {
-                                                
-                                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
-                                                    .textCase(.lowercase)
-                                                    .padding()
-                                                    .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
-                                                   
-                                            }
-                
-                                        }, label: {
-                                            
-                                            VStack(alignment: .leading, spacing: 5) {
-                                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
-                                                CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
-                                            }
-                                            .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
+                            content: {
+                                
+                                VStack(alignment: .leading) {
+                                    
+                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
+                                        .textCase(.lowercase)
+                                        .padding()
+                                        .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
                                        
-                                        })
+                                }
+    
+                            }, label: {
+                                
+                                VStack(alignment: .leading, spacing: 5) {
+                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
+                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
+                                }
+                                .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
+                           
+                            })
                         
                     }
                     .onTapGesture(count: 2, perform: {
@@ -348,13 +348,19 @@ struct CustomTextView: View {
     var body: some View {
         
         if link != nil {
-            if let link = link {
-                Link(destination: URL(string: "https://\(link)")!, label: {
+            if let linkUrl = URL(string: link ?? "invalid") {
+                Link(destination: linkUrl, label: {
                     Text("\(text)")
                         .font(.system(size: fontSize))
                         .fontWeight(checkFontWeight())
                         .padding(checkPadding())
                 })
+            } else {
+                Text("Invalid link provided")
+                    .font(.system(size: fontSize))
+                    .foregroundColor(.red)
+                    .fontWeight(checkFontWeight())
+                    .padding(checkPadding())
             }
         } else {
             Text("\(text)")

@@ -24,7 +24,8 @@ struct ContentView: View {
     
     @EnvironmentObject private var authUtil: AuthUtil
     @EnvironmentObject private var todoDataModel: TodoDataModel
-
+    
+    @State private var isPresentingAlert = false
     @State private var delIndex: Int = 0
     
     init() {
@@ -52,6 +53,16 @@ struct ContentView: View {
         .sheet(isPresented: $authUtil.isPresentingProfile, content: {
             LoggedInProfileView()
         })
+        .alert(isPresented: $isPresentingAlert) {
+            Alert(
+                title: Text(LocalizeNoCom(name: "Delete this item?")),
+                message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
+                primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
+                    FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[delIndex].id!)
+                },
+                secondaryButton: .cancel()
+            )
+        }
         .onAppear {
             todoDataModel.initializeListener()
         }
@@ -59,8 +70,9 @@ struct ContentView: View {
     }
     
     func delete(at offsets: IndexSet) {
-        let index = offsets[offsets.startIndex]
-        FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[index].id!)
+        isPresentingAlert.toggle()
+        delIndex = offsets[offsets.startIndex]
+       
     }
 
 }
@@ -69,7 +81,8 @@ struct NavigationViews: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @EnvironmentObject var authUtil: AuthUtil
-    var index: Int
+    @State var isPresentingEdit = false
+    @State var index: Int
     
     var body: some View {
         
@@ -86,6 +99,12 @@ struct NavigationViews: View {
             }
             
         }
+        .onLongPressGesture {
+            isPresentingEdit.toggle()
+        }
+        .sheet(isPresented: $isPresentingEdit, content: {
+            SelectedTodoItemEditView(todoItem: todoDataModel.todoData[index])
+        })
             
     }
 
