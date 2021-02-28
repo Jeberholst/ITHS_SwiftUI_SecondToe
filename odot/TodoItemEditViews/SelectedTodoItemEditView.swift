@@ -108,8 +108,6 @@ struct SelectedTodoItemEditView: View {
         guard let title = todoItem.title else { return }
         guard let note = todoItem.note else { return }
         
-    
-
         let docData: [String : Any] = [
                 "title": title,
                 "note" : note,

@@ -29,7 +29,6 @@ struct SheetEditBarView: View {
                 Text("\(title)")
                     .font(.system(size: 12))
                     .foregroundColor(Color("AccentColor"))
-            
             })
             
             Spacer()

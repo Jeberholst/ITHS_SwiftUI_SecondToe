@@ -16,8 +16,14 @@ struct SheetSaveOnlyBarView: View {
     var body: some View {
         HStack(spacing: 15) {
             
-            Text("\(title)")
-                .font(.system(size: 12))
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+               
+                Text("\(title)")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color("AccentColor"))
+            })
             
             Spacer()
             
