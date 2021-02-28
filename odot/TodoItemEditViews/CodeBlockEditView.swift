@@ -24,9 +24,9 @@ struct CodeBlockEditView: View {
     
     private let documentField = "codeBlocks"
     @State private var isSharingPresented = false
+    @State private var isShowingFormatterProgress = false
     @State private var lineCount: Int = 0
     @State private var lines: String = ""
-    
     @State private var newCodeBlockItem = CodeBlockItem(date: Date(), code: "")
 
     var body: some View {
@@ -80,20 +80,17 @@ struct CodeBlockEditView: View {
                             
                             HStack {
                                 ScrollView(.horizontal) {
-                                    FormatCodeActionView(code: $newCodeBlockItem.code)
+                                    FormatCodeActionView(code: $newCodeBlockItem.code, isShowingProgress: $isShowingFormatterProgress)
+                                }
+                                HStack {
+                                    ProgressIndeterminedView().hidden(isShowingFormatterProgress)
                                 }
                             }
                             
                             Divider()
                
                             HStack(alignment: .top) {
-                                ScrollView(.vertical, showsIndicators: true) {
-                                    HStack {
-                                        CodeBlockContentView(lines: $lines, code: $newCodeBlockItem.code, lineCount: $lineCount)
-                                    }
-                                    .frame(height: CGFloat(lineCount * 25))
-                                }
-                            
+                                CodeBlockContentView(lines: $lines, code: $newCodeBlockItem.code, lineCount: $lineCount)
                             }
                             
                         }
@@ -200,13 +197,17 @@ struct FormatCodeActionView: View {
     @Binding var code: String
     
     private let listOfFormats = getFormats()
+    @Binding var isShowingProgress: Bool
     
     var body: some View {
         
+        
         HStack {
+            
             ForEach(listOfFormats.indices, id: \.self){ item in
                
                 Button(action: {
+                    isShowingProgress.toggle()
                     let output = onPrettifyCode(form: listOfFormats[item], input: code)
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -217,6 +218,7 @@ struct FormatCodeActionView: View {
                                print("Code formatting failed...")
                             }
                         }
+                        isShowingProgress.toggle()
                     }
                 }) {
                     Text(String(describing: listOfFormats[item]))
@@ -226,6 +228,7 @@ struct FormatCodeActionView: View {
                 }
                 .padding()
             }
+            
         }
         
     }
@@ -249,6 +252,21 @@ struct FormatCodeActionView: View {
             
         return output
      
+    }
+}
+
+extension View {
+    @ViewBuilder func hidden(_ shouldHide: Bool) -> some View {
+        switch shouldHide {
+        case false: self.hidden()
+        case true: self
+        }
+    }
+}
+
+struct ProgressIndeterminedView: View {
+    var body: some View {
+        ProgressView()
     }
 }
 
