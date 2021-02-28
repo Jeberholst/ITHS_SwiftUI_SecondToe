@@ -8,7 +8,7 @@
 import Foundation
 
 struct CodeBlockItem: Codable, Hashable {
-   
+    
     var date: Date = Date()
     var code: String
     
@@ -18,12 +18,12 @@ struct CodeBlockItem: Codable, Hashable {
     }
     
     func getAsDictionary() -> [String : Any] {
-       return [
-                "date": self.date,
-                "code": self.code,
-            ]
+        return [
+            "date": self.date,
+            "code": self.code,
+        ]
     }
-
+    
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short

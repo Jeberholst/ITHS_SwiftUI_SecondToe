@@ -152,6 +152,7 @@
 		431A930325C6130400F08481 /* ImageHandling */ = {
 			isa = PBXGroup;
 			children = (
+				4399278A25D5DB5100FAED5A /* ShareController.swift */,
 				431A92FE25C612F100F08481 /* ImagePickerPresenter.swift */,
 			);
 			path = ImageHandling;
@@ -212,7 +213,6 @@
 				43A9245025C1A2CF00FAD285 /* TodoItemEditViews */,
 				43B4CDBF25BDC84900C59D08 /* ContentView.swift */,
 				43B4CE0225BDD13100C59D08 /* TodoSelectedItemView.swift */,
-				4399278A25D5DB5100FAED5A /* ShareController.swift */,
 				43B4CDC125BDC84A00C59D08 /* Assets.xcassets */,
 				43B4CDC625BDC84A00C59D08 /* Info.plist */,
 				43B118A025CB48C900F9A9FB /* AppDelegate.swift */,

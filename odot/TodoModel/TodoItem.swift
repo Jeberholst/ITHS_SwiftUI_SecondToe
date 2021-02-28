@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestoreSwift
 
 struct TodoItem: Codable, Identifiable, Hashable {
-
+    
     @DocumentID var id: String?
     
     var title: String?
@@ -61,7 +61,7 @@ struct TodoItem: Codable, Identifiable, Hashable {
             }
             return map
         }
-       
+        
         return [[:]]
     }
     

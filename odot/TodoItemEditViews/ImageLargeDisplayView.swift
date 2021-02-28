@@ -30,7 +30,7 @@ struct ImageLargeDisplayView: View {
                 SheetDeleteOnlyBarView(title: "Image \(imagesSelectedIndex)"){
                     onActionDelete()
                 }
-               
+                
                 Divider()
                 
                 Spacer()
@@ -44,25 +44,25 @@ struct ImageLargeDisplayView: View {
                         .offset(x: viewState.width, y: viewState.height)
                         .frame(width: UIScreen.main.bounds.width - 60, alignment: .center)
                         .gesture(DragGesture()
-                              .onChanged { val in
-                                  self.viewState = val.translation
-                              }
+                                    .onChanged { val in
+                                        self.viewState = val.translation
+                                    }
                         )
                         .gesture(MagnificationGesture()
-                            .onChanged { val in
-                    
-                            let delta = val / self.lastScale
-                            self.lastScale = val
-                            if delta > 0.93 {
-                                let newScale = self.scale * delta
-                                self.scale = newScale
-                            }
-                        }
-                        .onEnded { _ in
-                            self.lastScale = 1.0
-                        })
+                                    .onChanged { val in
+                                        
+                                        let delta = val / self.lastScale
+                                        self.lastScale = val
+                                        if delta > 0.93 {
+                                            let newScale = self.scale * delta
+                                            self.scale = newScale
+                                        }
+                                    }
+                                    .onEnded { _ in
+                                        self.lastScale = 1.0
+                                    })
                         .scaleEffect(scale)
-                        
+                    
                 }
                 .frame(width: UIScreen.main.bounds.width)
                 .clipped()
@@ -73,7 +73,7 @@ struct ImageLargeDisplayView: View {
                 })
                 
                 Spacer()
-                      
+                
             }
             
         }
@@ -81,20 +81,20 @@ struct ImageLargeDisplayView: View {
     }
     
     private func onActionDelete(){
-
+        
         let storage = Storage.storage()
         let storageRef = storage.reference(forURL: selectedImage)
         
         let currImages = todoDataModel.todoData[todoDataModel.mainIndex].images
         var newImages = currImages
         newImages.remove(at: imagesSelectedIndex)
-
+        
         let docData: [[String: Any]] = newImages.map { item in
             item.getAsDictionary()
         }
-
+        
         fbUtil.deleteImageFromStorage(documentID: todoDataModel.selectedDocId, imageName: storageRef.name, docData: docData)
-
+        
     }
     
 }

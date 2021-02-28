@@ -21,7 +21,7 @@ struct SheetDeleteOnlyBarView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }, label: {
-               
+                
                 Text("\(title)")
                     .font(.system(size: 12))
                     .foregroundColor(Color("AccentColor"))
@@ -43,14 +43,14 @@ struct SheetDeleteOnlyBarView: View {
                 
             }).alert(isPresented: $isPresentingAlert) {
                 Alert(
-                        title: Text(LocalizeNoCom(name: "Delete this item?")),
-                        message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
-                        primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
-                            actionDelete()
-                            presentationMode.wrappedValue.dismiss()
-                        },
-                        secondaryButton: .cancel()
-                    )
+                    title: Text(LocalizeNoCom(name: "Delete this item?")),
+                    message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
+                    primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
+                        actionDelete()
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
             }
             
         }

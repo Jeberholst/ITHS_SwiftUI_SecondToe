@@ -44,7 +44,7 @@ struct FirebaseUtil {
                 print("Document successfully updated")
             }
         }
-     
+        
     }
     
     func deleteSingleUserDocument(documentID: String){
@@ -63,7 +63,7 @@ struct FirebaseUtil {
     
     func updateDocumentField(documentID: String, docData: [String : Any]){
         guard let docRef = getUserCollection()?.document(documentID) else { return }
-  
+        
         docRef.updateData(docData){ err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -75,7 +75,7 @@ struct FirebaseUtil {
     }
     
     func updateDocumentWholeArray(documentID: String, documentField: String, docData: [[String : Any]]){
-
+        
         guard let docRef = getUserCollection()?.document(documentID) else { return }
         
         docRef.updateData([
@@ -114,28 +114,28 @@ struct FirebaseUtil {
             let folderRef = storageRef.child("\(user.uid)")
             let uuid = UUID().uuidString
             let storageRef = folderRef.child("\(uuid).jpeg")
-           
+            
             if let imageData = imageData {
                 
                 let metaData =  StorageMetadata()
                 metaData.contentType = "image/jpg"
-
+                
                 let uploadTask = storageRef.putData(imageData, metadata: metaData) { metadata, error in
-                  guard let metadata = metadata else {
-                    return
-                  }
-                   
-                  storageRef.downloadURL { (url, error) in
-                    guard let downloadURL = url else {
-                      return
+                    guard let metadata = metadata else {
+                        return
                     }
-              
-                    let newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
-                    let docData : [String: Any] = newImageItem.getAsDictionary()
-                    updateDocumentFieldArrayUnion(documentID: documentID, documentField: documentFieldImages, docData: docData)
                     
-                  }
-            
+                    storageRef.downloadURL { (url, error) in
+                        guard let downloadURL = url else {
+                            return
+                        }
+                        
+                        let newImageItem = ImagesItem(date: Date(), storageReference: downloadURL.absoluteString)
+                        let docData : [String: Any] = newImageItem.getAsDictionary()
+                        updateDocumentFieldArrayUnion(documentID: documentID, documentField: documentFieldImages, docData: docData)
+                        
+                    }
+                    
                 }
             }
         }
@@ -150,15 +150,15 @@ struct FirebaseUtil {
             
             let folderRef = storageRef.child("\(user.uid)")
             let imageStorageRef = folderRef.child("\(imageName)")
-           
+            
             imageStorageRef.delete { error in
-              if let error = error {
-                // Uh-oh, an error occurred!
-              } else {
-                updateDocumentWholeArray(documentID: documentID, documentField: documentFieldImages, docData: docData)
-              }
+                if let error = error {
+                    // Uh-oh, an error occurred!
+                } else {
+                    updateDocumentWholeArray(documentID: documentID, documentField: documentFieldImages, docData: docData)
+                }
             }
-             
+            
         }
     }
     

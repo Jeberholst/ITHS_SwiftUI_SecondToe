@@ -28,7 +28,7 @@ struct CodeBlockEditView: View {
     @State private var lineCount: Int = 0
     @State private var lines: String = ""
     @State private var newCodeBlockItem = CodeBlockItem(date: Date(), code: "")
-
+    
     var body: some View {
         
         ZStack(alignment: .top) {
@@ -41,7 +41,7 @@ struct CodeBlockEditView: View {
                 }
                 
                 Divider()
-              
+                
                 VStack(alignment: .trailing) {
                     
                     HStack {
@@ -56,7 +56,7 @@ struct CodeBlockEditView: View {
                                 
                                 Spacer()
                                 HStack(spacing: 15) {
-                                        
+                                    
                                     ClipBoardActionView(iconSystemName: icCopy, label: "Copy", onAction: {
                                         UIPasteboard.general.string = newCodeBlockItem.code
                                     })
@@ -73,7 +73,7 @@ struct CodeBlockEditView: View {
                                     ClipBoardActionView(iconSystemName: icShare, label: "Share", onAction: {
                                         isSharingPresented.toggle()
                                     })
-
+                                    
                                 }.padding()
                             }
                             Divider()
@@ -88,7 +88,7 @@ struct CodeBlockEditView: View {
                             }
                             
                             Divider()
-               
+                            
                             HStack(alignment: .top) {
                                 CodeBlockContentView(lines: $lines, code: $newCodeBlockItem.code, lineCount: $lineCount)
                             }
@@ -99,8 +99,8 @@ struct CodeBlockEditView: View {
                     .onAppear(){
                         newCodeBlockItem = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[codeBlockIndex]
                     }
-                
-                Spacer()
+                    
+                    Spacer()
                     
                 }
             }
@@ -111,33 +111,33 @@ struct CodeBlockEditView: View {
     }
     
     private func onActionSave(){
-      
+        
         let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
-       
+        
         var newCodeBlock = allCodeBlocks
         newCodeBlock[codeBlockIndex] = newCodeBlockItem
-
+        
         let docData: [[String: Any]] = newCodeBlock.map { item in
             item.getAsDictionary()
         }
-    
+        
         FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-
+        
     }
     
     private func onActionDelete(){
         
         let allCodeBlocks = todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks
-             
+        
         var newCodeBlock = allCodeBlocks
         newCodeBlock.remove(at: codeBlockIndex)
-
+        
         let docData: [[String: Any]] = newCodeBlock.map { item in
             item.getAsDictionary()
         }
-    
+        
         FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-
+        
     }
 }
 
@@ -171,12 +171,12 @@ struct CodeBlockContentView: View {
                 .onReceive(Just(code)){ text in
                     code = text
                 }.onChange(of: code) { value in
-              
+                    
                     let lf = value.split(omittingEmptySubsequences: false){ $0.isNewline }
                     lineCount = lf.count
                     let ladd = Int(Double((lineCount/5)) * 0.4)
                     updateLines(lineCount: (lineCount + ladd))
-                  
+                    
                 }
         }
         
@@ -205,7 +205,7 @@ struct FormatCodeActionView: View {
         HStack {
             
             ForEach(listOfFormats.indices, id: \.self){ item in
-               
+                
                 Button(action: {
                     isShowingProgress.toggle()
                     let output = onPrettifyCode(form: listOfFormats[item], input: code)
@@ -215,7 +215,7 @@ struct FormatCodeActionView: View {
                             if output != "" {
                                 code = output
                             } else {
-                               print("Code formatting failed...")
+                                print("Code formatting failed...")
                             }
                         }
                         isShowingProgress.toggle()
@@ -234,7 +234,7 @@ struct FormatCodeActionView: View {
     }
     
     private func onPrettifyCode(form: FORMATS, input: String) -> String? {
-                
+        
         let prettier = Prettier()
         var output = ""
         
@@ -249,9 +249,9 @@ struct FormatCodeActionView: View {
         case .TYPESCRIPT:
             output = prettier.prettify(input, parser: .typescript) ?? ""
         }
-            
+        
         return output
-     
+        
     }
 }
 

@@ -12,23 +12,23 @@ struct ShareController: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIActivityViewController
     
     @Binding var text: String
-
+    
     init(text: Binding<String>) {
         _text = text
     }
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let avc = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-            avc.excludedActivityTypes = [.postToFacebook,
-                                            .postToTwitter,
-                                            .postToWeibo,
-                                            .assignToContact,
-                                            .saveToCameraRoll,
-                                            .addToReadingList,
-                                            .postToFlickr,
-                                            .postToVimeo,
-                                            .postToTencentWeibo,
-                                            .airDrop]
+        avc.excludedActivityTypes = [.postToFacebook,
+                                     .postToTwitter,
+                                     .postToWeibo,
+                                     .assignToContact,
+                                     .saveToCameraRoll,
+                                     .addToReadingList,
+                                     .postToFlickr,
+                                     .postToVimeo,
+                                     .postToTencentWeibo,
+                                     .airDrop]
         return avc
     }
     

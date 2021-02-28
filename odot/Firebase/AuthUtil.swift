@@ -13,7 +13,7 @@ class AuthUtil: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var isPresentingLoginUI: Bool = false
     @Published var isPresentingProfile: Bool = false
-
+    
     var listener: AuthStateDidChangeListenerHandle? = nil
     @Published var listenerCollection: ListenerRegistration? = nil
     
@@ -23,12 +23,12 @@ class AuthUtil: ObservableObject {
     
     func addAuthListener(){
         listener = Auth.auth().addStateDidChangeListener { (auth, user) in
-             if user != nil {
+            if user != nil {
                 self.alreadySignedIn()
-             } else {
+            } else {
                 self.isLoggedIn = false
-             }
-         }
+            }
+        }
     }
     
     func displaySignIn(){

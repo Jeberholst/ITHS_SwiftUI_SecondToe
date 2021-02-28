@@ -26,55 +26,57 @@ struct ContentView: View {
     @EnvironmentObject private var todoDataModel: TodoDataModel
     
     @State private var isPresentingAlert = false
+    @State private var isPresentingEditTodoItem = false
     @State private var delIndex: Int = 0
+//    @State private var selIndex: Int = 0
     
     init() {
         UITableView.appearance().backgroundColor = UIColor(Color("Background"))
     }
     
     var body: some View {
-        
-        ZStack{
-            NavigationView {
-                List(){
-                    ForEach(todoDataModel.todoData.indices, id: \.self){ index in
-                        NavigationViews(index: index).environmentObject(todoDataModel)
-                    }
-                    .onDelete(perform: delete)
-                    .listRowBackground(Color("BackgroundOver"))
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: TodoAddNew())
-        .frame(width: UIScreen.main.bounds.width)
-        .sheet(isPresented: $authUtil.isPresentingProfile, content: {
-            LoggedInProfileView()
-        })
-        .alert(isPresented: $isPresentingAlert) {
-            Alert(
-                title: Text(LocalizeNoCom(name: "Delete this item?")),
-                message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
-                primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
-                    FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[delIndex].id!)
-                },
-                secondaryButton: .cancel()
-            )
-        }
-        .onAppear {
-            todoDataModel.initializeListener()
-        }
-        
-    }
+         
+         ZStack{
+             NavigationView {
+                 List(){
+                     ForEach(todoDataModel.todoData.indices, id: \.self){ index in
+                         NavigationViews(index: index).environmentObject(todoDataModel)
+                     }
+                     .onDelete(perform: delete)
+                     .listRowBackground(Color("BackgroundOver"))
+                 }
+                 .navigationBarTitleDisplayMode(.inline)
+                 .navigationBarItems(leading: ProfileNavigateView(isPresenting: $authUtil.isPresentingProfile).environmentObject(todoDataModel), trailing: TodoAddNew())
+             }
+         }
+         .navigationBarTitleDisplayMode(.inline)
+         .navigationBarItems(trailing: TodoAddNew())
+         .frame(width: UIScreen.main.bounds.width)
+         .sheet(isPresented: $authUtil.isPresentingProfile, content: {
+             LoggedInProfileView()
+         })
+         .alert(isPresented: $isPresentingAlert) {
+             Alert(
+                 title: Text(LocalizeNoCom(name: "Delete this item?")),
+                 message: Text(LocalizeNoCom(name: "Deletion cannot be undone")),
+                 primaryButton: .destructive(Text(LocalizeNoCom(name: "Delete"))) {
+                     FirebaseUtil.firebaseUtil.deleteSingleUserDocument(documentID: self.todoDataModel.todoData[delIndex].id!)
+                 },
+                 secondaryButton: .cancel()
+             )
+         }
+         .onAppear {
+             todoDataModel.initializeListener()
+         }
+         
+     }
     
     func delete(at offsets: IndexSet) {
         isPresentingAlert.toggle()
         delIndex = offsets[offsets.startIndex]
-       
+        
     }
-
+    
 }
 
 struct NavigationViews: View {
@@ -103,7 +105,7 @@ struct NavigationViews: View {
             isPresentingEdit.toggle()
         })
         .sheet(isPresented: $isPresentingEdit, content: {
-            SelectedTodoItemEditView(todoItem: todoDataModel.todoData[index])
+            SelectedTodoItemEditView(todoItem: todoDataModel.todoData[index]).environmentObject(todoDataModel)
         })
             
     }
@@ -118,9 +120,9 @@ struct ProfileNavigateView: View {
     var body: some View {
         
         Button(action: {
-
+            
             isPresenting.toggle()
-
+            
         }, label: {
             
             HStack {
@@ -148,7 +150,7 @@ struct ProfileNavigateView: View {
 
 
 struct TodoAddNew: View {
-
+    
     var body: some View {
         HStack {
             Button(action: {
@@ -166,19 +168,19 @@ struct TodoItemView: View {
     
     @EnvironmentObject var todoDataModel: TodoDataModel
     @State var index: Int
-
+    
     var body: some View {
         
         if todoDataModel.todoData.indices.contains(index){
-
+            
             HStack {
                 
                 VStack {
-    
+                    
                     Rectangle()
                         .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[index].priority!).opacity(0.5))
                         .frame(width: 2)
-    
+                    
                 }
                 
                 VStack(alignment: .leading){
@@ -232,23 +234,6 @@ struct TodoItemView: View {
             .padding()
         }
     }
-}
-
-func getPriorityColor(priority: Int) -> Color {
-    
-    switch priority {
-    
-    case 1:
-        return Color(.green)
-    case 2:
-        return Color(.orange)
-    case 3:
-        return Color(.red)
-        
-    default:
-        return Color(.gray)
-    }
-    
 }
 
 extension Binding where Value == String? {

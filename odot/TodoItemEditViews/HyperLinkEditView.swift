@@ -21,7 +21,7 @@ struct HyperLinkEditView: View {
     @State private var newHyperLinkItem = HyperLinkItem(title: "", description: "", hyperlink: "")
     
     var body: some View {
-            
+        
         ZStack(alignment: .top) {
             VStack(alignment: .leading) {
                 
@@ -37,7 +37,7 @@ struct HyperLinkEditView: View {
                     
                     TextEditorCompoundView(
                         iconSystemName: icRosette, hyperLinkState: newHyperLinkItem, hyperLinkString: $newHyperLinkItem.title)
-                   
+                    
                     Divider()
                     
                     TextEditorCompoundView(
@@ -51,7 +51,7 @@ struct HyperLinkEditView: View {
                     Spacer()
                     
                 }
-              
+                
             }
             .onAppear(){
                 newHyperLinkItem = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[hyperLinkIndex]
@@ -60,33 +60,33 @@ struct HyperLinkEditView: View {
     }
     
     private func onActionSave(){
-      
+        
         let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
-       
+        
         var newCodeBlock = allHyperLinks
         newCodeBlock[hyperLinkIndex] = newHyperLinkItem
-
+        
         let docData: [[String: Any]] = newCodeBlock.map { item in
             item.getAsDictionary()
         }
-    
+        
         FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-
+        
     }
     
     private func onActionDelete(){
         
         let allHyperLinks = todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks
-           
+        
         var newHyperLink = allHyperLinks
         newHyperLink.remove(at: hyperLinkIndex)
-
+        
         let docData: [[String: Any]] = newHyperLink.map { item in
             item.getAsDictionary()
         }
-    
+        
         FirebaseUtil.firebaseUtil.updateDocumentWholeArray(documentID: todoDataModel.selectedDocId, documentField: documentField, docData: docData)
-
+        
     }
     
 }

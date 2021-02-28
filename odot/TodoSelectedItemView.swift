@@ -25,86 +25,86 @@ struct TodoSelectedItemView: View {
     @State private var isPresentingLargeImage = false
     @State private var isPresentingHyperLinkEdit = false
     @State private var isPresentingBlockEdit = false
-   
+    
     var body: some View {
         
-            ZStack {
-        
-                ScrollView(.vertical){
+        ZStack {
+            
+            ScrollView(.vertical){
+                
+                VStack(alignment: .leading) {
                     
-                    VStack(alignment: .leading) {
-                        
-                        HStack {
-                            Rectangle()
-                                .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[todoItemIndex].priority ?? 1).opacity(0.5))
-                                .frame(height: 2)
-                        }
-                            
-                        TitleTextView(dateFormatted: todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
-                        
-                        DisclosureGroup(
-                            content : {
-                                ScrollView(.horizontal, showsIndicators: true) {
-                                    ImagesScrollView(documentID: todoDataModel.selectedDocId)
-                                }
-                            }, label: {
-                                GroupTitleImagesView(systemName: icCamera, documentID: todoDataModel.selectedDocId, presented: isPrestentingImagePicker)
-                            }
-                        )
-                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
-                    
-                        Divider()
-                        
-                        DisclosureGroup(
-                            content : {
-                                ScrollView(.vertical, showsIndicators: true) {
-                                    HyperLinksScrollView(documentID: todoDataModel.selectedDocId)
-                                }
-                                
-                            }, label: {
-                                GroupTitleHyperLinkView(systemName: icLink) {
-                                    addNewHyperLinkItem()
-                                }
-                            }
-                        )
-                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
-                        
-                        Divider()
-                        
-                        DisclosureGroup(
-                            content : {
-                                    ScrollView(.vertical, showsIndicators: true) {
-                                       
-                                        CodeBlockScrollView(documentID: todoDataModel.selectedDocId)
-                                      
-                                    }
-                            }, label: {
-                                GroupTitleTextCodeBlockView(systemName: icCode){
-                                    addNewCodeBlockItem()
-                                }
-                            }
-                        )
-                        .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
-                    
+                    HStack {
+                        Rectangle()
+                            .foregroundColor(getPriorityColor(priority: todoDataModel.todoData[todoItemIndex].priority ?? 1).opacity(0.5))
+                            .frame(height: 2)
                     }
+                    
+                    TitleTextView(dateFormatted: todoDataModel.todoData[todoItemIndex].getFormattedDate()) // ?? "Date here")
+                    
+                    DisclosureGroup(
+                        content : {
+                            ScrollView(.horizontal, showsIndicators: true) {
+                                ImagesScrollView(documentID: todoDataModel.selectedDocId)
+                            }
+                        }, label: {
+                            GroupTitleImagesView(systemName: icCamera, documentID: todoDataModel.selectedDocId, presented: isPrestentingImagePicker)
+                        }
+                    )
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    
+                    Divider()
+                    
+                    DisclosureGroup(
+                        content : {
+                            ScrollView(.vertical, showsIndicators: true) {
+                                HyperLinksScrollView(documentID: todoDataModel.selectedDocId)
+                            }
+                            
+                        }, label: {
+                            GroupTitleHyperLinkView(systemName: icLink) {
+                                addNewHyperLinkItem()
+                            }
+                        }
+                    )
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    
+                    Divider()
+                    
+                    DisclosureGroup(
+                        content : {
+                            ScrollView(.vertical, showsIndicators: true) {
+                                
+                                CodeBlockScrollView(documentID: todoDataModel.selectedDocId)
+                                
+                            }
+                        }, label: {
+                            GroupTitleTextCodeBlockView(systemName: icCode){
+                                addNewCodeBlockItem()
+                            }
+                        }
+                    )
+                    .padding(.init(top: 10, leading: 20, bottom: 10, trailing: 20))
+                    
                 }
-                
-                
             }
-            .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title!)")
-            .onAppear(){
-                setSelectedMainIndex(mainIndex: todoItemIndex)
-                if let docId = todoDataModel.todoData[todoItemIndex].id {
-                    todoDataModel.setSelectedDocId(documentId: docId)
-                }
+            
+            
+        }
+        .navigationBarTitle("\(self.todoDataModel.todoData[todoItemIndex].title!)")
+        .onAppear(){
+            setSelectedMainIndex(mainIndex: todoItemIndex)
+            if let docId = todoDataModel.todoData[todoItemIndex].id {
+                todoDataModel.setSelectedDocId(documentId: docId)
             }
+        }
     }
     
-
+    
     private func setSelectedMainIndex(mainIndex: Int){
         todoDataModel.mainIndex = mainIndex
     }
-        
+    
     private func addNewHyperLinkItem(){
         addNewItem(type: .HYPERLINK)
     }
@@ -115,34 +115,34 @@ struct TodoSelectedItemView: View {
     
     private func addNewItem(type: DOC_FIELDS_NEW){
         
-            var deterDocumentField: String
-            var docData : [String: Any] = [:]
-            let FIELD_HYPERLINKS = "hyperLinks"
-            let FIELD_CODEBLOCKS = "codeBlocks"
-
-            switch(type){
-            case .HYPERLINK:
-                
-                deterDocumentField = FIELD_HYPERLINKS
-                
-                docData = HyperLinkItem(
-                    title: LocalizeNoCom(name: "A title"),
-                    description: LocalizeNoCom(name: "A note"),
-                    hyperlink: LocalizeNoCom(name: "LinkBase")).getAsDictionary()
-                
-            case .CODEBLOCK:
-                
-                deterDocumentField = FIELD_CODEBLOCKS
+        var deterDocumentField: String
+        var docData : [String: Any] = [:]
+        let FIELD_HYPERLINKS = "hyperLinks"
+        let FIELD_CODEBLOCKS = "codeBlocks"
+        
+        switch(type){
+        case .HYPERLINK:
             
-                docData = CodeBlockItem(
-                    code: LocalizeNoCom(name: "A description")).getAsDictionary()
-                
-            }
-    
-            fbUtil.updateDocumentFieldArrayUnion(documentID: todoDataModel.selectedDocId, documentField: deterDocumentField, docData: docData)
+            deterDocumentField = FIELD_HYPERLINKS
+            
+            docData = HyperLinkItem(
+                title: LocalizeNoCom(name: "A title"),
+                description: LocalizeNoCom(name: "A note"),
+                hyperlink: LocalizeNoCom(name: "LinkBase")).getAsDictionary()
+            
+        case .CODEBLOCK:
+            
+            deterDocumentField = FIELD_CODEBLOCKS
+            
+            docData = CodeBlockItem(
+                code: LocalizeNoCom(name: "A description")).getAsDictionary()
+            
+        }
+        
+        fbUtil.updateDocumentFieldArrayUnion(documentID: todoDataModel.selectedDocId, documentField: deterDocumentField, docData: docData)
         
     }
-
+    
 }
 
 enum DOC_FIELDS_NEW {
@@ -166,33 +166,33 @@ struct CodeBlockScrollView: View {
     
     var body: some View {
         
-            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
-                    VStack{
-                        DisclosureGroup(
-                                        content: {
-                                            Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
-                                                .font(.system(size: 12))
-                                                .padding()
-                                                .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
-                                        }, label: {
-                                        
-                                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .semibold, padding: 10)
-                                                .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
-                                            
-                                        })
-                    }
-                    .onTapGesture(count: 1, perform: {
-                        selectItem(index: subIndex)
-                        isPresentingBlockEdit.toggle()
+        ForEach(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks.indices, id: \.self){ subIndex in
+            VStack{
+                DisclosureGroup(
+                    content: {
+                        Text(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].code)
+                            .font(.system(size: 12))
+                            .padding()
+                            .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
+                    }, label: {
+                        
+                        CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].codeBlocks[subIndex].getFormattedDate())", fontSize: 12, weight: .semibold, padding: 10)
+                            .padding(.init(top: 0, leading: 10, bottom: 0, trailing: 10))
+                        
                     })
-                    .sheet(isPresented: $isPresentingBlockEdit, content: {
-                        CodeBlockEditView(codeBlockIndex: $selectedItem).environmentObject(todoDataModel)
-                    })
-                    .padding()
-                    .background(GrayBackGroundView(alpha: 0.0))
-                }
-                .animation(.easeIn)
-
+            }
+            .onTapGesture(count: 1, perform: {
+                selectItem(index: subIndex)
+                isPresentingBlockEdit.toggle()
+            })
+            .sheet(isPresented: $isPresentingBlockEdit, content: {
+                CodeBlockEditView(codeBlockIndex: $selectedItem).environmentObject(todoDataModel)
+            })
+            .padding()
+            .background(GrayBackGroundView(alpha: 0.0))
+        }
+        .animation(.easeIn)
+        
     }
     
 }
@@ -213,46 +213,46 @@ struct HyperLinksScrollView: View {
     
     var body: some View {
         
-            ForEach(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks.indices, id: \.self){ subIndex in
-                    VStack{
-                    
-                        DisclosureGroup(
-                            content: {
-                                
-                                VStack(alignment: .leading) {
-                                    
-                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
-                                        .textCase(.lowercase)
-                                        .padding()
-                                        .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
-                                       
-                                }
-    
-                            }, label: {
-                                
-                                VStack(alignment: .leading, spacing: 5) {
-                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
-                                    CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
-                                }
-                                .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
-                           
-                            })
+        ForEach(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks.indices, id: \.self){ subIndex in
+            VStack{
+                
+                DisclosureGroup(
+                    content: {
                         
-                    }
-                    .onTapGesture(count: 1, perform: {
-                        selectItem(index: subIndex)
-                        isPresentingEdit.toggle()
+                        VStack(alignment: .leading) {
+                            
+                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink.prefix(80) + "...")", fontSize: 12, fontColor: Color.blue, link: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].hyperlink)")
+                                .textCase(.lowercase)
+                                .padding()
+                                .frame(width: UIScreen.main.bounds.width - 60, alignment: .topLeading)
+                            
+                        }
+                        
+                    }, label: {
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].title)", fontSize: 12, weight: .bold)
+                            CustomTextView(text: "\(todoDataModel.todoData[todoDataModel.mainIndex].hyperLinks[subIndex].description)", fontSize: 12, weight: .light)
+                        }
+                        .padding(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
+                        
                     })
-                    .sheet(isPresented: $isPresentingEdit, content: {
-                        HyperLinkEditView(hyperLinkIndex: $selectedItem).environmentObject(todoDataModel)
-                    })
-                    .padding()
-                    .background(Color("Background"))
-                    
-                    
-                }
-                .animation(.easeIn)
-      
+                
+            }
+            .onTapGesture(count: 1, perform: {
+                selectItem(index: subIndex)
+                isPresentingEdit.toggle()
+            })
+            .sheet(isPresented: $isPresentingEdit, content: {
+                HyperLinkEditView(hyperLinkIndex: $selectedItem).environmentObject(todoDataModel)
+            })
+            .padding()
+            .background(Color("Background"))
+            
+            
+        }
+        .animation(.easeIn)
+        
     }
     
 }
@@ -278,42 +278,42 @@ struct ImagesScrollView: View {
             ForEach(todoDataModel.todoData[todoDataModel.mainIndex].images.indices, id: \.self){ subIndex in
                 
                 
-                    HStack{
-                        let imageRef = todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference
-                        
-                        if let imageRef = imageRef {
-                            
-                            WebImage(url: URL(string: imageRef))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(5)
-                                .frame(width: 75, height: 75)
-                            
-                        } else {
-                           
-                            Image(systemName: "photo")
-                                .resizable()
-                                .padding()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 75, height: 75)
-                        }
+                HStack{
+                    let imageRef = todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference
                     
+                    if let imageRef = imageRef {
+                        
+                        WebImage(url: URL(string: imageRef))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(5)
+                            .frame(width: 75, height: 75)
+                        
+                    } else {
+                        
+                        Image(systemName: "photo")
+                            .resizable()
+                            .padding()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 75, height: 75)
                     }
-                    .onTapGesture(count: 1, perform: {
-                        selectItem(index: subIndex)
-                        selectImage(imageRef: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
-                        isPresenting.toggle()
-                    })
-                    .sheet(isPresented: $isPresenting, content: {
-                        ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage).environmentObject(todoDataModel)
-                    })
-                    .padding()
-                    .background(GrayBackGroundView(alpha: 0.0))
                     
                 }
-                .animation(.easeIn)
+                .onTapGesture(count: 1, perform: {
+                    selectItem(index: subIndex)
+                    selectImage(imageRef: todoDataModel.todoData[todoDataModel.mainIndex].images[subIndex].storageReference)
+                    isPresenting.toggle()
+                })
+                .sheet(isPresented: $isPresenting, content: {
+                    ImageLargeDisplayView(imagesSelectedIndex: $selectedItem, selectedImage: $selectedImage).environmentObject(todoDataModel)
+                })
+                .padding()
+                .background(GrayBackGroundView(alpha: 0.0))
+                
+            }
+            .animation(.easeIn)
         }
-    
+        
     }
     
 }
@@ -400,7 +400,7 @@ struct GroupTitleImagesView: View {
                 ImagePickerPresenter()
             })
             
-
+            
         }
         .frame(width: UIScreen.main.bounds.width - 40, alignment: .leading)
         .animation(.linear)

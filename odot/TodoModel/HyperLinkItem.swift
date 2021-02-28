@@ -28,12 +28,12 @@ struct HyperLinkItem: Codable, Hashable {
     }
     
     func getAsDictionary() -> [String : Any] {
-       return [
-                "date": self.date,
-                "title": self.title,
-                "description": self.description,
-                "hyperlink": self.hyperlink
-            ]
+        return [
+            "date": self.date,
+            "title": self.title,
+            "description": self.description,
+            "hyperlink": self.hyperlink
+        ]
     }
     
     func getFormattedDate() -> String {

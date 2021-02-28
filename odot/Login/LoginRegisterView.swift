@@ -12,10 +12,10 @@ import FirebaseUI
 
 
 struct LoginRegisterView: View {
-      
+    
     @EnvironmentObject private var authUtil: AuthUtil
     @EnvironmentObject private var todoDataModel: TodoDataModel
-
+    
     var body: some View {
         ZStack {
             VStack {
@@ -31,11 +31,11 @@ struct LoginRegisterView: View {
                         .environmentObject(todoDataModel)
                         .environmentObject(authUtil)
                 }
-             
+                
                 Spacer()
                 
                 HStack(alignment: .center, spacing: 0) {
-            
+                    
                     HStack(spacing: 1) {
                         Text("S")
                             .font(.system(size: 48))
@@ -58,8 +58,8 @@ struct LoginRegisterView: View {
                     if(Auth.auth().currentUser == nil){
                         authUtil.displaySignIn()
                     } else {
-                       // print("IsLoggedIn: \($authUtil.isLoggedIn)")
-                       // print("IsLoggedIn toggled: \($authUtil.isLoggedIn)")
+                        // print("IsLoggedIn: \($authUtil.isLoggedIn)")
+                        // print("IsLoggedIn toggled: \($authUtil.isLoggedIn)")
                     }
                 }, label: {
                     Text(LocalizeNoCom(name: "Sign in") + " / " + LocalizeNoCom(name: "Register"))

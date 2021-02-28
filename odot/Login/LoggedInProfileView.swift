@@ -37,7 +37,7 @@ struct LoggedInProfileView: View {
                     .bold()
                     .frame(alignment: .center)
                     .padding()
-                    
+                
             }
             
             Button(action: {
@@ -47,17 +47,17 @@ struct LoggedInProfileView: View {
                     .font(.system(size: 16))
             }).alert(isPresented: $isPresentingSignOutAlert) {
                 Alert(
-                        title: Text(LocalizeNoCom(name: "Sign out")),
+                    title: Text(LocalizeNoCom(name: "Sign out")),
                     message: Text(LocalizeNoCom(name: "Are you sure you want to ") + LocalizeNoCom(name: "Sign out") + "?"),
-                        primaryButton: .destructive(Text("Sign out")) {
-                            authUtil.signOut()
-                            presentationMode.wrappedValue.dismiss()
-                        },
-                        secondaryButton: .cancel()
-                    )
+                    primaryButton: .destructive(Text("Sign out")) {
+                        authUtil.signOut()
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
             }
             .padding()
-
+            
             
         }.animation(.linear)
         

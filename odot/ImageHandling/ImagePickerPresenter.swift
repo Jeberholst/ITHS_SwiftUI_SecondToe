@@ -10,7 +10,7 @@ import FirebaseStorage
 import FirebaseAuth
 
 struct ImagePickerPresenter: View {
-        
+    
     @EnvironmentObject private var todoDataModel: TodoDataModel
     private let fbUtil: FirebaseUtil = FirebaseUtil.firebaseUtil
     
@@ -21,7 +21,7 @@ struct ImagePickerPresenter: View {
     var body: some View {
         
         VStack {
-        
+            
             SheetSaveOnlyBarView(title: LocalizeNoCom(name: "New image"), actionSave: actionSave)
             
             Divider()
@@ -53,24 +53,24 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     @Binding var image: Image?
     @Binding var imageURL: Data?
-
+    
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-
+        
         @Binding var presentationMode: PresentationMode
         @Binding var image: Image?
         @Binding var imageData: Data?
-
+        
         init(presentationMode: Binding<PresentationMode>, image: Binding<Image?>, imageURL: Binding<Data?>) {
             _presentationMode = presentationMode
             _image = image
             _imageData = imageURL
         }
-
+        
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             
             let uiImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-             
+            
             
             let targetSize = CGSize(width: 200, height: 200)
             let scaledImage = uiImage.scalePreservingAspectRatio(
@@ -83,25 +83,25 @@ struct ImagePicker: UIViewControllerRepresentable {
             var data = Data()
             data = scaledImage.jpegData(compressionQuality: 1.0)!
             imageData = data
-          
+            
         }
-
+        
     }
     
-
+    
     func makeCoordinator() -> Coordinator {
         return Coordinator(presentationMode: presentationMode, image: $image, imageURL: $imageURL)
     }
-
+    
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         return picker
     }
-
+    
     func updateUIViewController(_ uiViewController: UIImagePickerController,
                                 context: UIViewControllerRepresentableContext<ImagePicker>) {
-            
+        
     }
     
 }
@@ -119,11 +119,11 @@ extension UIImage {
             width: size.width * scaleFactor,
             height: size.height * scaleFactor
         )
-
+        
         let renderer = UIGraphicsImageRenderer(
             size: scaledImageSize
         )
-
+        
         let scaledImage = renderer.image { _ in
             self.draw(in: CGRect(
                 origin: .zero,

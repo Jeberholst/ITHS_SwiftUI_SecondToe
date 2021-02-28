@@ -8,7 +8,7 @@
 import Foundation
 
 struct ImagesItem: Codable, Hashable {
-
+    
     var date: Date
     var storageReference: String
     
@@ -18,10 +18,10 @@ struct ImagesItem: Codable, Hashable {
     }
     
     func getAsDictionary() -> [String : Any] {
-       return [
-                "date": self.date,
-                "storageReference": self.storageReference
-            ]
+        return [
+            "date": self.date,
+            "storageReference": self.storageReference
+        ]
     }
     
 }
